@@ -72,6 +72,7 @@ public class Sistema {
 				// EXECUTA INSTRUCAO NO ir
 					switch (ir.opc) { // para cada opcode, sua execução
 
+						
 						case JMP: //  PC ← k
 								pc = ir.p;							
 						     break;
@@ -104,20 +105,36 @@ public class Sistema {
 							}
 							break;
 						
-						case JMPIM: // PC ← [A]
+						case JMPIM: // PC ← [A] //Duvida
+							pc = m[ir.p].p;
 							break;
 						
 						case JMPIGM: //if Rc > 0 then PC ← [A] Else PC ← PC +1 
+								if (reg[ir.r2] > 0) {
+									pc = m[ir.p].p;
+								} else {
+									pc++;
+								}
 							break;
 						
 						case JMPILM: //f Rc < 0 then PC ← [A] Else PC ← PC +1
+								if (reg[ir.r2] < 0) {
+									pc = m[ir.p].p;
+								} else {
+									pc++;
+								}
 							break;
 						
 						case JMPIEM: //f Rc = 0 then PC ← [A] Else PC ← PC +1
+								if (reg[ir.r2] == 0) {
+									pc = m[ir.p].p;
+								} else {
+									pc++;
+								}
 							break;
 
 						case STOP: // por enquanto, para execucao
-							break;
+							break;							
 
 						case ADDI: // Rd ← Rd + k
 								reg[ir.r1] = reg[ir.r1] + ir.p;
@@ -144,16 +161,14 @@ public class Sistema {
 								pc++;
 							break;
 
-						
-
-
-
 						case LDI: // Rd ← k
 							reg[ir.r1] = ir.p;
 							pc++;
 							break;
 
-						case LDD: // Rd ← [A]
+						case LDD: // Rd ← [A] //Conferir
+							reg[ir.r1] = m[ir.p].p;
+							pc++;
 							break;
 
 						case STD: // [A] ← Rs
@@ -162,7 +177,9 @@ public class Sistema {
 							    pc++;
 							break;
 
-						case LDX: // Rd ← [Rs]
+						case LDX: // Rd ← [Rs] //Conferir
+								reg[ir.r1] = m[ir.r2].p;
+								pc++;
 							break;
 
 						case STX: // [Rd] ←Rs
@@ -231,12 +248,14 @@ public class Sistema {
 	
     // -------------------------------------------------------------------------------------------------------
     // ------------------- instancia e testa sistema
+
 	public static void main(String args[]) {
 		Sistema s = new Sistema();
 		//s.test2();
 		s.test1();
 		//s.test3();
 	}
+	
     // -------------------------------------------------------------------------------------------------------
     // --------------- TUDO ABAIXO DE MAIN É AUXILIAR PARA FUNCIONAMENTO DO SISTEMA - nao faz parte 
 
