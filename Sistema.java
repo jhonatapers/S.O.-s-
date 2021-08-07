@@ -72,46 +72,13 @@ public class Sistema {
 				// EXECUTA INSTRUCAO NO ir
 					switch (ir.opc) { // para cada opcode, sua execução
 
-						case LDI: // Rd ← k
-							reg[ir.r1] = ir.p;
-							pc++;
-							break;
-
-						case STD: // [A] ← Rs
-							    m[ir.p].opc = Opcode.DATA;
-							    m[ir.p].p = reg[ir.r1];
-							    pc++;
-						break;
-
-						case ADD: // Rd ← Rd + Rs
-							reg[ir.r1] = reg[ir.r1] + reg[ir.r2];
-							pc++;
-							break;
-
-						case MULT: // Rd ← Rd * Rs
-							reg[ir.r1] = reg[ir.r1] * reg[ir.r2];
-							pc++;
-							break;
-
-						case ADDI: // Rd ← Rd + k
-							reg[ir.r1] = reg[ir.r1] + ir.p;
-							pc++;
-							break;
-
-						case STX: // [Rd] ←Rs
-							    m[reg[ir.r1]].opc = Opcode.DATA;      
-							    m[reg[ir.r1]].p = reg[ir.r2];          
-								pc++;
-							break;
-
-						case SUB: // Rd ← Rd - Rs
-							reg[ir.r1] = reg[ir.r1] - reg[ir.r2];
-							pc++;
-							break;
-
 						case JMP: //  PC ← k
-								pc = ir.p;
+								pc = ir.p;							
 						     break;
+
+						case JMPI: // PC ← Rs
+								pc = reg[ir.r1];
+							break;					
 						
 						case JMPIG: // If Rc > 0 Then PC ← Rs Else PC ← PC +1
 							if (reg[ir.r2] > 0) {
@@ -121,6 +88,14 @@ public class Sistema {
 							}
 							break;
 
+						case JMPIL: //f Rc < 0 then PC ← Rs Else PC ← PC +1 
+							if (reg[ir.r2] < 0) {
+								pc = reg[ir.r1];
+							} else {
+								pc++;
+							}
+						break;
+
 						case JMPIE: // If Rc = 0 Then PC ← Rs Else PC ← PC +1
 							if (reg[ir.r2] == 0) {
 								pc = reg[ir.r1];
@@ -128,9 +103,77 @@ public class Sistema {
 								pc++;
 							}
 							break;
+						
+						case JMPIM: // PC ← [A]
+							break;
+						
+						case JMPIGM: //if Rc > 0 then PC ← [A] Else PC ← PC +1 
+							break;
+						
+						case JMPILM: //f Rc < 0 then PC ← [A] Else PC ← PC +1
+							break;
+						
+						case JMPIEM: //f Rc = 0 then PC ← [A] Else PC ← PC +1
+							break;
 
 						case STOP: // por enquanto, para execucao
 							break;
+
+						case ADDI: // Rd ← Rd + k
+								reg[ir.r1] = reg[ir.r1] + ir.p;
+								pc++;
+							break;
+
+						case SUBI: // Rd ← Rd – k
+								reg[ir.r1] = reg[ir.r1] - ir.p;
+								pc++;
+							break;
+
+						case ADD: // Rd ← Rd + Rs
+								reg[ir.r1] = reg[ir.r1] + reg[ir.r2];
+								pc++;
+							break;
+
+						case SUB: // Rd ← Rd - Rs
+								reg[ir.r1] = reg[ir.r1] - reg[ir.r2];
+								pc++;
+							break;
+
+						case MULT: // Rd ← Rd * Rs
+								reg[ir.r1] = reg[ir.r1] * reg[ir.r2];
+								pc++;
+							break;
+
+						
+
+
+
+						case LDI: // Rd ← k
+							reg[ir.r1] = ir.p;
+							pc++;
+							break;
+
+						case LDD: // Rd ← [A]
+							break;
+
+						case STD: // [A] ← Rs
+							    m[ir.p].opc = Opcode.DATA;
+							    m[ir.p].p = reg[ir.r1];
+							    pc++;
+							break;
+
+						case LDX: // Rd ← [Rs]
+							break;
+
+						case STX: // [Rd] ←Rs
+							    m[reg[ir.r1]].opc = Opcode.DATA;      
+							    m[reg[ir.r1]].p = reg[ir.r2];          
+								pc++;
+							break;
+
+						case SWAP: // T ← Ra | Ra ← Rb | Rb ←T
+							break;
+
 					}
 				
 				// VERIFICA INTERRUPÇÃO !!! - TERCEIRA FASE DO CICLO DE INSTRUÇÕES
