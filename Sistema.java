@@ -177,8 +177,8 @@ public class Sistema {
 							    pc++;
 							break;
 
-						case LDX: // Rd ← [Rs] //Conferir
-								reg[ir.r1] = m[ir.r2].p;
+						case LDX: // Rd ← [Rs] 
+								reg[ir.r1] = m[reg[ir.r2]].p;
 								pc++;
 							break;
 
@@ -252,7 +252,7 @@ public class Sistema {
 	public static void main(String args[]) {
 		Sistema s = new Sistema();
 		//s.test2();
-		s.test1();
+		s.test4();
 		//s.test3();
 	}
 	
@@ -296,6 +296,18 @@ public class Sistema {
 		aux.dump(vm.m, 0, 15);
 	}
 
+	public void test4(){
+		Aux aux = new Aux();
+		Word[] p = new Programas().contador;
+		aux.carga(p, vm.m);
+		vm.cpu.setContext(0);
+		System.out.println("---------------------------------- programa carregado ");
+		aux.dump(vm.m, 0, 15);
+		vm.cpu.run();
+		System.out.println("---------------------------------- após execucao ");
+		aux.dump(vm.m, 0, 15);
+	}
+
 	// -------------------------------------------  classes e funcoes auxiliares
     public class Aux {
 		public void dump(Word w) {
@@ -320,7 +332,40 @@ public class Sistema {
 	
    //  -------------------------------------------- programas aa disposicao para copiar na memoria (vide aux.carga)
    public class Programas {
-	   public Word[] progMinimo = new Word[] {
+
+	   	public Word[] contador = new Word[] {
+		   new Word(Opcode.LDI, 0, -1, 0), 	 //r0 <- 0
+		   new Word(Opcode.STD, 0, -1, 14), //A <- r0 (Definir Endereço)
+
+		   new Word(Opcode.LDI, 0, -1, 50),  //r0 <- 50
+		   new Word(Opcode.STD, 0, -1, 15), //B <- r0 (Definir Endereço)
+
+		   new Word(Opcode.LDI, 0, -1, 6), 	 //r0 <- 6
+		   new Word(Opcode.STD, 0, -1, 16), //Loop <- r0 (Definir Endereço)
+
+
+		   new Word(Opcode.LDD, 0, -1, 14),  //r0 <- A (Definir Endereço)
+		   new Word(Opcode.LDD, 1, -1, 15),  //r1 <- B (Definir Endereço)			
+		   new Word(Opcode.SUB, 0, 1, -1),   //r0 <- r0 - r1
+		
+		   new Word(Opcode.LDD, 2, -1, 14),  //r2 <- A (Definir Endereço)
+		   new Word(Opcode.ADDI, 2, -1, 1),  //r2 <- r2 + 1
+		   new Word(Opcode.STD, 2, -1, 14),  //A <- r2 (Definir Endereço)
+
+		   new Word(Opcode.JMPILM, -1, 0, 16), //(eNDEREÇO LOOP)		
+
+		   new Word(Opcode.STOP, -1, -1, -1),
+
+
+
+		   new Word(Opcode.DATA, -1, -1, -1),  //A 0     14
+		   new Word(Opcode.DATA, -1, -1, -1),  //B 50    15
+		   new Word(Opcode.DATA, -1, -1, -1)   //Loop    16
+
+	   };
+
+	
+	   	public Word[] progMinimo = new Word[] {
 		    //       OPCODE      R1  R2  P         :: VEJA AS COLUNAS VERMELHAS DA TABELA DE DEFINICAO DE OPERACOES
 			//                                     :: -1 SIGNIFICA QUE O PARAMETRO NAO EXISTE PARA A OPERACAO DEFINIDA
 		    new Word(Opcode.LDI, 0, -1, 999), 		
@@ -331,7 +376,7 @@ public class Sistema {
 			new Word(Opcode.STD, 0, -1, 14), 
 			new Word(Opcode.STOP, -1, -1, -1) };
 
-	   public Word[] fibonacci10 = new Word[] { // mesmo que prog exemplo, so que usa r0 no lugar de r8
+	   	public Word[] fibonacci10 = new Word[] { // mesmo que prog exemplo, so que usa r0 no lugar de r8
 			new Word(Opcode.LDI, 1, -1, 0), 
 			new Word(Opcode.STD, 1, -1, 20),    // 20 posicao de memoria onde inicia a serie de fibonacci gerada  
 			new Word(Opcode.LDI, 2, -1, 1),
@@ -364,7 +409,7 @@ public class Sistema {
 			new Word(Opcode.DATA, -1, -1, -1)  // ate aqui - serie de fibonacci ficara armazenada
 			   };   
 
-	   public Word[] fatorial = new Word[] { 	 // este fatorial so aceita valores positivos.   nao pode ser zero
+	   	public Word[] fatorial = new Word[] { 	 // este fatorial so aceita valores positivos.   nao pode ser zero
 												 // linha   coment
 			new Word(Opcode.LDI, 0, -1, 6),      // 0   	r0 é valor a calcular fatorial
 			new Word(Opcode.LDI, 1, -1, 1),      // 1   	r1 é 1 para multiplicar (por r0)
