@@ -72,7 +72,6 @@ public class Sistema {
 				// EXECUTA INSTRUCAO NO ir
 					switch (ir.opc) { // para cada opcode, sua execução
 
-						
 						case JMP: //  PC ← k
 								pc = ir.p;							
 						     break;
@@ -105,7 +104,7 @@ public class Sistema {
 							}
 							break;
 						
-						case JMPIM: // PC ← [A] //Duvida
+						case JMPIM: // PC ← [A]
 							pc = m[ir.p].p;
 							break;
 						
@@ -189,6 +188,9 @@ public class Sistema {
 							break;
 
 						case SWAP: // T ← Ra | Ra ← Rb | Rb ←T
+								int t = reg[ir.r1];
+								reg[ir.r1] = reg[ir.r2];
+								reg[ir.r2] = t;
 							break;
 
 					}
