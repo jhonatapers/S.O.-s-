@@ -36,17 +36,21 @@ public class Sistema {
 		LDI, LDD, STD,LDX, STX, SWAP;        // movimentacao
 	}
 
+	public enum Interrupt {
+
+	}
+
 	public class CPU {
 							// característica do processador: contexto da CPU ...
 		private int pc; 			// ... composto de program counter,
 		private Word ir; 			// instruction register,
-		private int[] reg;       	// registradores da CPU
+		private int[] reg;       	// registradores da CPU		
 
 		private Word[] m;   // CPU acessa MEMORIA, guarda referencia 'm' a ela. memoria nao muda. ee sempre a mesma.
 			
 		private Aux aux = new Aux();
 
-		public CPU(Word[] _m) {     // ref a MEMORIA e interrupt handler passada na criacao da CPU
+		public CPU(Word[] _m, InterruptHandling ih) {     // ref a MEMORIA e interrupt handler passada na criacao da CPU
 			m = _m; 				// usa o atributo 'm' para acessar a memoria.
 			reg = new int[8]; 		// aloca o espaço dos registradores
 		}
@@ -169,8 +173,8 @@ public class Sistema {
 							reg[ir.r1] = m[ir.p].p;
 							pc++;
 							break;
-
-						case STD: // [A] ← Rs
+												
+						case STD: // [A] ← Rs     
 							    m[ir.p].opc = Opcode.DATA;
 							    m[ir.p].p = reg[ir.r1];
 							    pc++;
@@ -213,13 +217,13 @@ public class Sistema {
         public Word[] m;     
         public CPU cpu;    
 
-        public VM(){   // vm deve ser configurada com endereço de tratamento de interrupcoes
+        public VM(InterruptHandling ih){   // vm deve ser configurada com endereço de tratamento de interrupcoes
 	     // memória
   		 	 tamMem = 1024;
 			 m = new Word[tamMem]; // m ee a memoria
 			 for (int i=0; i<tamMem; i++) { m[i] = new Word(Opcode.___,-1,-1,-1); };
 	  	 // cpu
-			 cpu = new CPU(m);
+			 cpu = new CPU(m, ih);
 	    }	
 	}
     // ------------------- V M  - fim ------------------------------------------------------------------------
@@ -232,7 +236,13 @@ public class Sistema {
 	// -------------------------------------------------------------------------------------------------------
 	// ------------------- S O F T W A R E - inicio ----------------------------------------------------------
 
-	// ------------------- VAZIO
+	// ------------------- I N T E R R U P T S ---------------------------------------------------------------
+
+	public class InterruptHandling{
+		
+	}
+
+	// -------------------------------------------------------------------------------------------------------
 	
 
 	// -------------------------------------------------------------------------------------------------------
@@ -335,7 +345,7 @@ public class Sistema {
    //  -------------------------------------------- programas aa disposicao para copiar na memoria (vide aux.carga)
    public class Programas {
 
-	   	public Word[] contador = new Word[] {
+	   	public Word[] contador = new Word[] {		
 		   new Word(Opcode.LDI, 0, -1, 0), 	 //r0 <- 0
 		   new Word(Opcode.STD, 0, -1, 14), //A <- r0 (Definir Endereço)
 
@@ -357,8 +367,7 @@ public class Sistema {
 		   new Word(Opcode.JMPILM, -1, 0, 16), //(eNDEREÇO LOOP)		
 
 		   new Word(Opcode.STOP, -1, -1, -1),
-
-
+		   
 
 		   new Word(Opcode.DATA, -1, -1, -1),  //A 0     14
 		   new Word(Opcode.DATA, -1, -1, -1),  //B 50    15
@@ -379,6 +388,10 @@ public class Sistema {
 			new Word(Opcode.STOP, -1, -1, -1) };
 
 	   	public Word[] fibonacci10 = new Word[] { // mesmo que prog exemplo, so que usa r0 no lugar de r8
+
+
+			//if a < 0 entao a = -1 else
+
 			new Word(Opcode.LDI, 1, -1, 0), 
 			new Word(Opcode.STD, 1, -1, 20),    // 20 posicao de memoria onde inicia a serie de fibonacci gerada  
 			new Word(Opcode.LDI, 2, -1, 1),
