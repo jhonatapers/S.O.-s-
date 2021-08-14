@@ -20,6 +20,7 @@ public class SOs {
 
     public SOs(CPU _cpu, Memory _memory){        
         interruptHandling = new InterruptHandling();
+        _cpu.setInterruptHandling(interruptHandling);
         cpu = _cpu;
         memory = _memory;
     }
