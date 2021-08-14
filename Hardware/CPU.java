@@ -15,17 +15,22 @@ public class CPU {
 
     // ------ INTERRUPCOES CPU ------
     public static enum Interrupt {
-        NoInterrupt, InvalidAdress, InvalidInstruction, Overflow, ProgramEnd;
+        NoInterrupt, 
+        InvalidAdress, InvalidInstruction, 
+        Overflow, 
+        ProgramEnd;
     }
     // ----------------------------
+
+    private Aux aux = new Aux();
 
     private int pc;
     private Word ir;
     private int[] reg;
     private InterruptHandling ih;
     private Interrupt itr;
-
     public Memory m;
+    public Boolean debug = false;
 
     public CPU(Memory memory){
         m = memory;
@@ -44,153 +49,151 @@ public class CPU {
         return false;
     }*/
 
-    public void run() { 		// execucao da CPU supoe que o contexto da CPU, vide acima, esta devidamente setado
-        while (true) { 			// ciclo de instrucoes. acaba cfe instrucao, veja cada caso.
+    public void run() {
+
+        while (true) {
             itr = Interrupt.NoInterrupt;
-            // FETCH
-                ir = m.address[pc]; 	// busca posicao da memoria apontada por pc, guarda em ir
-                //if debug
-                    //showState();
-            // EXECUTA INSTRUCAO NO ir
-                switch (ir.opc) { // para cada opcode, sua execução
-
-                    case JMP: //  PC ← k                           
-                            pc = ir.p;						
-                         break;
-
-                    case JMPI: // PC ← Rs
-                            pc = reg[ir.r1];
-                        break;					
-                    
-                    case JMPIG: // If Rc > 0 Then PC ← Rs Else PC ← PC +1
-                        if (reg[ir.r2] > 0) {
-                            pc = reg[ir.r1];
-                        } else {
-                            pc++;
-                        }
-                        break;
-
-                    case JMPIL: //f Rc < 0 then PC ← Rs Else PC ← PC +1 
-                        if (reg[ir.r2] < 0) {
-                            pc = reg[ir.r1];
-                        } else {
-                            pc++;
-                        }
+            ir = m.address[pc]; 
+            
+            if(debug){ showState(); }
+            
+            switch (ir.opc) {
+                case JMP: //  PC ← k                           
+                    pc = ir.p;						
                     break;
 
-                    case JMPIE: // If Rc = 0 Then PC ← Rs Else PC ← PC +1
-                        if (reg[ir.r2] == 0) {
-                            pc = reg[ir.r1];
+                case JMPI: // PC ← Rs
+                    pc = reg[ir.r1];
+                    break;					
+                    
+                case JMPIG: // If Rc > 0 Then PC ← Rs Else PC ← PC +1
+                    if (reg[ir.r2] > 0) {
+                        pc = reg[ir.r1];
+                    } else {
+                        pc++;
+                    }
+                    break;
+
+                case JMPIL: //f Rc < 0 then PC ← Rs Else PC ← PC +1 
+                    if (reg[ir.r2] < 0) {
+                        pc = reg[ir.r1];
+                    } else {
+                        pc++;
+                    }
+                    break;
+
+                case JMPIE: // If Rc = 0 Then PC ← Rs Else PC ← PC +1
+                    if (reg[ir.r2] == 0) {
+                        pc = reg[ir.r1];
+                    } else {
+                        pc++;
+                    }
+                    break;
+                    
+                case JMPIM: // PC ← [A]
+                    pc = m.address[ir.p].p;
+                    break;
+                    
+                case JMPIGM: //if Rc > 0 then PC ← [A] Else PC ← PC +1 
+                        if (reg[ir.r2] > 0) {
+                            pc = m.address[ir.p].p;
                         } else {
                             pc++;
                         }
                         break;
                     
-                    case JMPIM: // PC ← [A]
-                        pc = m.address[ir.p].p;
+                case JMPILM: //f Rc < 0 then PC ← [A] Else PC ← PC +1
+                        if (reg[ir.r2] < 0) {
+                            pc = m.address[ir.p].p;
+                        } else {
+                            pc++;
+                        }
                         break;
                     
-                    case JMPIGM: //if Rc > 0 then PC ← [A] Else PC ← PC +1 
-                            if (reg[ir.r2] > 0) {
-                                pc = m.address[ir.p].p;
-                            } else {
-                                pc++;
-                            }
-                        break;
-                    
-                    case JMPILM: //f Rc < 0 then PC ← [A] Else PC ← PC +1
-                            if (reg[ir.r2] < 0) {
-                                pc = m.address[ir.p].p;
-                            } else {
-                                pc++;
-                            }
-                        break;
-                    
-                    case JMPIEM: //f Rc = 0 then PC ← [A] Else PC ← PC +1
-                            if (reg[ir.r2] == 0) {
-                                pc = m.address[ir.p].p;
-                            } else {
-                                pc++;
-                            }
+                case JMPIEM: //f Rc = 0 then PC ← [A] Else PC ← PC +1
+                        if (reg[ir.r2] == 0) {
+                            pc = m.address[ir.p].p;
+                        } else {
+                            pc++;
+                        }
                         break;						
 
-                    case ADDI: // Rd ← Rd + k
-                            reg[ir.r1] = reg[ir.r1] + ir.p;
-                            pc++;
+                case ADDI: // Rd ← Rd + k
+                        reg[ir.r1] = reg[ir.r1] + ir.p;
+                        pc++;
                         break;
 
-                    case SUBI: // Rd ← Rd – k
-                            reg[ir.r1] = reg[ir.r1] - ir.p;
-                            pc++;
+                case SUBI: // Rd ← Rd – k
+                        reg[ir.r1] = reg[ir.r1] - ir.p;
+                        pc++;
                         break;
 
-                    case ADD: // Rd ← Rd + Rs
-                            reg[ir.r1] = reg[ir.r1] + reg[ir.r2];
-                            pc++;
+                case ADD: // Rd ← Rd + Rs
+                        reg[ir.r1] = reg[ir.r1] + reg[ir.r2];
+                        pc++;
                         break;
 
-                    case SUB: // Rd ← Rd - Rs
-                            reg[ir.r1] = reg[ir.r1] - reg[ir.r2];
-                            pc++;
+                case SUB: // Rd ← Rd - Rs
+                        reg[ir.r1] = reg[ir.r1] - reg[ir.r2];
+                        pc++;
                         break;
 
-                    case MULT: // Rd ← Rd * Rs
-                            reg[ir.r1] = reg[ir.r1] * reg[ir.r2];
-                            pc++;
+                case MULT: // Rd ← Rd * Rs
+                        reg[ir.r1] = reg[ir.r1] * reg[ir.r2];
+                        pc++;
                         break;
 
-                    case LDI: // Rd ← k
+                case LDI: // Rd ← k
                         reg[ir.r1] = ir.p;
                         pc++;
                         break;
 
-                    case LDD: // Rd ← [A] //Conferir
+                case LDD: // Rd ← [A] //Conferir
                         reg[ir.r1] = m.address[ir.p].p;
                         pc++;
                         break;
                                             
-                    case STD: // [A] ← Rs     
-                            m.address[ir.p].opc = Opcode.DATA;
-                            m.address[ir.p].p = reg[ir.r1];
-                            pc++;
+                case STD: // [A] ← Rs     
+                        m.address[ir.p].opc = Opcode.DATA;
+                        m.address[ir.p].p = reg[ir.r1];
+                        pc++;
                         break;
 
-                    case LDX: // Rd ← [Rs] 
-                            reg[ir.r1] = m.address[reg[ir.r2]].p;
-                            pc++;
+                case LDX: // Rd ← [Rs] 
+                        reg[ir.r1] = m.address[reg[ir.r2]].p;
+                        pc++;
                         break;
 
-                    case STX: // [Rd] ←Rs
-                            m.address[reg[ir.r1]].opc = Opcode.DATA;      
-                            m.address[reg[ir.r1]].p = reg[ir.r2];          
-                            pc++;
+                case STX: // [Rd] ←Rs
+                        m.address[reg[ir.r1]].opc = Opcode.DATA;      
+                        m.address[reg[ir.r1]].p = reg[ir.r2];          
+                        pc++;
                         break;
 
-                    case SWAP: // T ← Ra | Ra ← Rb | Rb ←T
-                            int t = reg[ir.r1];
-                            reg[ir.r1] = reg[ir.r2];
-                            reg[ir.r2] = t;
+                case SWAP: // T ← Ra | Ra ← Rb | Rb ←T
+                        int t = reg[ir.r1];
+                        reg[ir.r1] = reg[ir.r2];
+                        reg[ir.r2] = t;
                         break;
                     
-                    case STOP: // por enquanto, para execucao
+                case STOP:
                         itr = Interrupt.ProgramEnd;
                         break;	
 
-                    case DATA:
+                case DATA:
                         itr = Interrupt.InvalidInstruction;
                         break;
 
-                    case ___:
+                case ___:
                         itr = Interrupt.InvalidInstruction;
                         break;
 
-                    default:
+                default:
                         itr = Interrupt.InvalidInstruction;
                         break;
 
-                }
+            }
             
-            // VERIFICA INTERRUPÇÃO !!! - TERCEIRA FASE DO CICLO DE INSTRUÇÕES
             if(itr != Interrupt.NoInterrupt){
                 ih.handle(itr);
                 break;
@@ -198,4 +201,36 @@ public class CPU {
         }
     }
 
+    //#region AUX
+    public void showState(){
+        System.out.println("       "+ pc); 
+          System.out.print("           ");
+        for (int i=0; i<8; i++) { System.out.print("r"+i);   System.out.print(": "+reg[i]+"     "); };  
+        System.out.println("");
+        System.out.print("           ");  aux.dump(ir);
+    }
+
+    public class Aux {
+        public void dump(Word w) {
+            System.out.print("[ "); 
+            System.out.print(w.opc); System.out.print(", ");
+            System.out.print(w.r1);  System.out.print(", ");
+            System.out.print(w.r2);  System.out.print(", ");
+            System.out.print(w.p);  System.out.println("  ] ");
+        }
+        public void dump(Word[] m, int ini, int fim) {
+            for (int i = ini; i < fim; i++) {
+                System.out.print(i); System.out.print(":  ");  dump(m[i]);
+            }
+        }
+        public void carga(Word[] p, Word[] m) {
+            for (int i = 0; i < p.length; i++) {
+                m[i].opc = p[i].opc;     m[i].r1 = p[i].r1;     m[i].r2 = p[i].r2;     m[i].p = p[i].p;
+            }
+        }
+    }
+    //#endregion
+
 }
+
+

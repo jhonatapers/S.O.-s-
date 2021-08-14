@@ -8,6 +8,7 @@ public class VirtualMachine {
 	public CPU cpu;
 	public Memory memory;
 	public SOs sos;
+	private static int MEM_SIZE = 1024;
 
     public VirtualMachine(CPU _cpu, Memory _memory){  
 		cpu = _cpu;
@@ -15,13 +16,17 @@ public class VirtualMachine {
 		sos = new SOs(_cpu, _memory);
     }
 
-    public static void main(String args[]) {
-        
-		Memory memory = new Memory();
-		CPU cpu = new CPU(memory);		
-		VirtualMachine vm = new VirtualMachine(cpu, memory);
-		vm.sos.loadProgram(0, Softwares.fibonacci10);
+    public static void main(String args[]) {   		     
+		CPU cpu = new CPU(new Memory(MEM_SIZE));	
+
+		VirtualMachine vm = new VirtualMachine(cpu, cpu.m);
+
+		vm.cpu.debug = true;
+
+		vm.sos.loadProgram(0, Softwares.contador);
 		vm.sos.runProgram(0);
+
+		
 	}
 	
     // -------------------------------------------------------------------------------------------------------

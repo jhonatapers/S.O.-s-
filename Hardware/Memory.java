@@ -3,11 +3,11 @@ import Hardware.CPU.Opcode;
 
 public class Memory {
 
-    private static int MEM_SIZE;
     public Word[] address;
 
-    public Memory(){
+    public Memory(int MEM_SIZE){
         address = new Word[MEM_SIZE];
+        
         for(int i = 0; i < address.length; i++){
             address[i] = new Word(Opcode.___, -1, -1, -1);
         }

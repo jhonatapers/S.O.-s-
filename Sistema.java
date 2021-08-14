@@ -5,7 +5,6 @@
 // Fase 1 - máquina virtual (vide enunciado correspondente)
 //
 
-import java.util.*;
 public class Sistema {
 	
 	// -------------------------------------------------------------------------------------------------------
@@ -196,6 +195,12 @@ public class Sistema {
 								reg[ir.r1] = reg[ir.r2];
 								reg[ir.r2] = t;
 							break;
+						case DATA:
+							break;
+						case ___:
+							break;
+						default:
+							break;
 
 					}
 				
@@ -251,7 +256,7 @@ public class Sistema {
 	public VM vm;
 
     public Sistema(){   // a VM com tratamento de interrupções
-		 vm = new VM();
+		 //vm = new VM();
 	}
 
     // -------------------  S I S T E M A - fim --------------------------------------------------------------
