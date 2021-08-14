@@ -8,10 +8,26 @@ public class SOs {
     
     public static class InterruptHandling{
         
+        //Tratando interrupções
         public void handle(Interrupt itr){
-            System.out.println(itr);
+            switch (itr) {
+                case InvalidInstruction:
+                    System.out.println(itr);
+                    break;
+                case InvalidAdress:
+                    System.out.println(itr);
+                    break;
+                case Overflow:
+                    System.out.println(itr);
+                    break;
+                case ProgramEnd:
+                    System.out.println(itr);
+                    break;
+                default:
+                    System.out.println(itr);
+                    break;
+            }
         }        
-
     }
 
     public InterruptHandling interruptHandling;
