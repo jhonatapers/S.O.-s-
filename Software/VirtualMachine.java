@@ -1,7 +1,7 @@
-package Hardware;
+package Software;
 
-import Software.SOs;
-import Software.Softwares;
+import Hardware.CPU;
+import Hardware.Memory;
 
 public class VirtualMachine {
 
