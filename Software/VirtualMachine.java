@@ -24,9 +24,7 @@ public class VirtualMachine {
 		vm.cpu.debug = true;
 
 		vm.sos.loadProgram(0, Softwares.contador);
-		vm.sos.runProgram(0);
-
-		
+		vm.sos.runProgram(0, 0, Softwares.contador.length-1);
 	}
 	
     // -------------------------------------------------------------------------------------------------------

@@ -31,8 +31,8 @@ public class SOs {
         }
     }
 
-    public void runProgram(int pc){
-        cpu.setContext(pc);
+    public void runProgram(int pc, int limiteInferior, int limiteSuperior){
+        cpu.setContext(pc, limiteInferior, limiteSuperior);
         cpu.run();
     }
 
