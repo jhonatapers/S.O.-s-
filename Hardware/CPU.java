@@ -42,7 +42,10 @@ public class CPU {
         pc = _pc;                
     }
 
-    
+    public void setInterruptHandling(InterruptHandling _ih){
+        ih = _ih;
+    }
+
     private boolean validAdress(int _pc){
         if(_pc < 0 || _pc > m.address.length)
             return false;
