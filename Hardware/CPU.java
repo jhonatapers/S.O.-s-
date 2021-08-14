@@ -52,8 +52,16 @@ public class CPU {
 
     private boolean validAdress(int _pc){
         if(_pc < 0 || _pc > m.address.length)
-            return false;
+        {
             itr = Interrupt.InvalidAdress;
+            return false;
+        }
+        
+        if(_pc < limiteInferior || _pc > limiteSuperior)
+        {
+            itr = Interrupt.InvalidAdress;
+            return false;
+        }
         
         return true;
     }
