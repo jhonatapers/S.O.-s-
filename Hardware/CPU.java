@@ -26,6 +26,8 @@ public class CPU {
     private Aux aux = new Aux();
 
     private int pc;
+    private int limiteSuperior;
+    private int limiteInferior;
     private Word ir;
     private int[] reg;
     private InterruptHandling ih;
@@ -38,8 +40,10 @@ public class CPU {
         reg = new int[8];
     }
 
-    public void setContext(int _pc) {
+    public void setContext(int _pc, int _limiteSuperior, int _limiteInferior) {
         pc = _pc;                
+        limiteSuperior =_limiteSuperior;
+        limiteInferior = _limiteInferior;
     }
 
     public void setInterruptHandling(InterruptHandling _ih){
