@@ -8,8 +8,8 @@ public class SOs {
     
     public static class InterruptHandling{
         
+        //Tratando interrupções
         public void handle(Interrupt itr){
-
             switch (itr) {
                 case InvalidInstruction:
                     System.out.println(itr);
@@ -28,7 +28,6 @@ public class SOs {
                     break;
             }
         }        
-
     }
 
     public InterruptHandling interruptHandling;
