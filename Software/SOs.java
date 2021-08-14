@@ -2,11 +2,12 @@ package Software;
 import Hardware.CPU;
 import Hardware.Memory;
 import Hardware.CPU.Interrupt;
+import Hardware.CPU.Opcode;
 import Hardware.Memory.Word;
 
 public class SOs {
     
-    public static class InterruptHandling{
+    public class InterruptHandling{
         
         //Tratando interrupções
         public void handle(Interrupt itr){
@@ -23,6 +24,16 @@ public class SOs {
                 case ProgramEnd:
                     System.out.println(itr);
                     break;
+                case Trap:
+                    int pcAtual = cpu.getPC();
+                    int limiteInferiorAtual = cpu.getLimiteInferior();
+                    int limiteSuperiorAtual = cpu.getLimiteSuperior();
+
+                    cpu.setContext(900, 900, 930);
+                    cpu.run();
+                    cpu.setContext(pcAtual, limiteSuperiorAtual, limiteInferiorAtual);
+                    cpu.run();
+
                 default:
                     System.out.println(itr);
                     break;
@@ -52,6 +63,10 @@ public class SOs {
         cpu.setContext(pc, limiteInferior, limiteSuperior);
         cpu.run();
     }
+
+    public static Word[] Trap = new Word[] {		
+        
+    };
 
 }
 

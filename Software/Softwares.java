@@ -90,4 +90,18 @@ public class Softwares {
         new Word(Opcode.DATA, -1, -1, -1)   //Loop    16        
     };
 
+    public static Word[] TrapExampleIn = new Word[] {		
+        new Word(Opcode.LDI, 8, -1, 1),   
+        new Word(Opcode.LDI, 9, -1, 4),   
+        new Word(Opcode.TRAP, -1, -1, -1),
+        new Word(Opcode.STOP, -1, -1, -1)
+    };
+
+    public static Word[] TrapExampleOut = new Word[] {		
+        new Word(Opcode.LDI, 8, -1, 1),   
+        new Word(Opcode.LDI, 9, -1, 4),   
+        new Word(Opcode.TRAP, 9, -1, 4),
+        new Word(Opcode.STOP, -1, -1, -1)
+    };
+
 }
