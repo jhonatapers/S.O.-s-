@@ -25,11 +25,9 @@ public class CPU {
     private InterruptHandling ih;
     private Interrupt itr;
 
-    private Memory m;
-    //private Word[] m;
+    public Memory m;
 
-    public CPU(Memory memory, InterruptHandling interruptHandling){
-        ih = interruptHandling;
+    public CPU(Memory memory){
         m = memory;
         reg = new int[8];
     }
@@ -38,18 +36,26 @@ public class CPU {
         pc = _pc;                
     }
 
+    /*
+    private boolean invalidAdress(int _pc){
+        if(_pc < 0 || _pc > m.address.length)
+            return true;
+        
+        return false;
+    }*/
+
     public void run() { 		// execucao da CPU supoe que o contexto da CPU, vide acima, esta devidamente setado
         while (true) { 			// ciclo de instrucoes. acaba cfe instrucao, veja cada caso.
             itr = Interrupt.NoInterrupt;
             // FETCH
-                ir = m.mem[pc]; 	// busca posicao da memoria apontada por pc, guarda em ir
+                ir = m.address[pc]; 	// busca posicao da memoria apontada por pc, guarda em ir
                 //if debug
                     //showState();
             // EXECUTA INSTRUCAO NO ir
                 switch (ir.opc) { // para cada opcode, sua execução
 
-                    case JMP: //  PC ← k
-                            pc = ir.p;							
+                    case JMP: //  PC ← k                           
+                            pc = ir.p;						
                          break;
 
                     case JMPI: // PC ← Rs
@@ -81,12 +87,12 @@ public class CPU {
                         break;
                     
                     case JMPIM: // PC ← [A]
-                        pc = m.mem[ir.p].p;
+                        pc = m.address[ir.p].p;
                         break;
                     
                     case JMPIGM: //if Rc > 0 then PC ← [A] Else PC ← PC +1 
                             if (reg[ir.r2] > 0) {
-                                pc = m.mem[ir.p].p;
+                                pc = m.address[ir.p].p;
                             } else {
                                 pc++;
                             }
@@ -94,7 +100,7 @@ public class CPU {
                     
                     case JMPILM: //f Rc < 0 then PC ← [A] Else PC ← PC +1
                             if (reg[ir.r2] < 0) {
-                                pc = m.mem[ir.p].p;
+                                pc = m.address[ir.p].p;
                             } else {
                                 pc++;
                             }
@@ -102,7 +108,7 @@ public class CPU {
                     
                     case JMPIEM: //f Rc = 0 then PC ← [A] Else PC ← PC +1
                             if (reg[ir.r2] == 0) {
-                                pc = m.mem[ir.p].p;
+                                pc = m.address[ir.p].p;
                             } else {
                                 pc++;
                             }
@@ -139,24 +145,24 @@ public class CPU {
                         break;
 
                     case LDD: // Rd ← [A] //Conferir
-                        reg[ir.r1] = m.mem[ir.p].p;
+                        reg[ir.r1] = m.address[ir.p].p;
                         pc++;
                         break;
                                             
                     case STD: // [A] ← Rs     
-                            m.mem[ir.p].opc = Opcode.DATA;
-                            m.mem[ir.p].p = reg[ir.r1];
+                            m.address[ir.p].opc = Opcode.DATA;
+                            m.address[ir.p].p = reg[ir.r1];
                             pc++;
                         break;
 
                     case LDX: // Rd ← [Rs] 
-                            reg[ir.r1] = m.mem[reg[ir.r2]].p;
+                            reg[ir.r1] = m.address[reg[ir.r2]].p;
                             pc++;
                         break;
 
                     case STX: // [Rd] ←Rs
-                            m.mem[reg[ir.r1]].opc = Opcode.DATA;      
-                            m.mem[reg[ir.r1]].p = reg[ir.r2];          
+                            m.address[reg[ir.r1]].opc = Opcode.DATA;      
+                            m.address[reg[ir.r1]].p = reg[ir.r2];          
                             pc++;
                         break;
 
@@ -184,12 +190,11 @@ public class CPU {
 
                 }
             
-            // VERIFICA INTERRUPÇÃO
+            // VERIFICA INTERRUPÇÃO !!! - TERCEIRA FASE DO CICLO DE INSTRUÇÕES
             if(itr != Interrupt.NoInterrupt){
                 ih.handle(itr);
                 break;
             }
-
         }
     }
 

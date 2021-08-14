@@ -3,16 +3,16 @@ import Hardware.CPU.Opcode;
 
 public class Memory {
 
-    public Word[] mem;
+    private static int MEM_SIZE;
+    public Word[] address;
 
-    public Memory(int MEM_SIZE){
-        mem = new Word[MEM_SIZE];
-        for(int i = 0; i < mem.length; i++){
-            mem[i] = new Word(Opcode.___, -1, -1, -1);
+    public Memory(){
+        address = new Word[MEM_SIZE];
+        for(int i = 0; i < address.length; i++){
+            address[i] = new Word(Opcode.___, -1, -1, -1);
         }
     }
 
-    
     public static class Word { 	// cada posicao da memoria tem uma instrucao (ou um dado)
 		public Opcode opc; 	//
 		public int r1; 		// indice do primeiro registrador da operacao (Rs ou Rd cfe opcode na tabela)
