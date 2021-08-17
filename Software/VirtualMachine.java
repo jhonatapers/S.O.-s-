@@ -23,8 +23,8 @@ public class VirtualMachine {
 
 		vm.cpu.debug = true;
 
-		vm.sos.loadProgram(0, Softwares.contador);
-		vm.sos.runProgram(0, 0, Softwares.contador.length-1);
+		vm.sos.loadProgram(0, Softwares.PA);
+		vm.sos.runProgram(0, 0, Softwares.PA.length-1);
 	}
 	
     // -------------------------------------------------------------------------------------------------------
