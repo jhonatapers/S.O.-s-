@@ -9,7 +9,8 @@ public class CPU {
 		DATA, ___,		    // se memoria nesta posicao tem um dado, usa DATA, se nao usada ee NULO ___
 		JMP, JMPI, JMPIG, JMPIL, JMPIE,  JMPIM, JMPIGM, JMPILM, JMPIEM, STOP,   // desvios e parada
 		ADDI, SUBI,  ADD, SUB, MULT,         // matematicos
-		LDI, LDD, STD,LDX, STX, SWAP;        // movimentacao
+		LDI, LDD, STD,LDX, STX, SWAP,        // movimentacao
+        TRAP;                                // Chamada de sistema
 	}
     // ----------------------------
 
@@ -19,7 +20,8 @@ public class CPU {
         InvalidInstruction, 
         InvalidAdress, 
         Overflow, 
-        ProgramEnd;
+        ProgramEnd,
+        Trap;
     }
     // ----------------------------
 
@@ -37,13 +39,25 @@ public class CPU {
 
     public CPU(Memory memory){
         m = memory;
-        reg = new int[8];
+        reg = new int[10];
     }
 
     public void setContext(int _pc, int _limiteSuperior, int _limiteInferior) {
         pc = _pc;                
         limiteSuperior =_limiteSuperior;
         limiteInferior = _limiteInferior;
+    }
+
+    public int getPC(){
+        return pc;
+    }
+
+    public int getLimiteInferior(){
+        return limiteInferior;
+    }
+
+    public int getLimiteSuperior(){
+        return limiteSuperior;
     }
 
     public void setInterruptHandling(InterruptHandling _ih){
@@ -229,6 +243,10 @@ public class CPU {
                         reg[ir.r2] = t;
                         break;
                     
+                case TRAP:
+                        itr = Interrupt.Trap;                
+                        pc++;
+                    
                 case STOP:
                         itr = Interrupt.ProgramEnd;
                         break;	
@@ -254,7 +272,7 @@ public class CPU {
         }
     }
 
-    //#region AUX
+    //#region AUx
     public void showState(){
         System.out.println("       "+ pc); 
           System.out.print("           ");

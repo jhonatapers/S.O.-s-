@@ -94,8 +94,22 @@ public class Softwares {
         new Word(Opcode.STOP, -1, -1, -1),    // 9   	stop
         new Word(Opcode.DATA, -1, -1, -1),  // 10   ao final o valor do fatorial estará na posição 10 da memória  
         new Word(Opcode.DATA, -1, -1, 5), //A           19
-        new Word(Opcode.DATA, -1, -1, 17)  //Stop       20
+        new Word(Opcode.DATA, -1, -1, 17)
+        //Stop       20
+    };
+    public static Word[] TrapExampleIn = new Word[] {		
+        new Word(Opcode.LDI, 8, -1, 1),   
+        new Word(Opcode.LDI, 9, -1, 4),   
+        new Word(Opcode.TRAP, -1, -1, -1),
+        new Word(Opcode.STOP, -1, -1, -1)
+    };
 
-};                    
+    public static Word[] TrapExampleOut = new Word[] {		
+        new Word(Opcode.LDI, 8, -1, 1),   
+        new Word(Opcode.LDI, 9, -1, 4),   
+        new Word(Opcode.TRAP, 9, -1, 4),
+        new Word(Opcode.STOP, -1, -1, -1)
+    };
+
 }
 
