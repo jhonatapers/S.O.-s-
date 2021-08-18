@@ -272,7 +272,7 @@ public class CPU {
         }
     }
 
-    //#region AUX
+    //#region AUx
     public void showState(){
         System.out.println("       "+ pc); 
           System.out.print("           ");
