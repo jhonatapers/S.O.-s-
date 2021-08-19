@@ -25,7 +25,7 @@ public class CPU {
     }
     // ----------------------------
 
-    private Aux aux = new Aux();
+    public Aux aux = new Aux();
 
     private int pc;
     private int limiteSuperior;
@@ -42,7 +42,7 @@ public class CPU {
         reg = new int[10];
     }
 
-    public void setContext(int _pc, int _limiteSuperior, int _limiteInferior) {
+    public void setContext(int _pc, int _limiteInferior, int _limiteSuperior) {
         pc = _pc;                
         limiteSuperior =_limiteSuperior;
         limiteInferior = _limiteInferior;
@@ -81,8 +81,10 @@ public class CPU {
     }
 
     private boolean overflow(int n){
-        if(n < -32768 || n > 32767)
+        if(n < -32768 || n > 32767){
+            itr = Interrupt.Overflow;
             return true;
+        }
 
         return false;
     }

@@ -19,7 +19,7 @@ public class Softwares {
 	public static Word[] PA = new Word[] { // mesmo que prog exemplo, so que usa r0 no lugar de r8
            
            
-        new Word(Opcode.LDI, 3, -1, -10),    //r3 <- -10
+        new Word(Opcode.LDI, 3, -1, 22),    //r3 <- -10
         new Word(Opcode.STD, 3, -1, 36),     //A <- r0 (Definir EndereÃ§o)
 
         new Word(Opcode.LDI, 3, -1, 22),    //r3 <- 22
@@ -97,6 +97,7 @@ public class Softwares {
         new Word(Opcode.DATA, -1, -1, 17)
         //Stop       20
     };
+
     public static Word[] TrapExampleIn = new Word[] {		
         new Word(Opcode.LDI, 8, -1, 1),   
         new Word(Opcode.LDI, 9, -1, 4),   
