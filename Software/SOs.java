@@ -53,7 +53,6 @@ public class SOs {
     }
 
     public void loadProgram(int pc, Word[] program){
-        //cpu.aux.dump(m, ini, fim);
         for(int i=0; i < program.length; i++){
             memory.address[pc] = program[i];
             pc++;
