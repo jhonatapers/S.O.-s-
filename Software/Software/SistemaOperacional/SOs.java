@@ -2,8 +2,8 @@ package Software.SistemaOperacional;
 import Hardware.CPU;
 import Hardware.Memory;
 import Hardware.CPU.Interrupt;
-import Hardware.CPU.Opcode;
 import Hardware.Memory.Word;
+import Software.SistemaOperacional.Drivers.*;
 
 public class SOs {
     
@@ -25,15 +25,15 @@ public class SOs {
                     System.out.println(itr);
                     break;
                 case Trap:
-                    int pcAtual = cpu.getPC();
-                    int limiteInferiorAtual = cpu.getLimiteInferior();
-                    int limiteSuperiorAtual = cpu.getLimiteSuperior();
-
-                    cpu.setContext(900, 900, 930);
-                    cpu.run();
-                    cpu.setContext(pcAtual, limiteSuperiorAtual, limiteInferiorAtual);
-                    cpu.run();
-
+                    switch(cpu.getRegistrator(8)){
+                        case 1: 
+                            input();
+                            break;
+                        case 2:
+                            output();
+                            break;
+                    }
+                    break;
                 default:
                     System.out.println(itr);
                     break;
@@ -44,6 +44,8 @@ public class SOs {
     public InterruptHandling interruptHandling;
     private CPU cpu;
     private Memory memory;
+    private KeyboardDriver keyboardDriver;
+    private ConsoleOutputDriver consoleOutputDriver;
 
     public SOs(CPU _cpu, Memory _memory){        
         interruptHandling = new InterruptHandling();
@@ -64,9 +66,13 @@ public class SOs {
         cpu.run();
     }
 
-    public static Word[] Trap = new Word[] {
+    public void input(){
+        cpu.setRegistrator(9, keyboardDriver.readKeyboardInput());
+    }
 
-    };
+    public void output(){
+        consoleOutputDriver.systemOutInt(cpu.getRegistrator(9));
+    }
 
 }
 

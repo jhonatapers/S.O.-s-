@@ -11,7 +11,7 @@ public class KeyboardDriver {
 		return input;
 	}
 	
-	//Utilizado para "limpar" o conteúdo do leitor.
+	//Utilizado para "limpar" o conteudo do leitor.
 	public void flushReaderBuffer() { 
 		sc.nextLine();
 	}

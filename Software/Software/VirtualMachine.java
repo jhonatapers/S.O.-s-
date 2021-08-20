@@ -3,7 +3,6 @@ package Software;
 import Hardware.CPU;
 import Hardware.Memory;
 import Software.SistemaOperacional.SOs;
-import Software.SistemaOperacional.Drivers.KeyboardDriver;
 
 public class VirtualMachine {
 
@@ -29,7 +28,7 @@ public class VirtualMachine {
 		vm.sos.runProgram(0, 0, Softwares.PA.length-1);
 		
 		System.out.println("\n----------------");
-		System.out.println("Fim da execução.");
+		System.out.println("Fim da execuï¿½ï¿½o.");
 	}	
 
 }

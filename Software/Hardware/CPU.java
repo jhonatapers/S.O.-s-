@@ -52,6 +52,14 @@ public class CPU {
         return pc;
     }
 
+    public int getRegistrator(int r){
+        return reg[r];
+    }
+
+    public void setRegistrator(int r, int value){
+        reg[r] = value;
+    }
+
     public int getLimiteInferior(){
         return limiteInferior;
     }
