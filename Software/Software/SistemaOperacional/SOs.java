@@ -1,4 +1,4 @@
-package Software;
+package Software.SistemaOperacional;
 import Hardware.CPU;
 import Hardware.Memory;
 import Hardware.CPU.Interrupt;
@@ -9,7 +9,7 @@ public class SOs {
     
     public class InterruptHandling{
         
-        //Tratando interrupções
+        //Tratando interrupcoes
         public void handle(Interrupt itr){
             switch (itr) {
                 case InvalidInstruction:
