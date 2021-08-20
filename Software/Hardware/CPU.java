@@ -1,6 +1,6 @@
 package Hardware;
 import Hardware.Memory.Word;
-import Software.SOs.InterruptHandling;
+import Software.SistemaOperacional.SOs.InterruptHandling;
 
 public class CPU {
 
@@ -98,17 +98,17 @@ public class CPU {
             if(debug){ showState(); }
             
             switch (ir.opc) {
-                case JMP: //  PC ← k       
+                case JMP: //  PC â†� k       
                     if(validAdress(ir.p))                    
                         pc = ir.p;			                    
                     break;
 
-                case JMPI: // PC ← Rs
+                case JMPI: // PC â†� Rs
                     if(validAdress(reg[ir.r1]))
                         pc = reg[ir.r1];
                     break;					
                     
-                case JMPIG: // If Rc > 0 Then PC ← Rs Else PC ← PC +1
+                case JMPIG: // If Rc > 0 Then PC â†� Rs Else PC â†� PC +1
                     if (reg[ir.r2] > 0) {
                         if(validAdress(reg[ir.r1]))
                             pc = reg[ir.r1];                      
@@ -117,7 +117,7 @@ public class CPU {
                     }
                     break;
 
-                case JMPIL: //f Rc < 0 then PC ← Rs Else PC ← PC +1 
+                case JMPIL: //f Rc < 0 then PC â†� Rs Else PC â†� PC +1 
                     if (reg[ir.r2] < 0) {
                         if(validAdress(reg[ir.r1]))
                             pc = reg[ir.r1];
@@ -126,7 +126,7 @@ public class CPU {
                     }
                     break;
 
-                case JMPIE: // If Rc = 0 Then PC ← Rs Else PC ← PC +1
+                case JMPIE: // If Rc = 0 Then PC â†� Rs Else PC â†� PC +1
                     if (reg[ir.r2] == 0) {
                         if(validAdress(reg[ir.r1]))
                             pc = reg[ir.r1];
@@ -135,12 +135,12 @@ public class CPU {
                     }
                     break;
                     
-                case JMPIM: // PC ← [A]
+                case JMPIM: // PC â†� [A]
                     if(validAdress(m.address[ir.p].p))
                         pc = m.address[ir.p].p;
                     break;
                     
-                case JMPIGM: //if Rc > 0 then PC ← [A] Else PC ← PC +1 
+                case JMPIGM: //if Rc > 0 then PC â†� [A] Else PC â†� PC +1 
                         if (reg[ir.r2] > 0) {
                             if(validAdress(m.address[ir.p].p))
                                 pc = m.address[ir.p].p;
@@ -149,7 +149,7 @@ public class CPU {
                         }
                         break;
                     
-                case JMPILM: //f Rc < 0 then PC ← [A] Else PC ← PC +1
+                case JMPILM: //f Rc < 0 then PC â†� [A] Else PC â†� PC +1
                         if (reg[ir.r2] < 0) {
                             if(validAdress(m.address[ir.p].p))
                                 pc = m.address[ir.p].p;
@@ -158,7 +158,7 @@ public class CPU {
                         }
                         break;
                     
-                case JMPIEM: //f Rc = 0 then PC ← [A] Else PC ← PC +1
+                case JMPIEM: //f Rc = 0 then PC â†� [A] Else PC â†� PC +1
                         if (reg[ir.r2] == 0) {
                             if(validAdress(m.address[ir.p].p))
                                 pc = m.address[ir.p].p;
@@ -167,56 +167,56 @@ public class CPU {
                         }
                         break;						
 
-                case ADDI: // Rd ← Rd + 
+                case ADDI: // Rd â†� Rd + 
                         if(!overflow(reg[ir.r1] + ir.p)){
                             reg[ir.r1] = reg[ir.r1] + ir.p;
                             pc++;
                         }
                         break;
 
-                case SUBI: // Rd ← Rd – 
+                case SUBI: // Rd â†� Rd â€“ 
                         if(!overflow(reg[ir.r1] - ir.p)){
                             reg[ir.r1] = reg[ir.r1] - ir.p;
                             pc++;
                         }
                         break;
 
-                case ADD: // Rd ← Rd + Rs
+                case ADD: // Rd â†� Rd + Rs
                         if(!overflow(reg[ir.r1] + reg[ir.r2])){
                             reg[ir.r1] = reg[ir.r1] + reg[ir.r2];
                             pc++;
                         }
                         break;
 
-                case SUB: // Rd ← Rd - Rs
+                case SUB: // Rd â†� Rd - Rs
                         if(!overflow(reg[ir.r1] - reg[ir.r2])){
                             reg[ir.r1] = reg[ir.r1] - reg[ir.r2];
                             pc++;
                         }
                         break;
 
-                case MULT: // Rd ← Rd * Rs
+                case MULT: // Rd â†� Rd * Rs
                         if(!overflow(reg[ir.r1] * reg[ir.r2])){
                             reg[ir.r1] = reg[ir.r1] * reg[ir.r2];
                             pc++;
                         }
                         break;
 
-                case LDI: // Rd ← k
+                case LDI: // Rd â†� k
                         if(!overflow(ir.p)){
                             reg[ir.r1] = ir.p;
                             pc++;
                         }                        
                         break;
 
-                case LDD: // Rd ← [A] //Conferir
+                case LDD: // Rd â†� [A] //Conferir
                         if(validAdress(ir.p)){
                             reg[ir.r1] = m.address[ir.p].p;
                             pc++;
                         }
                         break;
                                             
-                case STD: // [A] ← Rs     
+                case STD: // [A] â†� Rs     
                         if(validAdress(ir.p)){
                             m.address[ir.p].opc = Opcode.DATA;
                             m.address[ir.p].p = reg[ir.r1];
@@ -224,14 +224,14 @@ public class CPU {
                         }
                         break;
 
-                case LDX: // Rd ← [Rs] 
+                case LDX: // Rd â†� [Rs] 
                         if(validAdress(reg[ir.r2])){
                             reg[ir.r1] = m.address[reg[ir.r2]].p;
                             pc++;
                         }
                         break;
 
-                case STX: // [Rd] ←Rs
+                case STX: // [Rd] â†�Rs
                         if(validAdress(reg[ir.r1])){
                             m.address[reg[ir.r1]].opc = Opcode.DATA;      
                             m.address[reg[ir.r1]].p = reg[ir.r2];          
@@ -239,7 +239,7 @@ public class CPU {
                         }
                         break;
 
-                case SWAP: // T ← Ra | Ra ← Rb | Rb ←T
+                case SWAP: // T â†� Ra | Ra â†� Rb | Rb â†�T
                         int t = reg[ir.r1];
                         reg[ir.r1] = reg[ir.r2];
                         reg[ir.r2] = t;
