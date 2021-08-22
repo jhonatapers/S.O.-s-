@@ -2,7 +2,6 @@ package Software.SistemaOperacional;
 import Hardware.CPU;
 import Hardware.Memory;
 import Hardware.CPU.Interrupt;
-import Hardware.CPU.Opcode;
 import Hardware.Memory.Word;
 import Software.SistemaOperacional.Drivers.*;
 
@@ -54,7 +53,7 @@ public class SOs {
         cpu = _cpu;
         memory = _memory;
 
-        loadSysPrograms();
+        loadDrivers();
     }
     
     public void loadProgram(int pc, Word[] program){
@@ -69,30 +68,19 @@ public class SOs {
         cpu.run();
     }
 
-    private void loadSysPrograms(){
-        loadProgram(900, inputProgram()); //Input
+    private void loadDrivers(){
+        keyboardDriver = new KeyboardDriver();
+        consoleOutputDriver = new ConsoleOutputDriver();
     }
 
     public void input(){
-        //cpu.setRegistrator(9, keyboardDriver.readKeyboardInput());
-
-        
-        int pc = cpu.getPC(), li = cpu.getLimiteInferior(), ls = cpu.getLimiteSuperior();
-        cpu.setContext(900, 900, 901);
-        cpu.run();
-        cpu.setContext(pc, li, ls);
-        cpu.run();
+        int teste = keyboardDriver.readKeyboardInput();
+        cpu.setRegistrator(9, teste);
     }
 
     public void output(){
-        consoleOutputDriver.systemOutInt(cpu.getRegistrator(9));
-    }
-
-    public Word[] inputProgram(){
-        return new Word[]{
-            new Word(Opcode.LDI, 9, -1, keyboardDriver.readKeyboardInput()),
-            new Word(Opcode.STOP, -1, -1, -1)
-        };
+        int teste  = cpu.getRegistrator(9);
+        consoleOutputDriver.systemOutInt(teste);
     }
 
 }

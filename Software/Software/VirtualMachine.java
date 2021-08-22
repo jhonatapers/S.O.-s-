@@ -22,10 +22,10 @@ public class VirtualMachine {
 
 		VirtualMachine vm = new VirtualMachine(cpu, cpu.m);
 
-		vm.cpu.debug = true;
+		vm.cpu.debug = false;
 
-		vm.sos.loadProgram(0, Softwares.PA);
-		vm.sos.runProgram(0, 0, Softwares.PA.length-1);
+		vm.sos.loadProgram(0, Softwares.contadorInOut);
+		vm.sos.runProgram(0, 0, Softwares.contadorInOut.length-1);
 		
 		System.out.println("\n----------------");
 		System.out.println("Fim da execu��o.");

@@ -112,5 +112,62 @@ public class Softwares {
         new Word(Opcode.STOP, -1, -1, -1)
     };
 
+    public  static  Word [] contador =  new  Word [] {
+        new Word(Opcode.LDI, 0, -1, 0),       // r0 <- 0
+        new Word(Opcode.STD, 0, -1, 14),      // A <- r0
+
+        new Word(Opcode.LDI, 0, -1, 50),      // r0 <- 50
+        new Word(Opcode.STD, 0, -1, 15),      // B <- r0
+
+        new Word(Opcode.LDI, 0, -1 , 6),      // r0 <- 6
+        new Word(Opcode.STD, 0, -1, 16),      // Loop <- r0
+
+        new Word(Opcode. LDD, 0, -1, 14),     // r0 <- A
+        new Word(Opcode. LDD, 1, -1 , 15),    // r1 <- B
+        new Word(Opcode. SUB, 0, 1, -1),      // r0 <- r0 - r1
+
+        new Word(Opcode.LDD, 2, - 1, 14),     // r2 <- A
+        new Word(Opcode.ADDI, 2, -1, 1),      // r2 <- r2 + 1
+        new Word(Opcode.STD, 2, -1, 14),      // A <- r2
+
+        new Word(Opcode.JMPILM, -1, 0, 16),
+
+        new Word( Opcode.STOP, -1, -1, -1),
+
+        new Word( Opcode.DATA, -1, -1, -1),   // A 0 14
+        new Word( Opcode.DATA, -1, -1, -1),   // B 50 15
+        new Word( Opcode.DATA, -1, -1, -1)    // Loop 16
+    };
+
+    public  static  Word [] contadorInOut =  new  Word [] {
+        new Word(Opcode.LDI, 0, -1, 0),       // r0 <- 0      
+        new Word(Opcode.STD, 0, -1, 18),      // A <- r0
+
+        new Word(Opcode.LDI, 8, -1, 1),      //Input
+        new Word(Opcode.TRAP, -1, -1, -1),   //Input
+        new Word(Opcode.STD, 9, -1, 19),      // B <- r0
+
+        new Word(Opcode.LDI, 0, -1 , 6),      // r0 <- 6
+        new Word(Opcode.STD, 0, -1, 16),      // Loop <- r0
+
+        new Word(Opcode. LDD, 0, -1, 18),     // r0 <- A
+        new Word(Opcode. LDD, 1, -1 , 19),    // r1 <- B
+        new Word(Opcode. SUB, 0, 1, -1),      // r0 <- r0 - r1
+
+        new Word(Opcode.LDD, 2, - 1, 18),     // r2 <- A
+        new Word(Opcode.ADDI, 2, -1, 1),      // r2 <- r2 + 1
+        new Word(Opcode.STD, 2, -1, 18),      // A <- r2
+        new Word(Opcode.LDD, 9, -1, 18),
+        new Word(Opcode.LDI, 8, -1, 2),      //Output
+        new Word(Opcode.TRAP, -1, -1, -1),   //Output
+
+        new Word(Opcode.JMPILM, -1, 0, 20),
+
+        new Word( Opcode.STOP, -1, -1, -1),
+
+        new Word( Opcode.DATA, -1, -1, -1),   // A 0 18
+        new Word( Opcode.DATA, -1, -1, -1),   // B 50 19
+        new Word( Opcode.DATA, -1, -1, -1)    // Loop 20
+    };
 }
 

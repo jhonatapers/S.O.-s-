@@ -256,6 +256,7 @@ public class CPU {
                 case TRAP:
                         itr = Interrupt.Trap;                
                         pc++;
+                        break;
                     
                 case STOP:
                         itr = Interrupt.ProgramEnd;
