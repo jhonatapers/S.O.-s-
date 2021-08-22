@@ -147,8 +147,8 @@ public class Softwares {
         new Word(Opcode.TRAP, -1, -1, -1),   //Input
         new Word(Opcode.STD, 9, -1, 19),      // B <- r0
 
-        new Word(Opcode.LDI, 0, -1 , 6),      // r0 <- 6
-        new Word(Opcode.STD, 0, -1, 16),      // Loop <- r0
+        new Word(Opcode.LDI, 0, -1 , 7),      // r0 <- 6
+        new Word(Opcode.STD, 0, -1, 20),      // Loop <- r0
 
         new Word(Opcode. LDD, 0, -1, 18),     // r0 <- A
         new Word(Opcode. LDD, 1, -1 , 19),    // r1 <- B

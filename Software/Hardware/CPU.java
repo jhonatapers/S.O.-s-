@@ -33,7 +33,7 @@ public class CPU {
     private Word ir;
     private int[] reg;
     private InterruptHandling ih;
-    private Interrupt itr = Interrupt.NoInterrupt;
+    public Interrupt itr = Interrupt.NoInterrupt;
     public Memory m;
     public Boolean debug = false;
 
@@ -278,7 +278,9 @@ public class CPU {
             
             if(itr != Interrupt.NoInterrupt){
                 ih.handle(itr);
-                break;
+                if(itr == Interrupt.ProgramEnd){
+                    break;
+                }
             }
         }
     }
