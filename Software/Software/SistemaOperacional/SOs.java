@@ -75,16 +75,12 @@ public class SOs {
     }
 
     public void input(){
-        int teste = keyboardDriver.readKeyboardInput();
-        cpu.setRegistrator(9, teste);
-        //cpu.setContext(cpu.getPC() + 1, cpu.getLimiteInferior(), cpu.getLimiteSuperior());
+        cpu.setRegistrator(9, keyboardDriver.readKeyboardInput());
         cpu.itr = Interrupt.NoInterrupt;
     }
 
     public void output(){
-        int teste  = cpu.getRegistrator(9);
-        consoleOutputDriver.systemOutInt(teste);
-        //cpu.setContext(cpu.getPC() + 1, cpu.getLimiteInferior(), cpu.getLimiteSuperior());
+        consoleOutputDriver.systemOutInt(cpu.getRegistrator(9));
         cpu.itr = Interrupt.NoInterrupt;
     }
 

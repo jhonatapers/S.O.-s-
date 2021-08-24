@@ -18,7 +18,6 @@ public class Softwares {
     //PA
 	public static Word[] PA = new Word[] { // mesmo que prog exemplo, so que usa r0 no lugar de r8
            
-           
         new Word(Opcode.LDI, 3, -1, 22),    //r3 <- -10
         new Word(Opcode.STD, 3, -1, 36),     //A <- r0 (Definir EndereÃ§o)
 
@@ -158,8 +157,8 @@ public class Softwares {
         new Word(Opcode.ADDI, 2, -1, 1),      // r2 <- r2 + 1
         new Word(Opcode.STD, 2, -1, 18),      // A <- r2
         new Word(Opcode.LDD, 9, -1, 18),
-        new Word(Opcode.LDI, 8, -1, 2),      //Output
-        new Word(Opcode.TRAP, -1, -1, -1),   //Output
+        new Word(Opcode.LDI, 8, -1, 2),       //Output
+        new Word(Opcode.TRAP, -1, -1, -1),    //Output
 
         new Word(Opcode.JMPILM, -1, 0, 20),
 
@@ -172,15 +171,15 @@ public class Softwares {
 
 
     public static Word[] E1 = new Word[]{
-        new Word(Opcode.LDI, 2, -1, 10),      //r2 <- 10
+        new Word(Opcode.LDI, 2, -1, 10),    //r2 <- 10
         new Word(Opcode.STD, 2, -1, 7),     //A <- r0 (Definir Endereço)
 
         new Word(Opcode.LDI, 3, -1, 15),    //r3 <- 15
         new Word(Opcode.STD, 3, -1, 8),     //Stop 
 
-        new Word(Opcode.LDD, 2, -1, 7),    // chama valor armazenado em 
+        new Word(Opcode.LDD, 2, -1, 7),     // chama valor armazenado em 
 
-        new Word(Opcode.JMPILM, -1, 0, 8), // se for menor que 0 então
+        new Word(Opcode.JMPILM, -1, 0, 8),  // se for menor que 0 então
 
         new Word(Opcode.STOP, -1, -1, -1),   // posiçao 6
 
