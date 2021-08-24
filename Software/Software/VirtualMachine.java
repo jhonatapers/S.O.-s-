@@ -24,8 +24,8 @@ public class VirtualMachine {
 
 		vm.cpu.debug = false;
 
-		vm.sos.loadProgram(0, Softwares.contadorInOut);
-		vm.sos.runProgram(0, 0, Softwares.contadorInOut.length-1);
+		vm.sos.loadProgram(0, Softwares.E1);
+		vm.sos.runProgram(0, 0, Softwares.E1.length-1);
 		
 		System.out.println("\n----------------");
 		System.out.println("Fim da execu��o.");

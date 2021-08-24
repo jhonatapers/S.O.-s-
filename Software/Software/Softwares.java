@@ -169,22 +169,27 @@ public class Softwares {
         new Word(Opcode.DATA, -1, -1, -1)    // Loop 20
     };
 
-
+    /** 
+     * Recebe um int16 
+     * Se INPUT < 0 
+     *  STOP 
+     * else 
+     *  OUTPUT Entrada
+     */
     public static Word[] E1 = new Word[]{
-        new Word(Opcode.LDI, 2, -1, 10),    //r2 <- 10
-        new Word(Opcode.STD, 2, -1, 7),     //A <- r0 (Definir Endereço)
-
-        new Word(Opcode.LDI, 3, -1, 15),    //r3 <- 15
-        new Word(Opcode.STD, 3, -1, 8),     //Stop 
-
-        new Word(Opcode.LDD, 2, -1, 7),     // chama valor armazenado em 
-
-        new Word(Opcode.JMPILM, -1, 0, 8),  // se for menor que 0 então
-
-        new Word(Opcode.STOP, -1, -1, -1),   // posiçao 6
-
-        new Word(Opcode.DATA, -1, -1, 10), //A
-        new Word(Opcode.DATA, -1, -1, 6)  //Stop
+        new Word(Opcode.LDI, 8, -1, 1),       //0 Input
+        new Word(Opcode.TRAP, -1, -1, -1),    //1 Input
+        new Word(Opcode.STD, 9, -1, 11),      //2 A <- r9
+        new Word(Opcode.LDI, 3, -1, 10),      //3  r3   <- 15
+        new Word(Opcode.STD, 3, -1, 12),      //4  Stop <- r3 
+        new Word(Opcode.LDD, 2, -1, 11),      //5  r2 <- A
+        new Word(Opcode.JMPILM, -1, 2, 12),    //6 se for menor que 0 então Stop
+        new Word(Opcode.LDI, 8, -1, 2),       //7 Output
+        new Word(Opcode.LDD, 9, -1, 11),      //8  r2 <- A
+        new Word(Opcode.TRAP, -1, -1, -1),    //9 Output
+        new Word(Opcode.STOP, -1, -1, -1),    //10 posiçao 6
+        new Word(Opcode.DATA, -1, -1, 10),    //11 A
+        new Word(Opcode.DATA, -1, -1, 6)      //12 Stop
     };
  
     public static Word[] E2 = new Word[]{
