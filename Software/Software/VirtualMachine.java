@@ -22,13 +22,13 @@ public class VirtualMachine {
 
 		VirtualMachine vm = new VirtualMachine(cpu, cpu.m);
 
-		vm.cpu.debug = false;
+		vm.cpu.debug = true;
 
-		vm.sos.loadProgram(0, Softwares.E1);
-		vm.sos.runProgram(0, 0, Softwares.E1.length-1);
+		vm.sos.loadProgram(0, Softwares.E2);
+		vm.sos.runProgram(0, 0, Softwares.E2.length-1);
 		
 		System.out.println("\n----------------");
-		System.out.println("Fim da execu��o.");
+		System.out.println("Fim da execução.");
 	}	
 
 }

@@ -14,15 +14,19 @@ public class SOs {
             switch (itr) {
                 case InvalidInstruction:
                     System.out.println(itr);
+                    cpu.itr = Interrupt.ProgramEnd;
                     break;
                 case InvalidAdress:
                     System.out.println(itr);
+                    cpu.itr = Interrupt.ProgramEnd;
                     break;
                 case Overflow:
                     System.out.println(itr);
+                    cpu.itr = Interrupt.ProgramEnd;
                     break;
                 case ProgramEnd:
                     System.out.println(itr);
+                    cpu.itr = Interrupt.ProgramEnd;
                     break;
                 case Trap:
                     switch(cpu.getRegistrator(8)){
@@ -36,6 +40,7 @@ public class SOs {
                     break;
                 default:
                     System.out.println(itr);
+                    cpu.itr = Interrupt.ProgramEnd;
                     break;
             }
 
