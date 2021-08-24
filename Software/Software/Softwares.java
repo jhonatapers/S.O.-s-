@@ -163,11 +163,63 @@ public class Softwares {
 
         new Word(Opcode.JMPILM, -1, 0, 20),
 
+        new Word(Opcode.STOP, -1, -1, -1),
+
+        new Word(Opcode.DATA, -1, -1, -1),   // A 0 18
+        new Word(Opcode.DATA, -1, -1, -1),   // B 50 19
+        new Word(Opcode.DATA, -1, -1, -1)    // Loop 20
+    };
+
+
+    public static Word[] E1 = new Word[]{
+        new Word(Opcode.LDI, 2, -1, 10),      //r2 <- 10
+        new Word(Opcode.STD, 2, -1, 7),     //A <- r0 (Definir Endereço)
+
+        new Word(Opcode.LDI, 3, -1, 15),    //r3 <- 15
+        new Word(Opcode.STD, 3, -1, 8),     //Stop 
+
+        new Word(Opcode.LDD, 2, -1, 7),    // chama valor armazenado em 
+
+        new Word(Opcode.JMPILM, -1, 0, 8), // se for menor que 0 então
+
+        new Word(Opcode.STOP, -1, -1, -1),   // posiçao 6
+
+        new Word(Opcode.DATA, -1, -1, 10), //A
+        new Word(Opcode.DATA, -1, -1, 6)  //Stop
+    };
+ 
+    public static Word[] E2 = new Word[]{
+        new Word(Opcode.LDI, 1, -1, 50),       // r1 <- 50
+        new Word(Opcode.STD, 1, -1, 8 ),      // A <- r0
+
+        new Word(Opcode.LDI, 1, -1, 100),      // r1 <- 50
+        new Word(Opcode.STD, 1, -1, 9),       // B <- r0
+
+        new Word(Opcode. LDD, 1, -1, 8),     // r1 <- A
+        new Word(Opcode. LDD, 2, -1, 9),     // r2 <- B
+        new Word(Opcode. ADD, 1, 2, -1),      // r1 <- r1 + r2
+
         new Word( Opcode.STOP, -1, -1, -1),
 
-        new Word( Opcode.DATA, -1, -1, -1),   // A 0 18
-        new Word( Opcode.DATA, -1, -1, -1),   // B 50 19
-        new Word( Opcode.DATA, -1, -1, -1)    // Loop 20
+        new Word( Opcode.DATA, -1, -1, 50),   // A  50
+        new Word( Opcode.DATA, -1, -1, 100),   // B 100
+    };
+
+    public static Word[] E3 = new Word[]{
+        new Word(Opcode.LDI, 5, -1, 5),       // r1 <- 50
+        new Word(Opcode.STD, 5, -1, 8),      // A <- r0
+
+        new Word(Opcode.LDI, 5, -1, 10),      // r1 <- 50
+        new Word(Opcode.STD, 5, -1, 9),       // B <- r0
+
+        new Word(Opcode. LDD, 1, -1, 8),     // r1 <- A
+        new Word(Opcode. LDD, 2, -1, 9),     // r2 <- B
+        new Word(Opcode. MULT, 1, 2, -1),      // r1 <- r1 * r2
+
+        new Word( Opcode.STOP, -1, -1, -1),
+
+        new Word( Opcode.DATA, -1, -1, 5),   // A  5
+        new Word( Opcode.DATA, -1, -1, 10),   // B 10
     };
 }
 
