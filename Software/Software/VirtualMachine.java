@@ -1,7 +1,4 @@
 package Software;
-
-import java.io.Console;
-
 import Hardware.CPU;
 import Hardware.Memory;
 import Hardware.Memory.Word;
