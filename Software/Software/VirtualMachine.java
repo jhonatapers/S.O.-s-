@@ -30,11 +30,12 @@ public class VirtualMachine {
 		/**
 		 * Programa a ser carregado em memória
 		 */
-		Word[] program = Softwares.fibonacci10;
+		Word[] program = Softwares.PB;
 
 
 		System.out.println("----------------");
-		vm.cpu.aux.dump(program, 0, program.length);
+		if(vm.cpu.debug)
+			vm.cpu.aux.dump(program, 0, program.length);
 		System.out.println("----------------");
 
 
@@ -43,7 +44,8 @@ public class VirtualMachine {
 		vm.sos.runProgram(0, 0, program.length-1);
 
 		System.out.println("----------------");
-		vm.cpu.aux.dump(program, 0, program.length);
+		if(vm.cpu.debug)
+			vm.cpu.aux.dump(program, 0, program.length);
 		System.out.println("----------------");
 
 		System.out.println("\n----------------");
