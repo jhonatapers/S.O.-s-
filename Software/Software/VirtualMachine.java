@@ -24,8 +24,10 @@ public class VirtualMachine {
 
 		vm.cpu.debug = true;
 
-		vm.sos.loadProgram(0, Softwares.E2);
-		vm.sos.runProgram(0, 0, Softwares.E2.length-1);
+		//vm.sos.loadProgram(0, Softwares.E2);
+		//vm.sos.runProgram(0, 0, Softwares.E2.length-1);
+		vm.sos.loadProgram(0, Softwares.BubbleSortAsc);
+		vm.sos.runProgram(0, 0, Softwares.BubbleSortAsc.length-1);
 		
 		System.out.println("\n----------------");
 		System.out.println("Fim da execução.");

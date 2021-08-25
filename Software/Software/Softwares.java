@@ -227,5 +227,44 @@ public class Softwares {
         new Word( Opcode.DATA, -1, -1, 5),   // A  5
         new Word( Opcode.DATA, -1, -1, 10),   // B 10
     };
+
+    /**
+     * Bubble Sort Ascendente para 5 numeros inteiros.
+     * Incompleto, até o momento está apenas lendo 5 ints e botando em memória.
+     */
+    public static Word[] BubbleSortAsc = new Word[]{
+        new Word(Opcode.LDI, 0, -1, 0),        //0    
+        new Word(Opcode.LDI, 0, -1, 0),        //1 
+        
+        new Word(Opcode.LDI, 8, -1, 1),        //2 Input A
+        new Word(Opcode.TRAP, -1, -1, -1),     //3 Lendo numero do teclado
+        new Word(Opcode.STD, 9, -1, 18),       //4 Armazenando valor lido do teclado na memória
+
+        new Word(Opcode.LDI, 8, -1, 1),        //5
+        new Word(Opcode.TRAP, -1, -1, -1),     //6 Input B
+        new Word(Opcode.STD, 9, -1, 19),       //7 
+             
+        new Word(Opcode.LDI, 8, -1, 1),        //8
+        new Word(Opcode.TRAP, -1, -1, -1),     //9 Input C
+        new Word(Opcode.STD, 9, -1, 20),       //10 
+
+        new Word(Opcode.LDI, 8, -1, 1),        //11 
+        new Word(Opcode.TRAP, -1, -1, -1),     //12 Input D
+        new Word(Opcode.STD, 9, -1, 21),       //13 
+
+        new Word(Opcode.LDI, 8, -1, 1),        //14 
+        new Word(Opcode.TRAP, -1, -1, -1),     //15 Input E
+        new Word(Opcode.STD, 9, -1, 22),       //16
+
+        new Word(Opcode.STOP, -1, -1, -1),     //17
+
+        new Word(Opcode.DATA, -1, -1, -1),     //18 A
+        new Word(Opcode.DATA, -1, -1, -1),     //19 B
+        new Word(Opcode.DATA, -1, -1, -1),     //20 C
+        new Word(Opcode.DATA, -1, -1, -1),     //21 D 
+        new Word(Opcode.DATA, -1, -1, -1),     //22 E
+        new Word(Opcode.DATA, -1,-1,-1),       //23 Controle de loop (i)
+        new Word(Opcode.DATA, -1,-1,-1)        //24 Controle de loop (j)
+    };  
 }
 
