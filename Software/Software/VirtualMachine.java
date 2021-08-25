@@ -1,7 +1,10 @@
 package Software;
 
+import java.io.Console;
+
 import Hardware.CPU;
 import Hardware.Memory;
+import Hardware.Memory.Word;
 import Software.SistemaOperacional.SOs;
 
 public class VirtualMachine {
@@ -19,16 +22,33 @@ public class VirtualMachine {
 
     public static void main(String args[]) {   		     
 		CPU cpu = new CPU(new Memory(MEM_SIZE));	
-
 		VirtualMachine vm = new VirtualMachine(cpu, cpu.m);
 
-		vm.cpu.debug = true;
+		/**
+		 * true  = Debug ON
+		 * false = Debug OFF
+		 */
+		vm.cpu.debug = false;
 
-		//vm.sos.loadProgram(0, Softwares.E2);
-		//vm.sos.runProgram(0, 0, Softwares.E2.length-1);
-		vm.sos.loadProgram(0, Softwares.BubbleSortAsc);
-		vm.sos.runProgram(0, 0, Softwares.BubbleSortAsc.length-1);
-		
+		/**
+		 * Programa a ser carregado em memória
+		 */
+		Word[] program = Softwares.fibonacci10;
+
+
+		System.out.println("----------------");
+		vm.cpu.aux.dump(program, 0, program.length);
+		System.out.println("----------------");
+
+
+		System.out.println("DEBUG: " + vm.cpu.debug.toString());
+		vm.sos.loadProgram(0, program);
+		vm.sos.runProgram(0, 0, program.length-1);
+
+		System.out.println("----------------");
+		vm.cpu.aux.dump(program, 0, program.length);
+		System.out.println("----------------");
+
 		System.out.println("\n----------------");
 		System.out.println("Fim da execução.");
 	}	

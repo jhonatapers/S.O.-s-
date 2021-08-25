@@ -251,6 +251,7 @@ public class CPU {
                         int t = reg[ir.r1];
                         reg[ir.r1] = reg[ir.r2];
                         reg[ir.r2] = t;
+                        pc++;
                         break;
                     
                 case TRAP:
@@ -289,7 +290,7 @@ public class CPU {
     public void showState(){
         System.out.println("       "+ pc); 
           System.out.print("           ");
-        for (int i=0; i<8; i++) { System.out.print("r"+i);   System.out.print(": "+reg[i]+"     "); };  
+        for (int i=0; i<10; i++) { System.out.print("r"+i);   System.out.print(": "+reg[i]+"     "); };  
         System.out.println("");
         System.out.print("           ");  aux.dump(ir);
     }
