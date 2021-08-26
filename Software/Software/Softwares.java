@@ -104,7 +104,7 @@ public class Softwares {
         new Word(Opcode.LDI, 8, -1, 1),      //0 Input
         new Word(Opcode.TRAP, -1, -1, -1),   //1 Input
         new Word(Opcode.SWAP, 9, 0, -1),     //2    
-        new Word(Opcode.LDI, 1, -1, -11),    //3 r1 é 1 para multiplicar (por r0)
+        new Word(Opcode.LDI, 1, -1, -1),     //3 r1 é 1 para multiplicar (por r0)
         new Word(Opcode.LDI, 7, -1, 13),     //4 r7 tem posicao de stop do programa = 8
         new Word(Opcode.JMPIL, 7, 0, 0),     //5 Se r0<0 pula para r7(=8)
         new Word(Opcode.LDI, 1, -1, 1),      //6 r1 é 1 para multiplicar (por r0)
