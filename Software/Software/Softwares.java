@@ -49,53 +49,49 @@ public class Softwares {
     };  
     
     //PA
-	public static Word[] PA = new Word[] { // mesmo que prog exemplo, so que usa r0 no lugar de r8
-           
-        new Word(Opcode.LDI, 3, -1, 22),    //r3 <- -10
-        new Word(Opcode.STD, 3, -1, 36),     //A <- r0 (Definir EndereÃ§o)
+    public static Word[] PA = new Word[] {
 
-        new Word(Opcode.LDI, 3, -1, 22),    //r3 <- 22
-        new Word(Opcode.STD, 3, -1, 37),     //Stop <- r0 (Definir EndereÃ§o)
-     
-        new Word(Opcode.LDD, 3, -1, 36), //r3 = -10
-     
-        new Word(Opcode.JMPILM, -1, 3 ,37),
-     
-        new Word(Opcode.LDI, 1, -1, 0), 
-        new Word(Opcode.STD, 1, -1, 20),    // 20 posicao de memoria onde inicia a serie de fibonacci gerada  
-        new Word(Opcode.LDI, 2, -1, 1),
-        new Word(Opcode.STD, 2, -1, 21),      
-        new Word(Opcode.LDI, 0, -1, 22),       
-        new Word(Opcode.LDI, 6, -1, 6),
-        new Word(Opcode.LDI, 7, -1, 30),       
-        new Word(Opcode.LDI, 3, -1, 0), 
-        new Word(Opcode.ADD, 3, 1, -1),
-        new Word(Opcode.LDI, 1, -1, 0), 
-        new Word(Opcode.ADD, 1, 2, -1), 
-        new Word(Opcode.ADD, 2, 3, -1),
-        new Word(Opcode.STX, 0, 2, -1), 
-        new Word(Opcode.ADDI, 0, -1, 1), 
-        new Word(Opcode.SUB, 7, 0, -1),
-        new Word(Opcode.JMPIG, 6, 7, -1), 
-        new Word(Opcode.STOP, -1, -1, -1),   // POS 22
-        new Word(Opcode.DATA, -1, -1, -1),   // -1
-        new Word(Opcode.DATA, -1, -1, -1),
-        new Word(Opcode.DATA, -1, -1, -1),
-        new Word(Opcode.DATA, -1, -1, -1),   // POS 26
-        new Word(Opcode.DATA, -1, -1, -1),
-        new Word(Opcode.DATA, -1, -1, -1),
-        new Word(Opcode.DATA, -1, -1, -1),
-        new Word(Opcode.DATA, -1, -1, -1),
-        new Word(Opcode.DATA, -1, -1, -1),
-        new Word(Opcode.DATA, -1, -1, -1),
-        new Word(Opcode.DATA, -1, -1, -1),
-        new Word(Opcode.DATA, -1, -1, -1),
-        new Word(Opcode.DATA, -1, -1, -1),  // ate aqui - serie de fibonacci ficara armazenada
-                 
-        new Word(Opcode.DATA, -1, -1, -10), //A 10
-        new Word(Opcode.DATA, -1, -1, 22)  //Stop
-             
-    };
+        new Word(Opcode.LDI, 8, -1, 1),       //0  Input
+        new Word(Opcode.TRAP, -1, -1, -1),    //1  Input
+        new Word(Opcode.STD, 9, -1, 35),      //2  A <- r9
+        new Word(Opcode.LDI, 3, -1, 22),      //3  r3   <- 15
+        new Word(Opcode.STD, 3, -1, 36),      //4  Stop <- r3 
+        new Word(Opcode.LDD, 2, -1, 35),      //5  r2 <- A
+        new Word(Opcode.JMPILM, -1, 2, 36),   //6  se for menor que 0 então Stop
+
+        new Word(Opcode.LDI, 0, -1, 0),       //7 primeiro valor em r0
+        new Word(Opcode.STD, 0, -1, 27),      //8posição de memoria onde inicia a serie de fibonacci gerada
+        new Word(Opcode.LDI, 1, -1, 1),       //9segundo valor em r1
+        new Word(Opcode.STD, 1, -1, 28),      //10segunda posição
+        new Word(Opcode.LDI, 5, -1, 22),      //11terceira+ posição
+        new Word(Opcode.LDI, 7, -1, 8),       //12inicio do loop salvo em r7
+        new Word(Opcode.LDI, 2, -1, 0),       //13zera r2
+        new Word(Opcode.ADD, 2, 0, -1),       //14 r2 = r0
+        new Word(Opcode.LDI, 0, -1, 0),       //15 zera r0
+        new Word(Opcode.ADD, 0, 1, -1),       //16 r0 = r1
+        new Word(Opcode.ADD, 1, 2, -1),       //17 r1 = novo na sequencia
+        new Word(Opcode.STX, 5, 1, -1),       //18 guarda o valor na posição salva em r5
+        new Word(Opcode.ADDI, 5, -1, 1),      //19avança r5 em uma posição
+        new Word(Opcode.SUBI, 6, -1, 1),      //20 diminui um na contagem de elementos/execuções(r6)
+        new Word(Opcode.JMPIG, 7, 6, -1),     //21 pula pra inicio do loop
+        new Word(Opcode.STOP, -1, -1, -1),    //22 pos 17
+        new Word(Opcode.DATA, -1, -1, -1),    //23 posição de dados daqui pra frente
+        new Word(Opcode.DATA, -1, -1, 6),    //24
+        new Word(Opcode.DATA, -1, -1, -1),    //25
+        new Word(Opcode.DATA, -1, -1, -1),    //26
+        new Word(Opcode.DATA, -1, -1, -1),    //27 
+        new Word(Opcode.DATA, -1, -1, -1),    //28
+        new Word(Opcode.DATA, -1, -1, -1),    //29
+        new Word(Opcode.DATA, -1, -1, -1),    //30
+        new Word(Opcode.DATA, -1, -1, -1),    //31
+        new Word(Opcode.DATA, -1, -1, -1),    //32
+        new Word(Opcode.DATA, -1, -1, -1),    //33
+        new Word(Opcode.DATA, -1, -1, -1),    //34
+        new Word(Opcode.DATA, -1, -1, 22),    //35
+        new Word(Opcode.DATA, -1, -1, 6),    //36
+
+    }; //
+
     
     /**
      * Pede um Int16 de entrada, se maior ou igual a zero calcula e imprime seu fatorial
