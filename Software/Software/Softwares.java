@@ -127,26 +127,36 @@ public class Softwares {
      */
     public  static  Word [] contadorInOut =  new  Word [] {
         new Word(Opcode.LDI, 0, -1, 0),       //0 r0 <- 0      
-        new Word(Opcode.STD, 0, -1, 18),      //1 A <- r0
+        new Word(Opcode.STD, 0, -1, 21),      //1 A <- r0
         new Word(Opcode.LDI, 8, -1, 1),       //2 Input
         new Word(Opcode.TRAP, -1, -1, -1),    //3 Input
-        new Word(Opcode.STD, 9, -1, 19),      //4 B <- r0
-        new Word(Opcode.LDI, 0, -1 , 7),      //5 r0 <- 6
-        new Word(Opcode.STD, 0, -1, 20),      //6 Loop <- r0
-        new Word(Opcode.LDD, 0, -1, 18),      //7 r0 <- A
-        new Word(Opcode.LDD, 1, -1 , 19),     //8 r1 <- B
-        new Word(Opcode.SUB, 0, 1, -1),       //9 r0 <- r0 - r1
-        new Word(Opcode.LDD, 2, - 1, 18),     //10 r2 <- A
-        new Word(Opcode.ADDI, 2, -1, 1),      //11 r2 <- r2 + 1
-        new Word(Opcode.STD, 2, -1, 18),      //12 A <- r2
-        new Word(Opcode.LDD, 9, -1, 18),      //13
+        new Word(Opcode.STD, 9, -1, 22),      //4 B <- 
+
+        //Aqui defino a linha do loop
+        new Word(Opcode.LDI, 0, -1 , 7),      //5 r0 <- 7          
+        new Word(Opcode.STD, 0, -1, 23),      //6 Loop <- r0                  
+
+        //Dou loop pra linha 7
+        new Word(Opcode.LDD, 0, -1, 21),      //7 r0 <- A           
+        new Word(Opcode.LDD, 1, -1 , 22),     //8 r1 <- B            
+        new Word(Opcode.SUB, 0, 1, -1),       //9 r0 <- r0 - r1              
+        new Word(Opcode.LDD, 2, - 1, 21),     //10 r2 <- A                  
+        new Word(Opcode.ADDI, 2, -1, 1),      //11 r2 <- r2 + 1         
+        new Word(Opcode.STD, 2, -1, 21),      //12 A <- r2            
+        new Word(Opcode.LDD, 9, -1, 21),      //13                    
         new Word(Opcode.LDI, 8, -1, 2),       //14 Output
-        new Word(Opcode.TRAP, -1, -1, -1),    //15 Output
-        new Word(Opcode.JMPILM, -1, 0, 20),   //16
-        new Word(Opcode.STOP, -1, -1, -1),    //17
-        new Word(Opcode.DATA, -1, -1, -1),    //18 A 0 18
-        new Word(Opcode.DATA, -1, -1, -1),    //19 B 50 19
-        new Word(Opcode.DATA, -1, -1, -1)     //20 Loop 20
+        new Word(Opcode.TRAP, -1, -1, -1),    //15 Output     
+        new Word(Opcode.LDD, 0, -1, 21),      //16 r0 <- A      
+        new Word(Opcode.LDD, 1, -1 , 22),     //17 r1 <- B    
+        new Word(Opcode.SUB, 0, 1, -1),       //18 r0 <- r0 - r1   
+        
+        //Aqui eu faço a condição
+        new Word(Opcode.JMPILM, -1, 0, 23),   //19     
+        
+        new Word(Opcode.STOP, -1, -1, -1),    //20
+        new Word(Opcode.DATA, -1, -1, -1),    //21    A           
+        new Word(Opcode.DATA, -1, -1, -1),    //22  B                
+        new Word(Opcode.DATA, -1, -1, -1)     //23  Loop             
     };
 
     /** 

@@ -86,9 +86,9 @@ public class VirtualMachine {
 			case 5:
 				return Softwares.E1;
 			case 6:
-				return Softwares.E2;
+				return Softwares.ADD;
 			case 7:
-				return Softwares.E3;
+				return Softwares.MULT;
 			case 0: 
 				System.out.println("Encerrando programa!");
 				return null;
