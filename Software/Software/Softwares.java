@@ -104,7 +104,7 @@ public class Softwares {
         new Word(Opcode.LDI, 8, -1, 1),      //0 Input
         new Word(Opcode.TRAP, -1, -1, -1),   //1 Input
         new Word(Opcode.SWAP, 9, 0, -1),     //2    
-        new Word(Opcode.LDI, 1, -1, -1),     //3 r1 é 1 para multiplicar (por r0)
+        new Word(Opcode.LDI, 1, -1, -1),     //3 r1 é -1 
         new Word(Opcode.LDI, 7, -1, 13),     //4 r7 tem posicao de stop do programa = 8
         new Word(Opcode.JMPIL, 7, 0, 0),     //5 Se r0<0 pula para r7(=8)
         new Word(Opcode.LDI, 1, -1, 1),      //6 r1 é 1 para multiplicar (por r0)
@@ -175,7 +175,7 @@ public class Softwares {
     /**
      * Pede dois Int16 de entrada e imprime a soma
      */
-    public static Word[] E2 = new Word[]{
+    public static Word[] ADD = new Word[]{
         new Word(Opcode.LDI, 8, -1, 1),      //0 Input
         new Word(Opcode.TRAP, -1, -1, -1),   //1 Input
         new Word(Opcode.STD, 9, -1, 14),     //2 A <- r9
@@ -198,7 +198,7 @@ public class Softwares {
     /**
      * Pede dois Int16 de entrada e imprime a multiplicação
     */
-    public static Word[] E3 = new Word[]{
+    public static Word[] MULT = new Word[]{
         new Word(Opcode.LDI, 8, -1, 1),      //0 Input
         new Word(Opcode.TRAP, -1, -1, -1),   //1 Input
         new Word(Opcode.STD, 9, -1, 14),     //2 A <- r9
@@ -221,7 +221,7 @@ public class Softwares {
     /**
      * Pede dois Int16 de entrada e imprime a subtração
     */
-    public static Word[] E4 = new Word[]{
+    public static Word[] SUB = new Word[]{
         new Word(Opcode.LDI, 8, -1, 1),      //0 Input
         new Word(Opcode.TRAP, -1, -1, -1),   //1 Input
         new Word(Opcode.STD, 9, -1, 14),     //2 A <- r9

@@ -39,10 +39,7 @@ public class VirtualMachine {
 			vm.cpu.aux.dump(program, 0, program.length);
 		System.out.println("----------------");
 
-
 		System.out.println("DEBUG: " + vm.cpu.debug.toString());
-		vm.sos.loadProgram(0, program);
-		vm.sos.runProgram(0, 0, program.length-1);
 
 		System.out.println("----------------");
 		if(vm.cpu.debug)
