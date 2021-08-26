@@ -18,52 +18,49 @@ public class VirtualMachine {
 		sos = new SOs(_cpu, _memory);
     }
 
-    public static void main(String args[]) {   		     
+    public static void main(String args[]) {  
+		boolean debug = false; 		     
 		CPU cpu = new CPU(new Memory(MEM_SIZE));	
 		VirtualMachine vm = new VirtualMachine(cpu, cpu.m);
 
 		/**
+		 * Debug = Informar, no console, cada linha sendo executada pelo programa.
 		 * true  = Debug ON
 		 * false = Debug OFF
 		 */
-		vm.cpu.debug = false;
-
-		/**
-		 * Programa a ser carregado em memória
-		 */
-		Word[] program = Softwares.PB;
-
-
-		System.out.println("----------------");
-		if(vm.cpu.debug)
-			vm.cpu.aux.dump(program, 0, program.length);
-		System.out.println("----------------");
-
-		System.out.println("DEBUG: " + vm.cpu.debug.toString());
-
-		System.out.println("----------------");
-		if(vm.cpu.debug)
-			vm.cpu.aux.dump(program, 0, program.length);
-		System.out.println("----------------");
-
+		vm.cpu.debug = debug;
+		
 		KeyboardDriver kDriver = new KeyboardDriver();
 		int opt = 100;
 		while(opt != 0){
 			System.out.println("\nDigite o programa que deseja executar:");
+			System.out.println("\t\tDEBUG: "+((vm.cpu.debug) ? "Ativado" : "Desativado"));
 			System.out.println("\t1 - PA");
 			System.out.println("\t2 - PB");
 			System.out.println("\t3 - PC");
 			System.out.println("\t4 - Contador");
-			System.out.println("\t5 - E1 (DETALHAR)");
-			System.out.println("\t6 - E2 (DETALHAR)");
-			System.out.println("\t7 - E3 (DETALHAR)");
+			System.out.println("\t5 - E1");
+			System.out.println("\t6 - ADD");
+			System.out.println("\t7 - MULT");
+			System.out.println("\t8 - SUB");
+			System.out.println("\t9 - E5");
+			System.out.println("\t10 - E6");
 			System.out.println("\t0 - Encerrar execução");
-
 			
 			opt = kDriver.readKeyboardInput();
+			
+			System.out.println("----------------");
+			if(vm.cpu.debug) //Modo DEBUG ON -> Estado anterior a execução
+				vm.cpu.aux.dump(getProgram(opt), 0, getProgram(opt).length);
+			System.out.println("----------------");
 
-			vm.sos.loadProgram(0, getProgram(opt));
-			vm.sos.runProgram(0, 0, getProgram(opt).length-1);
+			vm.sos.loadProgram(0, getProgram(opt));//Carregando o programa em memória
+			vm.sos.runProgram(0, 0, getProgram(opt).length-1); //Executando o programa
+
+			System.out.println("----------------");
+			if(vm.cpu.debug)//Modo DEBUG ON -> Estado posterior a execução
+				vm.cpu.aux.dump(getProgram(opt), 0, getProgram(opt).length);
+			System.out.println("----------------");
 
 			cpu = new CPU(new Memory(MEM_SIZE));	//Limpando a memória para execução de um novo programa.
 			vm = new VirtualMachine(cpu, cpu.m);
@@ -86,9 +83,17 @@ public class VirtualMachine {
 			case 5:
 				return Softwares.E1;
 			case 6:
-				return Softwares.E2;
+				return Softwares.ADD;
 			case 7:
-				return Softwares.E3;
+				return Softwares.MULT;
+			case 8:
+				return Softwares.SUB;
+			case 9:
+				return Softwares.E5;
+			case 10:
+				return Softwares.E6;
+			case 20: //debug
+				return null;
 			case 0: 
 				System.out.println("Encerrando programa!");
 				return null;
@@ -96,6 +101,5 @@ public class VirtualMachine {
 				System.out.println("Encerrando programa!");
 				return null;
 		}
-	}	
-
+	}
 }
