@@ -290,25 +290,33 @@ public class Softwares {
         
         new Word(Opcode.LDI, 8, -1, 1),        //2 Input A
         new Word(Opcode.TRAP, -1, -1, -1),     //3 Lendo numero do teclado
-        new Word(Opcode.STD, 9, -1, 18),       //4 Armazenando valor lido do teclado na memória
+        new Word(Opcode.STD, 9, -1, 22),       //4 Armazenando valor lido do teclado na memória
 
         new Word(Opcode.LDI, 8, -1, 1),        //5
         new Word(Opcode.TRAP, -1, -1, -1),     //6 Input B
-        new Word(Opcode.STD, 9, -1, 19),       //7 
+        new Word(Opcode.STD, 9, -1, 23),       //7 
              
         new Word(Opcode.LDI, 8, -1, 1),        //8
         new Word(Opcode.TRAP, -1, -1, -1),     //9 Input C
-        new Word(Opcode.STD, 9, -1, 20),       //10 
+        new Word(Opcode.STD, 9, -1, 24),       //10 
 
         new Word(Opcode.LDI, 8, -1, 1),        //11 
         new Word(Opcode.TRAP, -1, -1, -1),     //12 Input D
-        new Word(Opcode.STD, 9, -1, 21),       //13 
+        new Word(Opcode.STD, 9, -1, 25),       //13 
 
         new Word(Opcode.LDI, 8, -1, 1),        //14 
         new Word(Opcode.TRAP, -1, -1, -1),     //15 Input E
-        new Word(Opcode.STD, 9, -1, 22),       //16
+        new Word(Opcode.STD, 9, -1, 26),       //16
 
-        new Word(Opcode.STOP, -1, -1, -1),     //17
+        //FAZER DIRETO SWAP
+        new Word(Opcode.LDD, 3, -1, 22),
+        new Word(Opcode.LDD, 4, -1, 23),
+        new Word(Opcode.SUB, 3, 4, -1),
+        new Word(Opcode.JMPILM, -1, 3, 17), // foi para o 22
+
+
+
+        new Word(Opcode.STOP, -1, -1, -1),     //21
 
         new Word(Opcode.DATA, -1, -1, -1),     //18 A
         new Word(Opcode.DATA, -1, -1, -1),     //19 B
