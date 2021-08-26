@@ -1,5 +1,4 @@
 package Software;
-
 import Hardware.CPU;
 import Hardware.Memory;
 import Hardware.Memory.Word;
@@ -21,10 +20,34 @@ public class VirtualMachine {
 
     public static void main(String args[]) {   		     
 		CPU cpu = new CPU(new Memory(MEM_SIZE));	
-
 		VirtualMachine vm = new VirtualMachine(cpu, cpu.m);
 
-		vm.cpu.debug = true;
+		/**
+		 * true  = Debug ON
+		 * false = Debug OFF
+		 */
+		vm.cpu.debug = false;
+
+		/**
+		 * Programa a ser carregado em memória
+		 */
+		Word[] program = Softwares.PB;
+
+
+		System.out.println("----------------");
+		if(vm.cpu.debug)
+			vm.cpu.aux.dump(program, 0, program.length);
+		System.out.println("----------------");
+
+
+		System.out.println("DEBUG: " + vm.cpu.debug.toString());
+		vm.sos.loadProgram(0, program);
+		vm.sos.runProgram(0, 0, program.length-1);
+
+		System.out.println("----------------");
+		if(vm.cpu.debug)
+			vm.cpu.aux.dump(program, 0, program.length);
+		System.out.println("----------------");
 
 		KeyboardDriver kDriver = new KeyboardDriver();
 		int opt = 100;
