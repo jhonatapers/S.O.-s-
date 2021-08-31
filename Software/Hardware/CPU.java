@@ -279,9 +279,11 @@ public class CPU {
             
             if(itr != Interrupt.NoInterrupt){
                 ih.handle(itr);
+
+                /*
                 if(itr == Interrupt.ProgramEnd){
                     break;
-                }
+                }*/
             }
         }
     }
