@@ -1,5 +1,4 @@
 package Software.SistemaOperacional;
-import java.util.Map;
 
 import Hardware.CPU;
 import Hardware.Memory;
@@ -32,13 +31,15 @@ public class SOs {
                     cpu.itr = Interrupt.ProgramEnd;
                     break;
                 case Trap:
-                    switch(cpu.getRegistrator(8)){
-                        case 1: 
-                            input();
-                            break;
-                        case 2:
-                            output();
-                            break;
+                    if(validAdress(cpu.getRegistrator(9))){
+                        switch(cpu.getRegistrator(8)){
+                            case 1: 
+                                input();
+                                break;
+                            case 2:
+                                output();
+                                break;
+                        }
                     }
                     break;
                 default:
@@ -48,6 +49,22 @@ public class SOs {
             }
 
         }        
+    }
+
+    private boolean validAdress(int _pc){
+        if(_pc < 0 || _pc > memory.address.length)
+        {
+            cpu.itr = Interrupt.InvalidAdress;
+            return false;
+        }
+        
+        if(_pc < cpu.getLimiteInferior() || _pc > cpu.getLimiteSuperior())
+        {
+            cpu.itr = Interrupt.InvalidAdress;
+            return false;
+        }
+        
+        return true;
     }
 
     public InterruptHandling interruptHandling;
@@ -96,6 +113,11 @@ public class SOs {
 
 
 
+
+
+
+/*
+
     private static final Map<String, Integer> SYS_PROGS_ADDRESS = Map.of(
         "INPUT", 900,
         "OUTPUT", 902
@@ -124,7 +146,7 @@ public class SOs {
         };
     }
 
-
+*/
 
 
 }

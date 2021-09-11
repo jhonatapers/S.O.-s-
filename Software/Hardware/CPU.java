@@ -32,7 +32,7 @@ public class CPU {
     private int limiteInferior;
     private Word ir;
     private int[] reg;
-    private InterruptHandling ih;
+    public InterruptHandling ih;
     public Interrupt itr = Interrupt.NoInterrupt;
     public Memory m;
     public Boolean debug = false;
