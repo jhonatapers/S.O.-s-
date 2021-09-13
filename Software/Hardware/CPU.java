@@ -72,7 +72,7 @@ public class CPU {
         ih = _ih;
     }
 
-    private boolean validAdress(int _pc){
+    public boolean validAdress(int _pc){
         if(_pc < 0 || _pc > m.address.length)
         {
             itr = Interrupt.InvalidAdress;
@@ -100,6 +100,7 @@ public class CPU {
     public void run() {
 
         while (true) {  
+            
             if(validAdress(pc))          
                 ir = m.address[pc]; 
             
@@ -280,10 +281,10 @@ public class CPU {
             if(itr != Interrupt.NoInterrupt){
                 ih.handle(itr);
 
-                /*
                 if(itr == Interrupt.ProgramEnd){
                     break;
-                }*/
+                }
+
             }
         }
     }

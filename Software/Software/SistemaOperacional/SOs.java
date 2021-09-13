@@ -31,7 +31,7 @@ public class SOs {
                     cpu.itr = Interrupt.ProgramEnd;
                     break;
                 case Trap:
-                    if(validAdress(cpu.getRegistrator(9))){
+                    if(cpu.validAdress(cpu.getRegistrator(9))){
                         switch(cpu.getRegistrator(8)){
                             case 1: 
                                 input();
@@ -49,22 +49,6 @@ public class SOs {
             }
 
         }        
-    }
-
-    private boolean validAdress(int _pc){
-        if(_pc < 0 || _pc > memory.address.length)
-        {
-            cpu.itr = Interrupt.InvalidAdress;
-            return false;
-        }
-        
-        if(_pc < cpu.getLimiteInferior() || _pc > cpu.getLimiteSuperior())
-        {
-            cpu.itr = Interrupt.InvalidAdress;
-            return false;
-        }
-        
-        return true;
     }
 
     public InterruptHandling interruptHandling;
@@ -110,10 +94,6 @@ public class SOs {
         consoleOutputDriver.systemOutInt(memory.address[cpu.getRegistrator(9)].p);
         cpu.itr = Interrupt.NoInterrupt; 
     }
-
-
-
-
 
 
 /*
