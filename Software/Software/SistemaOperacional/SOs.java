@@ -1,5 +1,7 @@
 package Software.SistemaOperacional;
 
+import java.util.ArrayList;
+
 import Hardware.CPU;
 import Hardware.Memory;
 import Hardware.CPU.Interrupt;
@@ -51,25 +53,82 @@ public class SOs {
         }        
     }
 
+    public class MemoryManager{
+
+        private Memory memory;
+        private int pageLength;
+        private int frameLength;
+        private int nFrames;
+        private boolean freeFrames[];
+
+        public MemoryManager(Memory _m, int _pLength){
+            memory = _m;
+            pageLength = _pLength;
+            frameLength = pageLength;
+            nFrames = memory.address.length/pageLength;
+
+            freeFrames = new boolean[nFrames];
+            for(int i = 0; i < freeFrames.length; i++){
+                freeFrames[i] = true;
+            }
+        }
+
+        public boolean allocates(int nWords, int[] tablePages){
+
+            ArrayList<Integer> aux = new ArrayList<Integer>();
+
+
+            //int qntdFramesNescesarios
+            
+            for(int i = 0; i < freeFrames.length; i++){
+                if(freeFrames[i]){
+                    aux.add(i);
+                    freeFrames[i] = false;
+                }
+            }
+
+            return true;
+        }
+
+        public void dislocate(int[] tablePages){
+            for (int page : tablePages) {
+                freeFrames[page] = true;
+            }
+        }
+
+    }
+
     public InterruptHandling interruptHandling;
     private CPU cpu;
-    private Memory memory;
+    private MemoryManager memoryManager;
+    //private Memory memory;
     private KeyboardDriver keyboardDriver;
     private ConsoleOutputDriver consoleOutputDriver;
 
-    public SOs(CPU _cpu, Memory _memory){        
+    public SOs(CPU _cpu, Memory _memory, int _pageLength){        
         interruptHandling = new InterruptHandling();
+        memoryManager = new MemoryManager(_memory, _pageLength);
         _cpu.setInterruptHandling(interruptHandling);
         cpu = _cpu;
-        memory = _memory;
         loadDrivers();
     }
     
     public void loadProgram(int pc, Word[] program){
+
+        int[] tablePages = new int[0];
+
+        if(memoryManager.allocates(program.length, tablePages)){
+           //carrega porgrama nos frames 
+        }else{
+            memoryManager.dislocate(tablePages);
+        }
+
+        /*
         for(int i=0; i < program.length; i++){
-            memory.address[pc] = program[i];
+            memoryManager.memory.address[pc] = program[i];
             pc++;
         }
+        */
     }
 
     public void runProgram(int pc, int limiteInferior, int limiteSuperior){
@@ -83,15 +142,15 @@ public class SOs {
     }
 
     public void input(){
-        memory.address[cpu.getRegistrator(9)].opc = Opcode.DATA;
-        memory.address[cpu.getRegistrator(9)].r1 = -1;
-        memory.address[cpu.getRegistrator(9)].r2 = -1;
-        memory.address[cpu.getRegistrator(9)].p = keyboardDriver.readKeyboardInput();
+        memoryManager.memory.address[cpu.getRegistrator(9)].opc = Opcode.DATA;
+        memoryManager.memory.address[cpu.getRegistrator(9)].r1 = -1;
+        memoryManager.memory.address[cpu.getRegistrator(9)].r2 = -1;
+        memoryManager.memory.address[cpu.getRegistrator(9)].p = keyboardDriver.readKeyboardInput();
         cpu.itr = Interrupt.NoInterrupt; 
     }
 
     public void output(){
-        consoleOutputDriver.systemOutInt(memory.address[cpu.getRegistrator(9)].p);
+        consoleOutputDriver.systemOutInt(memoryManager.memory.address[cpu.getRegistrator(9)].p);
         cpu.itr = Interrupt.NoInterrupt; 
     }
 

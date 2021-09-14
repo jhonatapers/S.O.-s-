@@ -11,11 +11,12 @@ public class VirtualMachine {
 	public Memory memory;
 	public SOs sos;
 	private static int MEM_SIZE = 1024;
+	private static int PAGE_SIZE = 16;
 
     public VirtualMachine(CPU _cpu, Memory _memory){  
 		cpu = _cpu;
 		memory = _memory;
-		sos = new SOs(_cpu, _memory);
+		sos = new SOs(_cpu, _memory, PAGE_SIZE);
     }
 
     public static void main(String args[]) {  
