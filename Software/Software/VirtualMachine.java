@@ -55,7 +55,7 @@ public class VirtualMachine {
 				vm.cpu.aux.dump(getProgram(opt), 0, getProgram(opt).length);
 			System.out.println("----------------");
 
-			vm.sos.loadProgram(0, getProgram(opt));//Carregando o programa em memória
+			vm.sos.loadProgram(getProgram(opt));//Carregando o programa em memória
 			vm.sos.runProgram(0, 0, getProgram(opt).length-1); //Executando o programa
 
 			System.out.println("----------------");
