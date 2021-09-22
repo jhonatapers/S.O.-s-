@@ -1,5 +1,6 @@
 package Hardware;
 import Hardware.Memory.Word;
+import Software.SistemaOperacional.ProcessControlBlock;
 import Software.SistemaOperacional.SOs.InterruptHandling;
 
 public class CPU {
@@ -22,6 +23,7 @@ public class CPU {
         Overflow, 
         ProgramEnd,
         Trap;
+        //Add uma nova instruction
     }
     // ----------------------------
 
@@ -36,6 +38,7 @@ public class CPU {
     public Interrupt itr = Interrupt.NoInterrupt;
     public Memory m;
     public Boolean debug = false;
+    public ProcessControlBlock process;
 
     public CPU(Memory memory){
         m = memory;
@@ -108,18 +111,18 @@ public class CPU {
             
             switch (ir.opc) {
                 case JMP: //  PC <- k       
-                    if(validAdress(ir.p))                    
+                    if(validAdress(translateAddress(ir.p, tablePages)))                    
                         pc = ir.p;			                    
                     break;
 
                 case JMPI: // PC <- Rs
-                    if(validAdress(reg[ir.r1]))
+                    if(validAdress(translateAddress(reg[ir.r1], tablePages)))
                         pc = reg[ir.r1];
                     break;					
                     
                 case JMPIG: // If Rc > 0 Then PC <- Rs Else PC <- PC +1
                     if (reg[ir.r2] > 0) {
-                        if(validAdress(reg[ir.r1]))
+                        if(validAdress(translateAddress(reg[ir.r1], tablePages)))
                             pc = reg[ir.r1];                      
                     } else {
                         pc++;
@@ -128,7 +131,7 @@ public class CPU {
 
                 case JMPIL: //f Rc < 0 then PC <- Rs Else PC <- PC +1 
                     if (reg[ir.r2] < 0) {
-                        if(validAdress(reg[ir.r1]))
+                        if(validAdress(translateAddress(reg[ir.r1], tablePages)))
                             pc = reg[ir.r1];
                     } else {
                         pc++;
@@ -137,7 +140,7 @@ public class CPU {
 
                 case JMPIE: // If Rc = 0 Then PC <- Rs Else PC <- PC +1
                     if (reg[ir.r2] == 0) {
-                        if(validAdress(reg[ir.r1]))
+                        if(validAdress(translateAddress(reg[ir.r1], tablePages)))
                             pc = reg[ir.r1];
                     } else {
                         pc++;
@@ -219,6 +222,7 @@ public class CPU {
                         break;
 
                 case LDD: // Rd <- [A] //Conferir
+                        int address = translateAddress(ir.p,);
                         if(validAdress(ir.p)){
                             reg[ir.r1] = m.address[ir.p].p;
                             pc++;
@@ -287,6 +291,16 @@ public class CPU {
 
             }
         }
+    }
+
+    public int translateAddress(int pc, int[] tablePages){
+        int page = pc / pageLength;
+        int offset = pc %  pageLength;
+        int frame  = tablePages[page] * frameLength;
+
+        int pFato = frame + offset;
+
+        return pFato;
     }
 
     //#region AUx

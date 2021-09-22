@@ -1,6 +1,6 @@
 package Software.SistemaOperacional;
 
-import java.util.ArrayList;
+import java.util.Queue;
 
 import Hardware.CPU;
 import Hardware.Memory;
@@ -8,6 +8,7 @@ import Hardware.CPU.Interrupt;
 import Hardware.CPU.Opcode;
 import Hardware.Memory.Word;
 import Software.SistemaOperacional.Drivers.*;
+import Software.SistemaOperacional.MemoryManager.AllocatesReturn;
 
 public class SOs {
     
@@ -53,12 +54,27 @@ public class SOs {
         }        
     }
 
+    public class ProcessControlBlock{
+
+        public int[] tablePage;
+        public int[] registrators;
+        public int pc;
+
+        public ProcessControlBlock(int[] _tablePage){
+            tablePage = _tablePage;
+            pc = 0;
+            registrators = new int[10];
+        }
+
+    }
+
     public InterruptHandling interruptHandling;
     private CPU cpu;
     private MemoryManager memoryManager;
     //private Memory memory;
     private KeyboardDriver keyboardDriver;
     private ConsoleOutputDriver consoleOutputDriver;
+    private Queue<ProcessControlBlock> processQueue;
 
     public SOs(CPU _cpu, Memory _memory, int _pageLength){        
         interruptHandling = new InterruptHandling();
@@ -68,21 +84,17 @@ public class SOs {
         loadDrivers();
     }
     
-    public void loadProgram(Word[] program){
+    public boolean loadProgram(Word[] program){
+        
+        AllocatesReturn allocatesReturn = memoryManager.allocates(program.length);
 
-        int[] tablePages = new int[0];
-
-        if(memoryManager.allocates(program.length, tablePages)){
-            memoryManager.carga(program,tablePages);
-           //carrega porgrama nos frames 
+        if(allocatesReturn.canAlocate){
+            memoryManager.carga(program,allocatesReturn.tablePages); //carrega porgrama nos frames 
+            processQueue.add(new ProcessControlBlock(allocatesReturn.tablePages)); //Adiciona processo na fila
+            return true;
         }
 
-        /*
-        for(int i=0; i < program.length; i++){
-            memoryManager.memory.address[pc] = program[i];
-            pc++;
-        }
-        */
+        return false;
     }
 
     public void runProgram(int pc, int limiteInferior, int limiteSuperior){
@@ -107,40 +119,6 @@ public class SOs {
         consoleOutputDriver.systemOutInt(memoryManager.memory.address[cpu.getRegistrator(9)].p);
         cpu.itr = Interrupt.NoInterrupt; 
     }
-
-
-/*
-
-    private static final Map<String, Integer> SYS_PROGS_ADDRESS = Map.of(
-        "INPUT", 900,
-        "OUTPUT", 902
-    );
-
-    public void inputCompletao(){
-        int pcOld = cpu.getPC();
-        int limiteInferiorOld = cpu.getLimiteInferior();
-        int limiteSuperiorOld = cpu.getLimiteSuperior();
-
-        int pcNew = SYS_PROGS_ADDRESS.get("INPUT");
-        
-        loadProgram(pcNew, inputProgram());
-        cpu.setContext(pcNew, pcNew, pcNew+1);
-        
-        cpu.itr = Interrupt.NoInterrupt;
-        
-
-        //memory.address[cpu.getRegistrator(9)].
-    }
-
-    private Word[] inputProgram(){
-        return new Word[]{
-            new Word(Opcode.STD, keyboardDriver.readKeyboardInput(), -1, cpu.getRegistrator(9)),
-            new Word(Opcode.STOP, -1, -1, -1)
-        };
-    }
-
-*/
-
 
 }
 

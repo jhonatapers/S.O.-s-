@@ -25,7 +25,13 @@ public class MemoryManager{
             }
         }
 
-        public boolean allocates(int nWords, int[] tablePages){
+        public class AllocatesReturn{
+            boolean canAlocate;
+            int[] tablePages;
+        }
+
+        public AllocatesReturn allocates(int nWords){
+            AllocatesReturn allocatesReturn = new AllocatesReturn();
             int nrFrames;
             ArrayList<Integer> aux = new ArrayList<Integer>();
 
@@ -46,13 +52,16 @@ public class MemoryManager{
                 } else break;
             }
 
-            tablePages = aux.stream().mapToInt(i -> i).toArray();
+            allocatesReturn.tablePages = aux.stream().mapToInt(i -> i).toArray();
 
-            if(nrFrames > 0){ //Não foi possível alocar na memória
-                dislocate(tablePages);
-                return false;
+            if(nrFrames > 0){ 
+                dislocate(allocatesReturn.tablePages);
+                allocatesReturn.canAlocate = false;
+            }else{
+                allocatesReturn.canAlocate = true;
             }
-            return true;
+
+            return allocatesReturn;
         }
 
         public void dislocate(int[] tablePages){
