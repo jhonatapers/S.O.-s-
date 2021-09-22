@@ -1,6 +1,6 @@
 package Hardware;
 import Hardware.Memory.Word;
-import Software.SistemaOperacional.ProcessControlBlock;
+import Software.SistemaOperacional.SOs.ProcessControlBlock;
 import Software.SistemaOperacional.SOs.InterruptHandling;
 
 public class CPU {
@@ -32,6 +32,7 @@ public class CPU {
     private int pc;
     private int limiteSuperior;
     private int limiteInferior;
+    private int pageSize;
     private Word ir;
     private int[] reg;
     public InterruptHandling ih;
@@ -39,16 +40,25 @@ public class CPU {
     public Memory m;
     public Boolean debug = false;
     public ProcessControlBlock process;
+    private int[] tablePages;
 
-    public CPU(Memory memory){
+    public CPU(Memory memory, int pageSize){
         m = memory;
         reg = new int[10];
+        this.pageSize = pageSize;
     }
 
     public void setContext(int _pc, int _limiteInferior, int _limiteSuperior) {
         pc = _pc;                
         limiteSuperior =_limiteSuperior;
         limiteInferior = _limiteInferior;
+    }
+
+    public void setProcess(ProcessControlBlock process) {
+        this.process = process;
+        this.reg = process.registrators;
+        this.pc = process.pc;
+        this.tablePages = process.tablePage;
     }
 
     public int getPC(){
@@ -104,8 +114,8 @@ public class CPU {
 
         while (true) {  
             
-            if(validAdress(pc))          
-                ir = m.address[pc]; 
+            if(validAdress(translateAddress(pc, tablePages))) 
+                ir = m.address[translateAddress(pc, tablePages)]; 
             
             if(debug){ showState(); }
             
@@ -149,13 +159,13 @@ public class CPU {
                     
                 case JMPIM: // PC <- [A]
                     if(validAdress(m.address[ir.p].p))
-                        pc = m.address[ir.p].p;
+                        pc = m.address[translateAddress(ir.p, tablePages)].p;
                     break;
                     
                 case JMPIGM: //if Rc > 0 then PC <- [A] Else PC <- PC +1 
                         if (reg[ir.r2] > 0) {
                             if(validAdress(m.address[ir.p].p))
-                                pc = m.address[ir.p].p;
+                                pc = m.address[translateAddress(ir.p, tablePages)].p;
                         } else {
                             pc++;
                         }
@@ -164,7 +174,7 @@ public class CPU {
                 case JMPILM: //f Rc < 0 then PC <- [A] Else PC <- PC +1
                         if (reg[ir.r2] < 0) {
                             if(validAdress(m.address[ir.p].p))
-                                pc = m.address[ir.p].p;
+                                pc = m.address[translateAddress(ir.p, tablePages)].p;
                         } else {
                             pc++;
                         }
@@ -173,7 +183,7 @@ public class CPU {
                 case JMPIEM: //f Rc = 0 then PC <- [A] Else PC <- PC +1
                         if (reg[ir.r2] == 0) {
                             if(validAdress(m.address[ir.p].p))
-                                pc = m.address[ir.p].p;
+                                pc = m.address[translateAddress(ir.p, tablePages)].p;
                         } else {
                             pc++;
                         }
@@ -222,17 +232,17 @@ public class CPU {
                         break;
 
                 case LDD: // Rd <- [A] //Conferir
-                        int address = translateAddress(ir.p,);
+                        int address = translateAddress(ir.p,tablePages);
                         if(validAdress(ir.p)){
-                            reg[ir.r1] = m.address[ir.p].p;
+                            reg[ir.r1] = m.address[translateAddress(ir.p, tablePages)].p;
                             pc++;
                         }
                         break;
                                             
                 case STD: // [A] <- Rs     
                         if(validAdress(ir.p)){
-                            m.address[ir.p].opc = Opcode.DATA;
-                            m.address[ir.p].p = reg[ir.r1];
+                            m.address[translateAddress(ir.p, tablePages)].opc = Opcode.DATA;
+                            m.address[translateAddress(ir.p, tablePages)].p = reg[ir.r1];
                             pc++;
                         }
                         break;
@@ -294,13 +304,13 @@ public class CPU {
     }
 
     public int translateAddress(int pc, int[] tablePages){
-        int page = pc / pageLength;
-        int offset = pc %  pageLength;
-        int frame  = tablePages[page] * frameLength;
+        int page = pc / pageSize; //0
+        int offset = pc % pageSize; // 3
+        int frame  = tablePages[page] * pageSize; // 0
 
-        int pFato = frame + offset;
+        int position = frame + offset;
 
-        return pFato;
+        return position;
     }
 
     //#region AUx

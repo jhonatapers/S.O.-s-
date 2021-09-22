@@ -98,7 +98,8 @@ public class SOs {
     }
 
     public void runProgram(int pc, int limiteInferior, int limiteSuperior){
-        cpu.setContext(pc, limiteInferior, limiteSuperior);
+        cpu.setProcess(processQueue.peek());
+        //cpu.setContext(pc, limiteInferior, limiteSuperior);
         cpu.run();
     }
 

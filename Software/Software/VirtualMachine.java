@@ -21,7 +21,7 @@ public class VirtualMachine {
 
     public static void main(String args[]) {  
 		boolean debug = false; 		     
-		CPU cpu = new CPU(new Memory(MEM_SIZE));	
+		CPU cpu = new CPU(new Memory(MEM_SIZE), PAGE_SIZE);	
 		VirtualMachine vm = new VirtualMachine(cpu, cpu.m);
 
 		/**
@@ -63,7 +63,7 @@ public class VirtualMachine {
 				vm.cpu.aux.dump(getProgram(opt), 0, getProgram(opt).length);
 			System.out.println("----------------");
 
-			cpu = new CPU(new Memory(MEM_SIZE));	//Limpando a memória para execução de um novo programa.
+			cpu = new CPU(new Memory(MEM_SIZE), PAGE_SIZE);	//Limpando a memória para execução de um novo programa.
 			vm = new VirtualMachine(cpu, cpu.m);
 		}
 
