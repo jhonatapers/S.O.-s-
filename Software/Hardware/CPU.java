@@ -85,6 +85,7 @@ public class CPU {
         ih = _ih;
     }
 
+    //alterar aqui
     public boolean validAdress(int _pc){
         if(_pc < 0 || _pc > m.address.length)
         {
@@ -158,13 +159,13 @@ public class CPU {
                     break;
                     
                 case JMPIM: // PC <- [A]
-                    if(validAdress(m.address[ir.p].p))
+                    if(validAdress(translateAddress(m.address[ir.p].p, tablePages)))
                         pc = m.address[translateAddress(ir.p, tablePages)].p;
                     break;
                     
                 case JMPIGM: //if Rc > 0 then PC <- [A] Else PC <- PC +1 
                         if (reg[ir.r2] > 0) {
-                            if(validAdress(m.address[ir.p].p))
+                            if(validAdress(translateAddress(m.address[ir.p].p, tablePages)))
                                 pc = m.address[translateAddress(ir.p, tablePages)].p;
                         } else {
                             pc++;
@@ -173,7 +174,7 @@ public class CPU {
                     
                 case JMPILM: //f Rc < 0 then PC <- [A] Else PC <- PC +1
                         if (reg[ir.r2] < 0) {
-                            if(validAdress(m.address[ir.p].p))
+                            if(validAdress(translateAddress(m.address[ir.p].p, tablePages)))
                                 pc = m.address[translateAddress(ir.p, tablePages)].p;
                         } else {
                             pc++;
@@ -182,7 +183,7 @@ public class CPU {
                     
                 case JMPIEM: //f Rc = 0 then PC <- [A] Else PC <- PC +1
                         if (reg[ir.r2] == 0) {
-                            if(validAdress(m.address[ir.p].p))
+                            if(validAdress(translateAddress(m.address[ir.p].p, tablePages)))
                                 pc = m.address[translateAddress(ir.p, tablePages)].p;
                         } else {
                             pc++;
@@ -231,16 +232,15 @@ public class CPU {
                         }                        
                         break;
 
-                case LDD: // Rd <- [A] //Conferir
-                        int address = translateAddress(ir.p,tablePages);
-                        if(validAdress(ir.p)){
+                case LDD: // Rd <- [A] 
+                        if(validAdress(translateAddress(ir.p, tablePages))){
                             reg[ir.r1] = m.address[translateAddress(ir.p, tablePages)].p;
                             pc++;
                         }
                         break;
                                             
                 case STD: // [A] <- Rs     
-                        if(validAdress(ir.p)){
+                        if(validAdress(translateAddress(ir.p, tablePages))){
                             m.address[translateAddress(ir.p, tablePages)].opc = Opcode.DATA;
                             m.address[translateAddress(ir.p, tablePages)].p = reg[ir.r1];
                             pc++;
@@ -248,14 +248,14 @@ public class CPU {
                         break;
 
                 case LDX: // Rd <- [Rs] 
-                        if(validAdress(reg[ir.r2])){
+                        if(validAdress(translateAddress(reg[ir.r2], tablePages))){
                             reg[ir.r1] = m.address[reg[ir.r2]].p;
                             pc++;
                         }
                         break;
 
                 case STX: // [Rd] <-Rs
-                        if(validAdress(reg[ir.r1])){
+                        if(validAdress(translateAddress(reg[ir.r1], tablePages))){
                             m.address[reg[ir.r1]].opc = Opcode.DATA;      
                             m.address[reg[ir.r1]].p = reg[ir.r2];          
                             pc++;
@@ -304,9 +304,9 @@ public class CPU {
     }
 
     public int translateAddress(int pc, int[] tablePages){
-        int page = pc / pageSize; //0
-        int offset = pc % pageSize; // 3
-        int frame  = tablePages[page] * pageSize; // 0
+        int page = pc / pageSize; 
+        int offset = pc % pageSize; 
+        int frame  = tablePages[page] * pageSize; 
 
         int position = frame + offset;
 
