@@ -21,7 +21,28 @@ public class MemoryManager{
 
             freeFrames = new boolean[nFrames];
             for(int i = 0; i < freeFrames.length; i++){
+
+
                 freeFrames[i] = true;
+
+
+                //#region furos
+                if(i == 1)
+                {
+                    freeFrames[i] = false;
+                }
+
+                if(i == 4)
+                {
+                    freeFrames[i] = false;
+                }
+                
+                if(i == 2)
+                {
+                    freeFrames[i] = false;
+                }
+                //#endregion
+                
             }
         }
 
@@ -72,8 +93,28 @@ public class MemoryManager{
 
         public void carga(Word[] program, int[] tablePages) {
             int countWords = 0;
+
+            int countPageSize = 0;
+
             for (int i : tablePages) {
+
+                int j = i * frameLength;
+                while(j < (i+1) * frameLength){
+                    countPageSize = 0;
+                    while (countPageSize < frameLength) {
+                        if(countWords < program.length){
+                            memory.address[j] = program[countWords];
+                        } 
+
+                        countWords++;
+                        countPageSize++;
+                        j++;
+                    }
+                }
+
+                /*
                 for (int j = i * frameLength ; j < ((i+1) * frameLength) - 1 ; j++) {
+                    countWords = 0;
                     while (countWords < frameLength) {
                         if(countWords <= program.length){
                             memory.address[j] = program[countWords];
@@ -81,8 +122,12 @@ public class MemoryManager{
                         } else break;
                     }
                 }
+                */
             }
             
         }
+
+
+
 
     }

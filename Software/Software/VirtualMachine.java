@@ -19,8 +19,7 @@ public class VirtualMachine {
 		sos = new SOs(_cpu, _memory, PAGE_SIZE);
     }
 
-    public static void main(String args[]) {  
-		boolean debug = false; 		     
+    public static void main(String args[]) {  	     
 		CPU cpu = new CPU(new Memory(MEM_SIZE), PAGE_SIZE);	
 		VirtualMachine vm = new VirtualMachine(cpu, cpu.m);
 
@@ -29,7 +28,7 @@ public class VirtualMachine {
 		 * true  = Debug ON
 		 * false = Debug OFF
 		 */
-		vm.cpu.debug = debug;
+		vm.cpu.debug = false;
 		
 		KeyboardDriver kDriver = new KeyboardDriver();
 		int opt = 100;

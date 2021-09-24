@@ -1,5 +1,7 @@
  
 
+ #CLASE PYTHON PARA TESTES RAPIDOS
+
 pc = -15
 
 pageSize = 10

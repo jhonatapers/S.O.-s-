@@ -1,5 +1,6 @@
 package Software.SistemaOperacional;
 
+import java.util.LinkedList;
 import java.util.Queue;
 
 import Hardware.CPU;
@@ -31,10 +32,11 @@ public class SOs {
                     break;
                 case ProgramEnd:
                     System.out.println(itr);
+                    processQueue.poll();
                     cpu.itr = Interrupt.ProgramEnd;
                     break;
                 case Trap:
-                    if(cpu.validAdress(cpu.getRegistrator(9))){
+                    if(cpu.validAdress(cpu.translateAddress(cpu.getRegistrator(9)))){
                         switch(cpu.getRegistrator(8)){
                             case 1: 
                                 input();
@@ -43,6 +45,8 @@ public class SOs {
                                 output();
                                 break;
                         }
+                    }else{
+                        cpu.itr = Interrupt.InvalidAdress;
                     }
                     break;
                 default:
@@ -76,7 +80,8 @@ public class SOs {
     private ConsoleOutputDriver consoleOutputDriver;
     private Queue<ProcessControlBlock> processQueue;
 
-    public SOs(CPU _cpu, Memory _memory, int _pageLength){        
+    public SOs(CPU _cpu, Memory _memory, int _pageLength){      
+        processQueue = new LinkedList<ProcessControlBlock>();
         interruptHandling = new InterruptHandling();
         memoryManager = new MemoryManager(_memory, _pageLength);
         _cpu.setInterruptHandling(interruptHandling);
@@ -84,6 +89,7 @@ public class SOs {
         loadDrivers();
     }
     
+    //vai ser igual o newProcess no gerente de processo (nao mais utilizar como esta agr... utilizar no gerente de processo)
     public boolean loadProgram(Word[] program){
         
         AllocatesReturn allocatesReturn = memoryManager.allocates(program.length);
@@ -97,6 +103,7 @@ public class SOs {
         return false;
     }
 
+    
     public void runProgram(int pc, int limiteInferior, int limiteSuperior){
         cpu.setProcess(processQueue.peek());
         //cpu.setContext(pc, limiteInferior, limiteSuperior);
@@ -109,15 +116,15 @@ public class SOs {
     }
 
     public void input(){
-        memoryManager.memory.address[cpu.getRegistrator(9)].opc = Opcode.DATA;
-        memoryManager.memory.address[cpu.getRegistrator(9)].r1 = -1;
-        memoryManager.memory.address[cpu.getRegistrator(9)].r2 = -1;
-        memoryManager.memory.address[cpu.getRegistrator(9)].p = keyboardDriver.readKeyboardInput();
+        memoryManager.memory.address[cpu.translateAddress(cpu.getRegistrator(9))].opc = Opcode.DATA;
+        memoryManager.memory.address[cpu.translateAddress(cpu.getRegistrator(9))].r1 = -1;
+        memoryManager.memory.address[cpu.translateAddress(cpu.getRegistrator(9))].r2 = -1;
+        memoryManager.memory.address[cpu.translateAddress(cpu.getRegistrator(9))].p = keyboardDriver.readKeyboardInput();
         cpu.itr = Interrupt.NoInterrupt; 
     }
 
     public void output(){
-        consoleOutputDriver.systemOutInt(memoryManager.memory.address[cpu.getRegistrator(9)].p);
+        consoleOutputDriver.systemOutInt(memoryManager.memory.address[cpu.translateAddress(cpu.getRegistrator(9))].p);
         cpu.itr = Interrupt.NoInterrupt; 
     }
 
