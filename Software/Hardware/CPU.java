@@ -85,21 +85,16 @@ public class CPU {
         ih = _ih;
     }
 
-    //alterar aqui
     public boolean validAdress(int _pc){
-        if(_pc < 0 || _pc > m.address.length)
-        {
-            itr = Interrupt.InvalidAdress;
-            return false;
+        int page = _pc / pageSize;
+
+        for(int i = 0; i < tablePages.length; i++){
+            if(tablePages[i] == page){
+                return true;
+            }
         }
         
-        if(_pc < limiteInferior || _pc > limiteSuperior)
-        {
-            itr = Interrupt.InvalidAdress;
-            return false;
-        }
-        
-        return true;
+        return false;
     }
 
     private boolean overflow(int n){
