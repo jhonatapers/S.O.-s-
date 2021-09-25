@@ -29,9 +29,23 @@ public class VirtualMachine {
 		 * false = Debug OFF
 		 */
 		vm.cpu.debug = false;
+
+		vm.sos.loadProgram(getProgram(4));//Carregando o programa em memória
+		vm.sos.loadProgram(getProgram(4));//Carregando o programa em memória
+		vm.sos.loadProgram(getProgram(4));//Carregando o programa em memória
+		vm.sos.loadProgram(getProgram(4));//Carregando o programa em memória
+		vm.sos.loadProgram(getProgram(4));//Carregando o programa em memória
+		vm.sos.loadProgram(getProgram(4));//Carregando o programa em memória
+		vm.sos.loadProgram(getProgram(4));//Carregando o programa em memória
+		//vm.sos.loadProgram(getProgram(8));//Carregando o programa em memória
 		
+		vm.sos.runNextProcess();
+
+		/*
 		KeyboardDriver kDriver = new KeyboardDriver();
+		
 		int opt = 100;
+		
 		while(opt != 0){
 			System.out.println("\nDigite o programa que deseja executar:");
 			System.out.println("\t\tDEBUG: "+((vm.cpu.debug) ? "Ativado" : "Desativado"));
@@ -55,7 +69,8 @@ public class VirtualMachine {
 			System.out.println("----------------");
 
 			vm.sos.loadProgram(getProgram(opt));//Carregando o programa em memória
-			vm.sos.runProgram(0, 0, getProgram(opt).length-1); //Executando o programa
+			//vm.sos.runProgram(0, 0, getProgram(opt).length-1); //Executando o programa
+			vm.sos.runNextProcess();
 
 			System.out.println("----------------");
 			if(vm.cpu.debug)//Modo DEBUG ON -> Estado posterior a execução
@@ -65,9 +80,11 @@ public class VirtualMachine {
 			cpu = new CPU(new Memory(MEM_SIZE), PAGE_SIZE);	//Limpando a memória para execução de um novo programa.
 			vm = new VirtualMachine(cpu, cpu.m);
 		}
+		
 
 		System.out.println("\n----------------");
 		System.out.println("Fim da execução.");
+		*/
 	}
 
 	private static Word[] getProgram(int opt) {

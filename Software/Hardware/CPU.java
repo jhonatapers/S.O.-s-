@@ -22,8 +22,8 @@ public class CPU {
         InvalidAdress, 
         Overflow, 
         ProgramEnd,
-        Trap;
-        //Add uma nova instruction
+        Trap,
+        ClockInterrupt;
     }
     // ----------------------------
 
@@ -40,6 +40,8 @@ public class CPU {
     public Memory m;
     public Boolean debug = false;
     public ProcessControlBlock process;
+
+    private static int MAX_CLOCK = 5;
 
     public CPU(Memory memory, int pageSize){
         m = memory;
@@ -67,6 +69,10 @@ public class CPU {
 
     public int getRegistrator(int r){
         return reg[r];
+    }
+
+    public int[] getRegistrators(){
+        return reg;
     }
 
     /* remover
@@ -109,6 +115,8 @@ public class CPU {
     }
 
     public void run() {
+
+        int clock = 0;
 
         while (true) {  
             
@@ -288,6 +296,11 @@ public class CPU {
                         break;
 
             }
+
+            clock++;
+            if(clock >= MAX_CLOCK){
+                itr = Interrupt.ClockInterrupt;
+            }
             
             if(itr != Interrupt.NoInterrupt){
                 ih.handle(itr);
@@ -297,6 +310,8 @@ public class CPU {
                 }
 
             }
+
+            
         }
     }
 

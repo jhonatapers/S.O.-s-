@@ -33,7 +33,9 @@ public class SOs {
                 case ProgramEnd:
                     System.out.println(itr);
                     processQueue.poll();
-                    cpu.itr = Interrupt.ProgramEnd;
+                    
+                    runProcess(processQueue.poll());
+                    cpu.itr =Interrupt.ProgramEnd;
                     break;
                 case Trap:
                     if(cpu.validAdress(cpu.translateAddress(cpu.getRegistrator(9)))){
@@ -49,6 +51,21 @@ public class SOs {
                         cpu.itr = Interrupt.InvalidAdress;
                     }
                     break;
+                case ClockInterrupt:
+
+                    //Adiciona no final da fila
+                    ProcessControlBlock process = cpu.process;
+                    process.pc = cpu.getPC();
+                    process.registrators = cpu.getRegistrators();
+                    processQueue.add(process);
+
+                    //Busca o primeiro da fila
+                    process = processQueue.poll();
+                    if(process != null){
+                        runProcess(process);
+                    }
+
+                    break;
                 default:
                     System.out.println(itr);
                     cpu.itr = Interrupt.ProgramEnd;
@@ -61,8 +78,8 @@ public class SOs {
     public class ProcessControlBlock{
 
         public int[] tablePage;
-        public int[] registrators;
         public int pc;
+        public int[] registrators;        
 
         public ProcessControlBlock(int[] _tablePage){
             tablePage = _tablePage;
@@ -103,10 +120,24 @@ public class SOs {
         return false;
     }
 
-    
+    //(RETIRAR DPS)
     public void runProgram(int pc, int limiteInferior, int limiteSuperior){
         cpu.setProcess(processQueue.peek());
         //cpu.setContext(pc, limiteInferior, limiteSuperior);
+        cpu.run();
+    }
+
+    public void runNextProcess(){
+        cpu.setProcess(processQueue.poll());
+        cpu.run();
+    }
+
+    public void setProcess(ProcessControlBlock process){
+        cpu.setProcess(process);
+    }
+
+    public void runProcess(ProcessControlBlock process){
+        cpu.setProcess(process);
         cpu.run();
     }
 
