@@ -19,7 +19,7 @@ public class MemoryManager{
             frameLength = pageLength;
             nFrames = memory.address.length/pageLength;
 
-            freeFrames = new boolean[nFrames];
+            freeFrames = new boolean[nFrames]; //1024/16 => 64 frames
             for(int i = 0; i < freeFrames.length; i++){
 
 
@@ -48,21 +48,24 @@ public class MemoryManager{
 
         public class AllocatesReturn{
             boolean canAlocate;
-            int[] tablePages;
+            int[] tablePages; //Frames que o programa será armazenado.
         }
 
         public AllocatesReturn allocates(int nWords){
             AllocatesReturn allocatesReturn = new AllocatesReturn();
-            int nrFrames;
-            ArrayList<Integer> aux = new ArrayList<Integer>();
+            int nrFrames; //Numero de frames para alocar o programa.
+            ArrayList<Integer> aux = new ArrayList<Integer>(); //Responsável por armazenar quais frames foram alocados para o programa.
 
+
+            //Verificando o numero de frames necessários para o programa.
             if (nWords % pageLength > 0){ // Com offset
                 nrFrames = (nWords / pageLength) + 1;
             } else {
                 nrFrames = (nWords / pageLength);
             }
 
-            //first fit
+            //first fit => Verifica na lista dos frames quais estão livres e aptos a receber o programa.
+            //Array "aux" irá armazenar os frames de memória escolhidos para este programa.
             for(int i = 0; i < freeFrames.length; i++){
                 if(nrFrames > 0){
                     if(freeFrames[i]){
@@ -73,8 +76,10 @@ public class MemoryManager{
                 } else break;
             }
 
-            allocatesReturn.tablePages = aux.stream().mapToInt(i -> i).toArray();
-
+            //Salvando frames que o programa será armazenado.
+            allocatesReturn.tablePages = aux.stream().mapToInt(i -> i).toArray(); //Convertando Wrapper para primitivo.
+            
+            //O numero de frames é decrementado sempre que uma página pode ser alocada, então se for maior que 0 não foi possível alocar o programa todo na memória.
             if(nrFrames > 0){ 
                 dislocate(allocatesReturn.tablePages);
                 allocatesReturn.canAlocate = false;
@@ -92,23 +97,25 @@ public class MemoryManager{
         }
 
         public void carga(Word[] program, int[] tablePages) {
-            int countWords = 0;
+            int countWords = 0; //Numero de Words já alocadas em memoria.
 
-            int countPageSize = 0;
+            int countPageSize = 0; //Número de Word's já alocadas no frame.
 
-            for (int i : tablePages) {
+            //Para cada frame escolhido para alocar o programa, faça:
+            for (int frame : tablePages) { // troquei i por frame
 
-                int j = i * frameLength;
-                while(j < (i+1) * frameLength){
+                // troquei j por realMemoryPosition
+                int realMemoryPosition = frame * frameLength; //Posição na memória onde o frame se inicia.
+                while(realMemoryPosition < (frame + 1) * frameLength){ //Posição na memória onde o frame encerra.
                     countPageSize = 0;
                     while (countPageSize < frameLength) {
                         if(countWords < program.length){
-                            memory.address[j] = program[countWords];
+                            memory.address[realMemoryPosition] = program[countWords];
                         } 
 
-                        countWords++;
-                        countPageSize++;
-                        j++;
+                        countWords++; //Proxima Word
+                        countPageSize++;//Número de Word's já alocadas no frame.
+                        realMemoryPosition++; //Percorre as posições na memoria do respectivo frame.
                     }
                 }
 

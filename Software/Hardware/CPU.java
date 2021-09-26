@@ -96,6 +96,7 @@ public class CPU {
     public boolean validAdress(int _pc){
         int page = _pc / pageSize;
 
+        //Valida se o pc atual está dentro do conjunto de páginas pertencentes ao processo.
         for(int i = 0; i < process.tablePage.length; i++){
             if(process.tablePage[i] == page){
                 return true;
@@ -316,10 +317,10 @@ public class CPU {
 
     public int translateAddress(int pc){
         int page = pc / pageSize; 
-        int offset = pc % pageSize; 
-        int frame  = process.tablePage[page] * pageSize; 
+        int offset = pc % pageSize;
+        int frame  = process.tablePage[page] * pageSize; //Converte a pagina do pc atual na posição real da memoria.
 
-        int position = frame + offset;
+        int position = frame + offset; //Posição exata no frame da memoria.
 
         return position;
     }

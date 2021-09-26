@@ -10,8 +10,8 @@ public class VirtualMachine {
 	public CPU cpu;
 	public Memory memory;
 	public SOs sos;
-	private static int MEM_SIZE = 1024;
-	private static int PAGE_SIZE = 16;
+	private final static int MEM_SIZE = 1024;
+	private final static int PAGE_SIZE = 16;
 
     public VirtualMachine(CPU _cpu, Memory _memory){  
 		cpu = _cpu;

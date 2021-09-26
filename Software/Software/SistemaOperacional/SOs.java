@@ -78,7 +78,7 @@ public class SOs {
 
     public class ProcessControlBlock{
 
-        public int[] tablePage;
+        public int[] tablePage; //Frames onde o programa foi alocado.
         public int pc;
         public int[] registrators;        
 
@@ -110,11 +110,12 @@ public class SOs {
     //vai ser igual o newProcess no gerente de processo (nao mais utilizar como esta agr... utilizar no gerente de processo)
     public boolean loadProgram(Word[] program){
         
+        //Verifica se é possível alocar o programa em memória ou não. Se possível, retorna também quais páginas foram alocadas.
         AllocatesReturn allocatesReturn = memoryManager.allocates(program.length);
 
         if(allocatesReturn.canAlocate){
-            memoryManager.carga(program,allocatesReturn.tablePages); //carrega porgrama nos frames 
-            processQueue.add(new ProcessControlBlock(allocatesReturn.tablePages)); //Adiciona processo na fila
+            memoryManager.carga(program,allocatesReturn.tablePages); //carrega porgrama nos respectivos frames 
+            processQueue.add(new ProcessControlBlock(allocatesReturn.tablePages)); //Adiciona processo na fila, informando quais os frames alocados na memoria.
             return true;
         }
 
@@ -129,8 +130,8 @@ public class SOs {
     }
 
     public void runNextProcess(){
-        cpu.setProcess(processQueue.poll());
-        cpu.run();
+        cpu.setProcess(processQueue.poll());//Pega o primeiro da fila e manda para o processador.
+        cpu.run(); //Executa o processo atual do processador.
     }
 
     public void setProcess(ProcessControlBlock process){
