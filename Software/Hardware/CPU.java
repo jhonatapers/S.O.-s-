@@ -58,6 +58,7 @@ public class CPU {
     */
 
     public void setProcess(ProcessControlBlock process) {
+        itr = process.interrupt;
         this.process = process;
         this.reg = process.registrators;
         this.pc = process.pc;
@@ -102,7 +103,7 @@ public class CPU {
                 return true;
             }
         }
-
+        itr = Interrupt.InvalidAdress;
         return false;
     }
 
@@ -180,8 +181,9 @@ public class CPU {
                     
                 case JMPILM: //f Rc < 0 then PC <- [A] Else PC <- PC +1
                         if (reg[ir.r2] < 0) {
-                            if(validAdress(translateAddress(m.address[ir.p].p)))
+                            if(validAdress(translateAddress(m.address[ir.p].p))){
                                 pc = m.address[translateAddress(ir.p)].p;
+                            }
                         } else {
                             pc++;
                         }
@@ -300,6 +302,7 @@ public class CPU {
 
             clock++;
             if(clock >= MAX_CLOCK){
+                process.interrupt = itr;
                 itr = Interrupt.ClockInterrupt;
             }
             

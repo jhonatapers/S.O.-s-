@@ -54,7 +54,7 @@ public class SOs {
                     }
                     break;
                 case ClockInterrupt:
-
+                    
                     //Adiciona no final da fila
                     ProcessControlBlock process = cpu.process;
                     process.pc = cpu.getPC();
@@ -64,7 +64,7 @@ public class SOs {
                     //Busca o primeiro da fila
                     process = processQueue.poll();
                     if(process != null){
-                        cpu.itr = Interrupt.NoInterrupt;
+                        //cpu.itr = Interrupt.NoInterrupt;
                         runProcess(process);
                     }
 
@@ -80,11 +80,13 @@ public class SOs {
 
     public class ProcessControlBlock{
 
+        public Interrupt interrupt;
         public int[] tablePage; //Frames onde o programa foi alocado.
         public int pc;
         public int[] registrators;        
 
         public ProcessControlBlock(int[] _tablePage){
+            this.interrupt = Interrupt.NoInterrupt;
             tablePage = _tablePage;
             pc = 0;
             registrators = new int[10];
