@@ -254,15 +254,15 @@ public class CPU {
 
                 case LDX: // Rd <- [Rs] 
                         if(validAdress(translateAddress(reg[ir.r2]))){
-                            reg[ir.r1] = m.address[reg[ir.r2]].p;
+                            reg[ir.r1] = m.address[translateAddress(reg[ir.r2])].p;
                             pc++;
                         }
                         break;
 
                 case STX: // [Rd] <-Rs
                         if(validAdress(translateAddress(reg[ir.r1]))){
-                            m.address[reg[ir.r1]].opc = Opcode.DATA;      
-                            m.address[reg[ir.r1]].p = reg[ir.r2];          
+                            m.address[translateAddressreg([ir.r1])].opc = Opcode.DATA;      
+                            m.address[translateAddressreg(reg[ir.r1])].p = reg[ir.r2];          
                             pc++;
                         }
                         break;
@@ -308,7 +308,6 @@ public class CPU {
                 if(itr == Interrupt.ProgramEnd){
                     break;
                 }
-
             }
 
             

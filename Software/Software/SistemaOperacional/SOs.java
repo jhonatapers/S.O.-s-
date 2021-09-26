@@ -62,6 +62,7 @@ public class SOs {
                     //Busca o primeiro da fila
                     process = processQueue.poll();
                     if(process != null){
+                        cpu.itr = Interrupt.NoInterrupt;
                         runProcess(process);
                     }
 
