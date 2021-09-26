@@ -262,8 +262,8 @@ public class CPU {
 
                 case STX: // [Rd] <-Rs
                         if(validAdress(translateAddress(reg[ir.r1]))){
-                            m.address[translateAddressreg([ir.r1])].opc = Opcode.DATA;      
-                            m.address[translateAddressreg(reg[ir.r1])].p = reg[ir.r2];          
+                            m.address[translateAddress(reg[ir.r1])].opc = Opcode.DATA;      
+                            m.address[translateAddress(reg[ir.r1])].p = reg[ir.r2];          
                             pc++;
                         }
                         break;

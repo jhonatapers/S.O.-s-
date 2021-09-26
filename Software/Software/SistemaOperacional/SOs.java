@@ -32,9 +32,11 @@ public class SOs {
                     break;
                 case ProgramEnd:
                     System.out.println(itr);
-                    processQueue.poll();
+
+                    if(processQueue.peek() != null){
+                        runProcess(processQueue.poll());
+                    }
                     
-                    runProcess(processQueue.poll());
                     cpu.itr =Interrupt.ProgramEnd;
                     break;
                 case Trap:
