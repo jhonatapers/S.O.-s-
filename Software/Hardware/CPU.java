@@ -77,20 +77,6 @@ public class CPU {
         return reg;
     }
 
-    /* remover
-    public void setRegistrator(int r, int value){
-        reg[r] = value;
-    }
-    
-    public int getLimiteInferior(){
-        return limiteInferior;
-    }
-
-    public int getLimiteSuperior(){
-        return limiteSuperior;
-    }
-    */
-
     public void setInterruptHandling(InterruptHandling _ih){
         ih = _ih;
     }
@@ -302,10 +288,9 @@ public class CPU {
             }
 
             clock++;
-            if(clock >= MAX_CLOCK){
-                
+            if(clock == MAX_CLOCK){                
                 process.pc = this.pc;
-                process.registrators = this.reg;
+                //process.registrators = this.reg;
                 process.interrupt = this.itr;
                 itr = Interrupt.ClockInterrupt;
                 clock = 0;
