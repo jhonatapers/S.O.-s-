@@ -31,7 +31,8 @@ public class SOs {
                     cpu.itr = Interrupt.ProgramEnd;
                     break;
                 case ProgramEnd:
-                    System.out.println(itr);
+                    System.out.println("\n\t\t###### "+ itr + " => PROCESS ID["+cpu.process.id+"] ######");
+                    processManager.terminateProcess(cpu.process);
 
                     if(processManager.peekNextProcess() != null){
                         processManager.dispatch(processManager.pollNextProcess());
@@ -48,6 +49,7 @@ public class SOs {
                                 input();
                                 break;
                             case 2:
+                                System.out.println("\nSAIDA Process ID [" + cpu.process.id+ "]");
                                 output();
                                 break;
                         }
@@ -57,12 +59,13 @@ public class SOs {
                     break;
                 case ClockInterrupt:
                     
-                    //Adiciona no final da fila
+                    //Adiciona processo atual no final da fila
                     processManager.createProcess(cpu.process);
 
                     //Busca o primeiro da fila
                     if(processManager.peekNextProcess() != null){
-                        processManager.createProcess(processManager.pollNextProcess());
+                        //Seta o primeiro da fila para executar.
+                        processManager.dispatch(processManager.pollNextProcess());
                     }
 
                     break;
@@ -88,7 +91,7 @@ public class SOs {
         memoryManager = new MemoryManager(_memory, _pageLength);
         _cpu.setInterruptHandling(interruptHandling);
         cpu = _cpu;
-        processManager = new ProcessManager(cpu);
+        processManager = new ProcessManager(cpu,memoryManager);
         loadDrivers();
     }
     

@@ -8,11 +8,13 @@ import Hardware.CPU;
 public class ProcessManager {
 
     private Queue<ProcessControlBlock> processQueue;
+    private MemoryManager memoryManager;
     private CPU cpu;
 
-    public ProcessManager(CPU cpu){
+    public ProcessManager(CPU cpu, MemoryManager memoryManager){
         this.cpu = cpu;
         processQueue = new LinkedList<ProcessControlBlock>();
+        this.memoryManager = memoryManager;
     }
 
     public void createProcess(ProcessControlBlock processControlBlock){
@@ -29,6 +31,10 @@ public class ProcessManager {
 
     public ProcessControlBlock peekNextProcess(){
         return processQueue.peek();
+    }
+
+    public void terminateProcess(ProcessControlBlock processControlBlock){
+        memoryManager.deallocate(processControlBlock.tablePage);
     }
 
 

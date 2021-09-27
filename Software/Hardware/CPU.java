@@ -41,7 +41,7 @@ public class CPU {
     public Boolean debug = false;
     public ProcessControlBlock process;
 
-    private static int MAX_CLOCK = 5;
+    private static int MAX_CLOCK = 6;
 
     public CPU(Memory memory, int pageSize){
         m = memory;
@@ -57,11 +57,12 @@ public class CPU {
     }
     */
 
-    public void setProcess(Software.SistemaOperacional.ProcessControlBlock process) {
+    public void setProcess(ProcessControlBlock process) {
         this.itr = process.interrupt;
         this.process = process;
         this.reg = process.registrators;
         this.pc = process.pc;
+        System.out.println("\nCPU executando: PROCESS ID ["+process.id+"]");
     }
 
     public int getPC(){

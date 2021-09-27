@@ -3,7 +3,6 @@ import Hardware.CPU;
 import Hardware.Memory;
 import Hardware.Memory.Word;
 import Software.SistemaOperacional.SOs;
-import Software.SistemaOperacional.Drivers.KeyboardDriver;
 
 public class VirtualMachine {
 
@@ -31,8 +30,9 @@ public class VirtualMachine {
 		vm.cpu.debug = false;
 
 		vm.sos.loadProgram(getProgram(4));//Carregando o programa em memória
-		vm.sos.loadProgram(getProgram(4));//Carregando o programa em memória
-		//vm.sos.loadProgram(getProgram(4));//Carregando o programa em memória
+		vm.sos.loadProgram(getProgram(7));//Carregando o programa em memória
+		vm.sos.loadProgram(getProgram(6));//Carregando o programa em memória
+		
 		
 		vm.sos.loadNextProcess();
 		vm.cpu.run();

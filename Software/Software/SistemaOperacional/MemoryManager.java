@@ -81,7 +81,7 @@ public class MemoryManager{
             
             //O numero de frames é decrementado sempre que uma página pode ser alocada, então se for maior que 0 não foi possível alocar o programa todo na memória.
             if(nrFrames > 0){ 
-                dislocate(allocatesReturn.tablePages);
+                deallocate(allocatesReturn.tablePages);
                 allocatesReturn.canAlocate = false;
             }else{
                 allocatesReturn.canAlocate = true;
@@ -90,7 +90,7 @@ public class MemoryManager{
             return allocatesReturn;
         }
 
-        public void dislocate(int[] tablePages){
+        public void deallocate(int[] tablePages){
             for (int page : tablePages) {
                 freeFrames[page] = true;
             }
