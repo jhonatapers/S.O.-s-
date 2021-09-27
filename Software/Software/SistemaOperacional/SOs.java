@@ -34,10 +34,12 @@ public class SOs {
                     System.out.println(itr);
 
                     if(processQueue.peek() != null){
-                        runProcess(processQueue.poll());
+                        setProcess(processQueue.poll());
+                    }else{
+                        cpu.itr =Interrupt.ProgramEnd;
+                        break;
                     }
-                    
-                    cpu.itr =Interrupt.ProgramEnd;
+                                                            
                     break;
                 case Trap:
                     if(cpu.validAdress(cpu.translateAddress(cpu.getRegistrator(9)))){
@@ -65,7 +67,7 @@ public class SOs {
                     process = processQueue.poll();
                     if(process != null){
                         //cpu.itr = Interrupt.NoInterrupt;
-                        runProcess(process);
+                        setProcess(process);
                     }
 
                     break;

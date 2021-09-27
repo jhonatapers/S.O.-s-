@@ -32,7 +32,7 @@ public class VirtualMachine {
 
 		vm.sos.loadProgram(getProgram(4));//Carregando o programa em memória
 		vm.sos.loadProgram(getProgram(4));//Carregando o programa em memória
-		//vm.sos.loadProgram(getProgram(8));//Carregando o programa em memória
+		vm.sos.loadProgram(getProgram(4));//Carregando o programa em memória
 		
 		vm.sos.runNextProcess();
 
