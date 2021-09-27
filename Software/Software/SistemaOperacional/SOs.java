@@ -62,7 +62,7 @@ public class SOs {
 
                     //Busca o primeiro da fila
                     if(processManager.peekNextProcess() != null){
-                        processManager.createProcess(processManager.pollNextProcess());
+                        processManager.dispatch(processManager.pollNextProcess());
                     }
 
                     break;
@@ -87,8 +87,8 @@ public class SOs {
         interruptHandling = new InterruptHandling();
         memoryManager = new MemoryManager(_memory, _pageLength);
         _cpu.setInterruptHandling(interruptHandling);
+        processManager = new ProcessManager(_cpu);
         cpu = _cpu;
-        processManager = new ProcessManager(cpu);
         loadDrivers();
     }
     
