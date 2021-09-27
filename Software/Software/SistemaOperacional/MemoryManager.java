@@ -32,12 +32,12 @@ public class MemoryManager{
                     freeFrames[i] = false;
                 }
 
-                if(i == 4)
+                if(i == 2)
                 {
                     freeFrames[i] = false;
                 }
                 
-                if(i == 2)
+                if(i == 3)
                 {
                     freeFrames[i] = false;
                 }

@@ -1,6 +1,6 @@
 package Hardware;
 import Hardware.Memory.Word;
-import Software.SistemaOperacional.SOs.ProcessControlBlock;
+import Software.SistemaOperacional.ProcessControlBlock;
 import Software.SistemaOperacional.SOs.InterruptHandling;
 
 public class CPU {
@@ -57,7 +57,7 @@ public class CPU {
     }
     */
 
-    public void setProcess(ProcessControlBlock process) {
+    public void setProcess(Software.SistemaOperacional.ProcessControlBlock process) {
         this.itr = process.interrupt;
         this.process = process;
         this.reg = process.registrators;
@@ -302,7 +302,10 @@ public class CPU {
 
             clock++;
             if(clock >= MAX_CLOCK){
-                process.interrupt = itr;
+                
+                process.pc = this.pc;
+                process.registrators = this.reg;
+                process.interrupt = this.itr;
                 itr = Interrupt.ClockInterrupt;
                 clock = 0;
             }

@@ -33,8 +33,8 @@ public class SOs {
                 case ProgramEnd:
                     System.out.println(itr);
 
-                    if(processQueue.peek() != null){
-                        setProcess(processQueue.poll());
+                    if(processManager.peekNextProcess() != null){
+                        processManager.dispatch(processManager.pollNextProcess());
                     }else{
                         cpu.itr =Interrupt.ProgramEnd;
                         break;
@@ -58,16 +58,11 @@ public class SOs {
                 case ClockInterrupt:
                     
                     //Adiciona no final da fila
-                    ProcessControlBlock process = cpu.process;
-                    process.pc = cpu.getPC();
-                    process.registrators = cpu.getRegistrators();
-                    processQueue.add(process);
+                    processManager.createProcess(cpu.process);
 
                     //Busca o primeiro da fila
-                    process = processQueue.poll();
-                    if(process != null){
-                        //cpu.itr = Interrupt.NoInterrupt;
-                        setProcess(process);
+                    if(processManager.peekNextProcess() != null){
+                        processManager.createProcess(processManager.pollNextProcess());
                     }
 
                     break;
@@ -80,36 +75,20 @@ public class SOs {
         }        
     }
 
-    public class ProcessControlBlock{
-
-        public Interrupt interrupt;
-        public int[] tablePage; //Frames onde o programa foi alocado.
-        public int pc;
-        public int[] registrators;        
-
-        public ProcessControlBlock(int[] _tablePage){
-            this.interrupt = Interrupt.NoInterrupt;
-            tablePage = _tablePage;
-            pc = 0;
-            registrators = new int[10];
-        }
-
-    }
-
     public InterruptHandling interruptHandling;
     private CPU cpu;
     private MemoryManager memoryManager;
     //private Memory memory;
     private KeyboardDriver keyboardDriver;
     private ConsoleOutputDriver consoleOutputDriver;
-    private Queue<ProcessControlBlock> processQueue;
+    private ProcessManager processManager;
 
     public SOs(CPU _cpu, Memory _memory, int _pageLength){      
-        processQueue = new LinkedList<ProcessControlBlock>();
         interruptHandling = new InterruptHandling();
         memoryManager = new MemoryManager(_memory, _pageLength);
         _cpu.setInterruptHandling(interruptHandling);
         cpu = _cpu;
+        processManager = new ProcessManager(cpu);
         loadDrivers();
     }
     
@@ -121,32 +100,13 @@ public class SOs {
 
         if(allocatesReturn.canAlocate){
             memoryManager.carga(program,allocatesReturn.tablePages); //carrega porgrama nos respectivos frames 
-            processQueue.add(new ProcessControlBlock(allocatesReturn.tablePages)); //Adiciona processo na fila, informando quais os frames alocados na memoria.
+
+            processManager.createProcess(new ProcessControlBlock(allocatesReturn.tablePages));
+
             return true;
         }
 
         return false;
-    }
-
-    //(RETIRAR DPS)
-    public void runProgram(int pc, int limiteInferior, int limiteSuperior){
-        cpu.setProcess(processQueue.peek());
-        //cpu.setContext(pc, limiteInferior, limiteSuperior);
-        cpu.run();
-    }
-
-    public void runNextProcess(){
-        cpu.setProcess(processQueue.poll());//Pega o primeiro da fila e manda para o processador.
-        cpu.run(); //Executa o processo atual do processador.
-    }
-
-    public void setProcess(ProcessControlBlock process){
-        cpu.setProcess(process);
-    }
-
-    public void runProcess(ProcessControlBlock process){
-        cpu.setProcess(process);
-        cpu.run();
     }
 
     private void loadDrivers(){
@@ -165,6 +125,10 @@ public class SOs {
     public void output(){
         consoleOutputDriver.systemOutInt(memoryManager.memory.address[cpu.translateAddress(cpu.getRegistrator(9))].p);
         cpu.itr = Interrupt.NoInterrupt; 
+    }
+
+    public void loadNextProcess(){
+        processManager.dispatch(processManager.pollNextProcess());
     }
 
 }

@@ -32,10 +32,10 @@ public class VirtualMachine {
 
 		vm.sos.loadProgram(getProgram(4));//Carregando o programa em memória
 		vm.sos.loadProgram(getProgram(4));//Carregando o programa em memória
-		vm.sos.loadProgram(getProgram(4));//Carregando o programa em memória
+		//vm.sos.loadProgram(getProgram(4));//Carregando o programa em memória
 		
-		vm.sos.runNextProcess();
-
+		vm.sos.loadNextProcess();
+		vm.cpu.run();
 		/*
 		KeyboardDriver kDriver = new KeyboardDriver();
 		
