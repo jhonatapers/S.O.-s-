@@ -30,8 +30,6 @@ public class CPU {
     public Aux aux = new Aux();
 
     private int pc;
-    //private int limiteSuperior;
-    //private int limiteInferior;
     private int pageSize;
     private Word ir;
     private int[] reg;
@@ -41,7 +39,7 @@ public class CPU {
     public Boolean debug = false;
     public ProcessControlBlock process;
 
-    private static int MAX_CLOCK = 6;
+    private static int MAX_CLOCK = 5000;
 
     public CPU(Memory memory, int pageSize){
         m = memory;
@@ -49,20 +47,12 @@ public class CPU {
         this.pageSize = pageSize;
     }
 
-    /* remover
-    public void setContext(int _pc, int _limiteInferior, int _limiteSuperior) {
-        pc = _pc;                
-        limiteSuperior =_limiteSuperior;
-        limiteInferior = _limiteInferior;
-    }
-    */
-
     public void setProcess(ProcessControlBlock process) {
-        this.itr = process.interrupt;
         this.process = process;
+        this.itr = process.interrupt;        
         this.reg = process.registrators;
         this.pc = process.pc;
-        System.out.println("\nCPU executando: PROCESS ID ["+process.id+"]");
+        //System.out.println("\nCPU executando: PROCESS ID ["+process.id+"]");
     }
 
     public int getPC(){
@@ -290,10 +280,12 @@ public class CPU {
             clock++;
             if(clock == MAX_CLOCK){                
                 process.pc = this.pc;
-                //process.registrators = this.reg;
+                process.registrators = this.reg;
                 process.interrupt = this.itr;
                 itr = Interrupt.ClockInterrupt;
                 clock = 0;
+
+                ih.handle(itr);
             }
             
             if(itr != Interrupt.NoInterrupt){

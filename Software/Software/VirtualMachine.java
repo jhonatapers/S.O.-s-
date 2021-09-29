@@ -30,10 +30,12 @@ public class VirtualMachine {
 		vm.cpu.debug = false;
 
 		vm.sos.loadProgram(getProgram(4));//Carregando o programa em memória
-		vm.sos.loadProgram(getProgram(7));//Carregando o programa em memória
-		vm.sos.loadProgram(getProgram(6));//Carregando o programa em memória
-		
-		
+		vm.sos.loadProgram(getProgram(4));//Carregando o programa em memória
+		vm.sos.loadProgram(getProgram(4));//Carregando o programa em memória
+		//vm.sos.loadProgram(getProgram(4));//Carregando o programa em memória
+		//vm.sos.loadProgram(getProgram(4));//Carregando o programa em memória
+		//vm.sos.loadProgram(getProgram(4));//Carregando o programa em memória
+
 		vm.sos.loadNextProcess();
 		vm.cpu.run();
 		/*

@@ -32,12 +32,17 @@ public class MemoryManager{
                     freeFrames[i] = false;
                 }
 
-                if(i == 2)
+                if(i == 5)
                 {
                     freeFrames[i] = false;
                 }
                 
-                if(i == 3)
+                if(i == 7)
+                {
+                    freeFrames[i] = false;
+                }
+
+                if(i == 9)
                 {
                     freeFrames[i] = false;
                 }
@@ -119,17 +124,6 @@ public class MemoryManager{
                     }
                 }
 
-                /*
-                for (int j = i * frameLength ; j < ((i+1) * frameLength) - 1 ; j++) {
-                    countWords = 0;
-                    while (countWords < frameLength) {
-                        if(countWords <= program.length){
-                            memory.address[j] = program[countWords];
-                            countWords++;
-                        } else break;
-                    }
-                }
-                */
             }
             
         }

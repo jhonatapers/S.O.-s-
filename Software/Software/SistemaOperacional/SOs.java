@@ -49,7 +49,7 @@ public class SOs {
                                 input();
                                 break;
                             case 2:
-                                System.out.println("\nSAIDA Process ID [" + cpu.process.id+ "]");
+                                //System.out.println("\nSAIDA Process ID [" + cpu.process.id+ "]");
                                 output();
                                 break;
                         }
