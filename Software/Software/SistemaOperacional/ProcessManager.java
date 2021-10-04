@@ -7,6 +7,8 @@ import Hardware.CPU;
 
 public class ProcessManager {
 
+    
+    public ProcessControlBlock runningProcess; //por aqui
     private Queue<ProcessControlBlock> processQueue;
     private MemoryManager memoryManager;
     private CPU cpu;

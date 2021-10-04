@@ -347,5 +347,58 @@ public class Softwares {
         new Word(Opcode.DATA, -1,-1,-1),       //23 Controle de loop (i)
         new Word(Opcode.DATA, -1,-1,-1)        //24 Controle de loop (j)
     };  
+
+    public Word[] p4BubbleSort = new Word[] {
+        new Word(Opcode.LDI, 0, -1, 12),  //carregando valor na memoria
+        new Word(Opcode.STD, 0, -1, 40),
+
+        new Word(Opcode.LDI, 0, -1, 20),
+        new Word(Opcode.STD, 0, -1, 41),
+
+        new Word(Opcode.LDI, 0, -1, 12),
+        new Word(Opcode.STD, 0, -1, 42),
+
+        new Word(Opcode.LDI, 0, -1, 1),
+        new Word(Opcode.STD, 0, -1, 43),
+
+        new Word(Opcode.LDI, 0, -1, 29),
+        new Word(Opcode.STD, 0, -1, 44),
+
+        new Word(Opcode.LDI, 0, -1, -12),
+        new Word(Opcode.STD, 0, -1, 45),
+
+        new Word(Opcode.LDI, 0, -1, 0),
+        new Word(Opcode.STD, 0, -1, 46),// valores carregados
+
+        new Word(Opcode.LDI, 3, -1, 6), 
+        new Word(Opcode.LDI, 4, -1, 6), 
+        new Word(Opcode.LDI, 5, -1, 20), 
+        new Word(Opcode.LDI, 6, -1, 33), 
+        new Word(Opcode.LDI, 7, -1, 38),
+        new Word(Opcode.LDI, 0, -1, 40), 
+
+        new Word(Opcode.JMPIE, 6, 3, -1), //inicio loop
+
+        new Word(Opcode.SUBI, 3, -1, 1),
+        new Word(Opcode.LDX, 1, 0, -1),
+        new Word(Opcode.ADDI, 0, -1, 1), 
+        new Word(Opcode.LDX, 2, 0, -1), 
+        new Word(Opcode.SUB, 2, 1, -1), 
+        new Word(Opcode.JMPIG, 5, 2, -1),
+
+        new Word(Opcode.LDX, 2, 0, -1),
+        new Word(Opcode.STX, 0, 1, -1),
+        new Word(Opcode.SUBI, 0, -1, 1),
+        new Word(Opcode.STX, 0, 2, -1),
+        new Word(Opcode.ADDI, 0, -1, 1),
+        new Word(Opcode.JMPI, 5, 0 , -1),
+
+        new Word(Opcode.JMPIE, 7, 4, -1),
+        new Word(Opcode.SUBI, 4, -1, 1),
+        new Word(Opcode.LDI, 0, -1, 40),
+        new Word(Opcode.LDI, 3, -1, 6),
+        new Word(Opcode.JMPIG, 5, 0, -1),//fim do loop
+        new Word(Opcode.STOP, -1, -1, -1)
+    };
 }
 

@@ -31,7 +31,7 @@ public class VirtualMachine {
 
 		vm.sos.loadProgram(getProgram(4));//Carregando o programa em memória
 		vm.sos.loadProgram(getProgram(4));//Carregando o programa em memória
-		vm.sos.loadProgram(getProgram(4));//Carregando o programa em memória
+		//vm.sos.loadProgram(getProgram(4));//Carregando o programa em memória
 		//vm.sos.loadProgram(getProgram(4));//Carregando o programa em memória
 		//vm.sos.loadProgram(getProgram(4));//Carregando o programa em memória
 		//vm.sos.loadProgram(getProgram(4));//Carregando o programa em memória
@@ -106,6 +106,8 @@ public class VirtualMachine {
 				return Softwares.E5;
 			case 10:
 				return Softwares.E6;
+			case 11:
+				return Softwares.fibonacci10;
 			case 20: //debug
 				return null;
 			case 0: 

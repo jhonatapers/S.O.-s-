@@ -1,8 +1,5 @@
 package Software.SistemaOperacional;
 
-import java.util.LinkedList;
-import java.util.Queue;
-
 import Hardware.CPU;
 import Hardware.Memory;
 import Hardware.CPU.Interrupt;
@@ -60,7 +57,7 @@ public class SOs {
                 case ClockInterrupt:
                     
                     //Adiciona processo atual no final da fila
-                    processManager.createProcess(cpu.process);
+                    processManager.createProcess(cpu.process.clone());
 
                     //Busca o primeiro da fila
                     if(processManager.peekNextProcess() != null){

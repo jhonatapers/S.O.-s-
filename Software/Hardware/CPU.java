@@ -38,8 +38,9 @@ public class CPU {
     public Memory m;
     public Boolean debug = false;
     public ProcessControlBlock process;
+    private int[] tablePage;
 
-    private static int MAX_CLOCK = 5000;
+    private static int MAX_CLOCK = 5;
 
     public CPU(Memory memory, int pageSize){
         m = memory;
@@ -48,10 +49,11 @@ public class CPU {
     }
 
     public void setProcess(ProcessControlBlock process) {
-        this.process = process;
+        this.process = process.clone();
         this.itr = process.interrupt;        
-        this.reg = process.registrators;
+        this.reg = process.registrators.clone();
         this.pc = process.pc;
+        this.tablePage = process.tablePage.clone();
         //System.out.println("\nCPU executando: PROCESS ID ["+process.id+"]");
     }
 
@@ -64,7 +66,7 @@ public class CPU {
     }
 
     public int[] getRegistrators(){
-        return reg;
+        return reg.clone();
     }
 
     public void setInterruptHandling(InterruptHandling _ih){
@@ -278,17 +280,23 @@ public class CPU {
             }
 
             clock++;
-            if(clock == MAX_CLOCK){                
+            if(clock == MAX_CLOCK){  
+                                
+                //Criar processo novo (nova refenrecia de memoria)
                 process.pc = this.pc;
-                process.registrators = this.reg;
+                process.registrators = this.reg.clone();
                 process.interrupt = this.itr;
                 itr = Interrupt.ClockInterrupt;
                 clock = 0;
 
+                //System.out.println("PROCESS ID ["+process.id+"]" +" PC ["+process.pc+"]" +" PC ["+process.interrupt+"]" );
                 ih.handle(itr);
+                
             }
             
             if(itr != Interrupt.NoInterrupt){
+                //System.out.println("PROCESS ID ["+process.id+"]" +" PC ["+process.pc+"]" +" PC ["+process.interrupt+"]" );
+                System.out.println("PROCESS ID ["+process.id+"]" +" PC ["+process.pc+"]" +" PC ["+process.interrupt+"]" );
                 ih.handle(itr);
 
                 if(itr == Interrupt.ProgramEnd){
@@ -303,7 +311,7 @@ public class CPU {
     public int translateAddress(int pc){
         int page = pc / pageSize; 
         int offset = pc % pageSize;
-        int frame  = process.tablePage[page] * pageSize; //Converte a pagina do pc atual na posição real da memoria.
+        int frame  = tablePage[page] * pageSize; //Converte a pagina do pc atual na posição real da memoria.
 
         int position = frame + offset; //Posição exata no frame da memoria.
 
