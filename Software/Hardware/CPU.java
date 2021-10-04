@@ -281,22 +281,20 @@ public class CPU {
 
             clock++;
             if(clock == MAX_CLOCK){  
-                                
-                //Criar processo novo (nova refenrecia de memoria)
-                process.pc = this.pc;
-                process.registrators = this.reg.clone();
-                process.interrupt = this.itr;
+
+                process = new  ProcessControlBlock(process.id, this.itr, process.tablePage, this.pc, this.reg.clone());
                 itr = Interrupt.ClockInterrupt;
                 clock = 0;
 
-                //System.out.println("PROCESS ID ["+process.id+"]" +" PC ["+process.pc+"]" +" PC ["+process.interrupt+"]" );
+                System.out.println("PROCESS ID ["+process.id+"]" +" PC ["+this.pc+"]" +" PC ["+this.itr+"]" );
                 ih.handle(itr);
                 
             }
             
             if(itr != Interrupt.NoInterrupt){
+                //process = new  ProcessControlBlock(process.id, this.itr, process.tablePage, this.pc, this.reg.clone());
                 //System.out.println("PROCESS ID ["+process.id+"]" +" PC ["+process.pc+"]" +" PC ["+process.interrupt+"]" );
-                System.out.println("PROCESS ID ["+process.id+"]" +" PC ["+process.pc+"]" +" PC ["+process.interrupt+"]" );
+                System.out.println("PROCESS ID ["+process.id+"]" +" PC ["+this.pc+"]" +" INTERRUPT ["+this.itr+"]" );
                 ih.handle(itr);
 
                 if(itr == Interrupt.ProgramEnd){
