@@ -27,6 +27,7 @@ public class ProcessControlBlock {
         this.registrators = registrators;
      }
 
+    //Retorna estado atual do PCB em nova instancia.
     public ProcessControlBlock clone(){
         ProcessControlBlock process = new ProcessControlBlock(this.id, this.interrupt, this.tablePage.clone(), this.pc, this.registrators.clone());
         return process;

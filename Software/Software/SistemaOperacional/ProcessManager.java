@@ -18,8 +18,9 @@ public class ProcessManager {
         this.memoryManager = memoryManager;
     }
 
+    //Adiciona processo na fila de execução.
     public void createProcess(ProcessControlBlock processControlBlock){
-        processQueue.add(processControlBlock); //Adiciona processo na fila, informando quais os frames alocados na memoria.
+        processQueue.add(processControlBlock); 
     }
     
     //Coloca um processo para executar no CPU.

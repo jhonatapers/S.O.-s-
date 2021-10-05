@@ -53,6 +53,7 @@ public class MemoryManager{
             int[] tablePages; //Frames que o programa será armazenado.
         }
 
+        //Verifica se é possível alocar um programa com "n" instruções na memória atual.
         public AllocatesReturn allocates(int nWords){
             AllocatesReturn allocatesReturn = new AllocatesReturn();
             int nrFrames; //Numero de frames para alocar o programa.
@@ -92,12 +93,14 @@ public class MemoryManager{
             return allocatesReturn;
         }
 
+        //Seta páginas para livres.
         public void deallocate(int[] tablePages){
             for (int page : tablePages) {
                 freeFrames[page] = true;
             }
         }
 
+        //Carrega um programa na memórias nas páginas informadas.
         public void carga(Word[] program, int[] tablePages) {
             int countWords = 0; //Numero de Words já alocadas em memoria.
 

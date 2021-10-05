@@ -93,14 +93,16 @@ public class SOs {
         loadDrivers();
     }
     
+    //Verificar e carregar programa na memória
     public boolean loadProgram(Word[] program){
         
         //Verifica se é possível alocar o programa em memória ou não. Se possível, retorna também quais páginas foram alocadas.
         AllocatesReturn allocatesReturn = memoryManager.allocates(program.length);
 
         if(allocatesReturn.canAlocate){
-            memoryManager.carga(program,allocatesReturn.tablePages); //carrega porgrama nos respectivos frames 
+            memoryManager.carga(program,allocatesReturn.tablePages); //carrega programa nos seus respectivos frames 
 
+            //Cria PCB e adiciona o processo na fila de execução.
             processManager.createProcess(new ProcessControlBlock(allocatesReturn.tablePages));
 
             return true;

@@ -306,6 +306,7 @@ public class CPU {
         }
     }
 
+    //Traduz um dado PC para a posição exata da memória onde a Word se encontra.
     public int translateAddress(int pc){
         int page = pc / pageSize; 
         int offset = pc % pageSize;
