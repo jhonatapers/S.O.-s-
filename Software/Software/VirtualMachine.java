@@ -1,7 +1,7 @@
 package Software;
 import Hardware.CPU;
 import Hardware.Memory;
-import Hardware.Memory.Word;
+//import Hardware.Memory.Word;
 import Software.SistemaOperacional.SOs;
 
 public class VirtualMachine {
@@ -30,9 +30,11 @@ public class VirtualMachine {
 		vm.cpu.debug = false;
 
 		//Carregando programas em memória.
-		vm.sos.loadProgram(Softwares.contadorInOut);// [10] //Carregando o programa em memória CONTADOR PROCESS ID [0]
-		vm.sos.loadProgram(Softwares.MULT);// [6*3 => 18] //Carregando o programa em memória MULT PROCESS ID [1]
-		vm.sos.loadProgram(Softwares.ADD);// [20+3 => 23] //Carregando o programa em memória ADD PROCESS ID [2]
+		vm.sos.loadProgram(new Softwares().contadorInOut);// [10] //Carregando o programa em memória CONTADOR PROCESS ID [0]	
+		vm.sos.loadProgram(new Softwares().contadorInOut);// [10] //Carregando o programa em memória CONTADOR PROCESS ID [0]
+		vm.sos.loadProgram(new Softwares().contadorInOut);// [10] //Carregando o programa em memória CONTADOR PROCESS ID [0]
+		vm.sos.loadProgram(new Softwares().contadorInOut);// [10] //Carregando o programa em memória CONTADOR PROCESS ID [0]
+		//vm.sos.loadProgram(Softwares.ADD);// [20+3 => 23] //Carregando o programa em memória ADD PROCESS ID [2]
 		//vm.sos.loadProgram(Softwares.SUB);// [30-32 => -2] //Carregando o programa em memória SUB PROCESS ID [3]
 		//vm.sos.loadProgram(Softwares.PB);// [4 => 12] //Carregando o programa em memória de FATORIAL
 		//vm.sos.loadProgram(Softwares.E1);// [12 => 12] [-1 => STOP (Interrupt ProgramEnd)] //Carregando o programa E1
@@ -44,6 +46,7 @@ public class VirtualMachine {
 		vm.cpu.run();
 	}
 
+	/*
 	private static Word[] getProgram(int opt) {
 		switch (opt) {
 			case 1:
@@ -78,4 +81,5 @@ public class VirtualMachine {
 				return null;
 		}
 	}
+	*/
 }

@@ -5,7 +5,7 @@ import Hardware.Memory.Word;
 
 public class Softwares {
 
-    public static Word[] progMinimo = new Word[] {
+    public Word[] progMinimo = new Word[] {
         new Word(Opcode.LDI, 0, -1, 999),
         new Word(Opcode.STD, 0, -1, 10),
         new Word(Opcode.STD, 0, -1, 11),
@@ -15,7 +15,7 @@ public class Softwares {
         new Word(Opcode.STOP, -1, -1, -1) 
     };
 
-    public static Word[] fibonacci10 = new Word[] { // mesmo que prog exemplo, so que usa r0 no lugar de r8
+    public Word[] fibonacci10 = new Word[] { // mesmo que prog exemplo, so que usa r0 no lugar de r8
         new Word(Opcode.LDI, 1, -1, 0), 
         new Word(Opcode.STD, 1, -1, 20),    // 20 posicao de memoria onde inicia a serie de fibonacci gerada  
         new Word(Opcode.LDI, 2, -1, 1),
@@ -49,7 +49,7 @@ public class Softwares {
     };  
     
     //PA
-    public static Word[] PA = new Word[] {
+    public Word[] PA = new Word[] {
 
         new Word(Opcode.LDI, 8, -1, 1),       //0  Input
         new Word(Opcode.LDI, 9, -1, 35),      //1  A <- Input
@@ -97,7 +97,7 @@ public class Softwares {
     /**
      * Pede um Int16 de entrada, se maior ou igual a zero calcula e imprime seu fatorial
     */
-    public static Word[] PB = new Word[] { 
+    public Word[] PB = new Word[] { 
         new Word(Opcode.LDI, 8, -1, 1),      //0 Input
         new Word(Opcode.LDI, 9, -1, 20),     //1 Input
         new Word(Opcode.TRAP, -1, -1, -1),   //2 Input
@@ -125,7 +125,7 @@ public class Softwares {
     /**
      * Recebe um Int16 e faz um for printando até ele +1
      */
-    public  static  Word [] contadorInOut =  new  Word [] {
+    public  Word [] contadorInOut =  new  Word [] {
         new Word(Opcode.LDI, 0, -1, 0),       //0 r0 <- 0      
         new Word(Opcode.STD, 0, -1, 21),      //1 A <- r0
         new Word(Opcode.LDI, 8, -1, 1),       //2 Input
@@ -159,6 +159,7 @@ public class Softwares {
         new Word(Opcode.DATA, -1, -1, -1)     //23  Loop             
     };
 
+
     /** 
      * Recebe um int16 
      * Se INPUT < 0 
@@ -166,7 +167,7 @@ public class Softwares {
      * else 
      *  OUTPUT Entrada
      */
-    public static Word[] E1 = new Word[]{
+    public Word[] E1 = new Word[]{
         new Word(Opcode.LDI, 8, -1, 1),       //0  Input
         new Word(Opcode.LDI, 9, -1, 11),      //1  A <- Input
         new Word(Opcode.TRAP, -1, -1, -1),    //2  Input
@@ -186,7 +187,7 @@ public class Softwares {
     /**
      * Pede dois Int16 de entrada e imprime a soma
      */
-    public static Word[] ADD = new Word[]{
+    public Word[] ADD = new Word[]{
         new Word(Opcode.LDI, 8, -1, 1),      //0 Input
         new Word(Opcode.LDI, 9, -1, 14),     //1 Input
         new Word(Opcode.TRAP, -1, -1, -1),   //2 Input
@@ -212,7 +213,7 @@ public class Softwares {
     /**
      * Pede dois Int16 de entrada e imprime a multiplicação
     */
-    public static Word[] MULT = new Word[]{
+    public Word[] MULT = new Word[]{
         new Word(Opcode.LDI, 8, -1, 1),      //0 Input
         new Word(Opcode.LDI, 9, -1, 14),     //1  A <- Input        
         new Word(Opcode.TRAP, -1, -1, -1),   //2 Input
@@ -237,7 +238,7 @@ public class Softwares {
     /**
      * Pede dois Int16 de entrada e imprime a subtração
     */
-    public static Word[] SUB = new Word[]{
+    public Word[] SUB = new Word[]{
         new Word(Opcode.LDI, 8, -1, 1),      //0 Input
         new Word(Opcode.LDI, 9, -1, 14),     //1 A <- Input
         new Word(Opcode.TRAP, -1, -1, -1),   //2 Input
@@ -262,7 +263,7 @@ public class Softwares {
         new Word(Opcode.DATA, -1, -1, -1)    //16 Result
     };
 
-    public static Word[] E5 = new Word[]{
+    public Word[] E5 = new Word[]{
         new Word(Opcode.LDI, 8, -1,  1),     //0 Input
         new Word(Opcode.LDI, 9, -1, 11),     //2 A <- Inpit
         new Word(Opcode.TRAP,-1, -1,-1),     //1 Input
@@ -286,7 +287,7 @@ public class Softwares {
      * else 
      *  OUTPUT Entrada
      */
-    public static Word[] E6 = new Word[]{
+    public Word[] E6 = new Word[]{
         new Word(Opcode.LDI, 8, -1,  1),     //0 Input
         new Word(Opcode.LDI, 9, -1, 11),     //1 
         new Word(Opcode.TRAP,-1, -1,-1),     //2 Input
@@ -307,7 +308,7 @@ public class Softwares {
      * Bubble Sort Ascendente para 5 numeros inteiros.
      * Incompleto, até o momento está apenas lendo 5 ints e botando em memória.
      */
-    public static Word[] BubbleSortAsc = new Word[]{
+    public Word[] BubbleSortAsc = new Word[]{
         new Word(Opcode.LDI, 0, -1, 0),        //0    
         new Word(Opcode.LDI, 0, -1, 0),        //1 
         

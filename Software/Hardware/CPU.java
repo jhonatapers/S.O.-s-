@@ -287,14 +287,14 @@ public class CPU {
                 itr = Interrupt.ClockInterrupt;
                 clock = 0;
 
-                System.out.println("PROCESS ID ["+process.id+"]" +" PC ["+this.pc+"]" +" PC ["+this.itr+"]" );
+                //System.out.println("PROCESS ID ["+process.id+"]" +" PC ["+this.pc+"]" +" PC ["+this.itr+"]" );
                 ih.handle(itr);
             }
             
             if(itr != Interrupt.NoInterrupt){
                 //process = new  ProcessControlBlock(process.id, this.itr, process.tablePage, this.pc, this.reg.clone());
                 //System.out.println("PROCESS ID ["+process.id+"]" +" PC ["+process.pc+"]" +" PC ["+process.interrupt+"]" );
-                System.out.println("PROCESS ID ["+process.id+"]" +" PC ["+this.pc+"]" +" INTERRUPT ["+this.itr+"]" );
+                //System.out.println("PROCESS ID ["+process.id+"]" +" PC ["+this.pc+"]" +" INTERRUPT ["+this.itr+"]" );
                 ih.handle(itr);
 
                 if(itr == Interrupt.ProgramEnd){
