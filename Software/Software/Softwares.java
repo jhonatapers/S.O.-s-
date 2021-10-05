@@ -125,7 +125,7 @@ public class Softwares {
     /**
      * Recebe um Int16 e faz um for printando até ele +1
      */
-    public  Word [] contadorInOut =  new  Word [] {
+    public Word [] contadorInOut =  new  Word [] {
         new Word(Opcode.LDI, 0, -1, 0),       //0 r0 <- 0      
         new Word(Opcode.STD, 0, -1, 21),      //1 A <- r0
         new Word(Opcode.LDI, 8, -1, 1),       //2 Input

@@ -30,14 +30,11 @@ public class VirtualMachine {
 		vm.cpu.debug = false;
 
 		//Carregando programas em memória.
-		vm.sos.loadProgram(new Softwares().contadorInOut);// [10] //Carregando o programa em memória CONTADOR PROCESS ID [0]	
 		vm.sos.loadProgram(new Softwares().contadorInOut);// [10] //Carregando o programa em memória CONTADOR PROCESS ID [0]
-		vm.sos.loadProgram(new Softwares().contadorInOut);// [10] //Carregando o programa em memória CONTADOR PROCESS ID [0]
-		vm.sos.loadProgram(new Softwares().contadorInOut);// [10] //Carregando o programa em memória CONTADOR PROCESS ID [0]
-		//vm.sos.loadProgram(Softwares.ADD);// [20+3 => 23] //Carregando o programa em memória ADD PROCESS ID [2]
-		//vm.sos.loadProgram(Softwares.SUB);// [30-32 => -2] //Carregando o programa em memória SUB PROCESS ID [3]
-		//vm.sos.loadProgram(Softwares.PB);// [4 => 12] //Carregando o programa em memória de FATORIAL
-		//vm.sos.loadProgram(Softwares.E1);// [12 => 12] [-1 => STOP (Interrupt ProgramEnd)] //Carregando o programa E1
+		vm.sos.loadProgram(new Softwares().ADD);// [20+3 => 23] //Carregando o programa em memória ADD PROCESS ID [2]
+		vm.sos.loadProgram(new Softwares().SUB);// [30-32 => -2] //Carregando o programa em memória SUB PROCESS ID [3]
+		//vm.sos.loadProgram(new Softwares().PB);// [4 => 12] //Carregando o programa em memória de FATORIAL
+		//vm.sos.loadProgram(new Softwares().E1);// [12 => 12] [-1 => STOP (Interrupt ProgramEnd)] //Carregando o programa E1
 
 		//Colocando o primeiro programa da fila no contexto do processador.
 		vm.sos.loadNextProcess();
@@ -46,40 +43,5 @@ public class VirtualMachine {
 		vm.cpu.run();
 	}
 
-	/*
-	private static Word[] getProgram(int opt) {
-		switch (opt) {
-			case 1:
-				return Softwares.PA;
-			case 2:
-				return Softwares.PB;
-			case 3:
-				return Softwares.BubbleSortAsc;
-			case 4:
-				return Softwares.contadorInOut;
-			case 5:
-				return Softwares.E1;
-			case 6:
-				return Softwares.ADD;
-			case 7:
-				return Softwares.MULT;
-			case 8:
-				return Softwares.SUB;
-			case 9:
-				return Softwares.E5;
-			case 10:
-				return Softwares.E6;
-			case 11:
-				return Softwares.fibonacci10;
-			case 20: //debug
-				return null;
-			case 0: 
-				System.out.println("Encerrando programa!");
-				return null;
-			default:
-				System.out.println("Encerrando programa!");
-				return null;
-		}
-	}
-	*/
+
 }
