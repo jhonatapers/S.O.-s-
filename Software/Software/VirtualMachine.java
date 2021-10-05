@@ -29,10 +29,10 @@ public class VirtualMachine {
 		 */
 		vm.cpu.debug = false;
 
-		vm.sos.loadProgram(getProgram(4));// [5] //Carregando o programa em memória MULT PROCESS ID [0]
-		vm.sos.loadProgram(getProgram(7));// [4*3 => x] //Carregando o programa em memória CONTADOR PROCESS ID [1]
-		//vm.sos.loadProgram(getProgram(6));// [20+5 => x] //Carregando o programa em memória ADD PROCESS ID [2]
-		//vm.sos.loadProgram(getProgram(8));// [30-32 => x] //Carregando o programa em memória SUB PROCESS ID [3]
+		vm.sos.loadProgram(getProgram(4));// [5] //Carregando o programa em memória CONTADOR PROCESS ID [0]
+		vm.sos.loadProgram(getProgram(7));// [6*3 => 18] //Carregando o programa em memória MULT PROCESS ID [1]
+		//vm.sos.loadProgram(getProgram(6));// [20+3 => 23] //Carregando o programa em memória ADD PROCESS ID [2]
+		//vm.sos.loadProgram(getProgram(8));// [30-32 => -2] //Carregando o programa em memória SUB PROCESS ID [3]
 
 		vm.sos.loadNextProcess();
 		vm.cpu.run();

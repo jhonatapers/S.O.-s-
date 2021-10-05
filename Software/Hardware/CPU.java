@@ -40,7 +40,7 @@ public class CPU {
     public ProcessControlBlock process;
     private int[] tablePage;
 
-    private static int MAX_CLOCK = 5;
+    private static int MAX_CLOCK = 10;
 
     public CPU(Memory memory, int pageSize){
         m = memory;

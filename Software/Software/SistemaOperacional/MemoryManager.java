@@ -19,13 +19,10 @@ public class MemoryManager{
             frameLength = pageLength;
             nFrames = memory.address.length/pageLength;
 
-            freeFrames = new boolean[nFrames]; //1024/16 => 64 frames
+            freeFrames = new boolean[nFrames];
             for(int i = 0; i < freeFrames.length; i++){
 
-
                 freeFrames[i] = true;
-
-
                 //#region furos
                 if(i == 1)
                 {
@@ -47,7 +44,7 @@ public class MemoryManager{
                     freeFrames[i] = false;
                 }
                 //#endregion
-                
+
             }
         }
 
