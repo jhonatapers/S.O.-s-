@@ -29,57 +29,19 @@ public class VirtualMachine {
 		 */
 		vm.cpu.debug = false;
 
-		vm.sos.loadProgram(getProgram(4));// [5] //Carregando o programa em memória CONTADOR PROCESS ID [0]
-		vm.sos.loadProgram(getProgram(7));// [6*3 => 18] //Carregando o programa em memória MULT PROCESS ID [1]
-		//vm.sos.loadProgram(getProgram(6));// [20+3 => 23] //Carregando o programa em memória ADD PROCESS ID [2]
-		//vm.sos.loadProgram(getProgram(8));// [30-32 => -2] //Carregando o programa em memória SUB PROCESS ID [3]
+		//Carregando programas em memória.
+		vm.sos.loadProgram(Softwares.contadorInOut);// [10] //Carregando o programa em memória CONTADOR PROCESS ID [0]
+		vm.sos.loadProgram(Softwares.MULT);// [6*3 => 18] //Carregando o programa em memória MULT PROCESS ID [1]
+		vm.sos.loadProgram(Softwares.ADD);// [20+3 => 23] //Carregando o programa em memória ADD PROCESS ID [2]
+		//vm.sos.loadProgram(Softwares.SUB);// [30-32 => -2] //Carregando o programa em memória SUB PROCESS ID [3]
+		//vm.sos.loadProgram(Softwares.PB);// [4 => 12] //Carregando o programa em memória de FATORIAL
+		//vm.sos.loadProgram(Softwares.E1);// [12 => 12] [-1 => STOP (Interrupt ProgramEnd)] //Carregando o programa E1
 
+		//Colocando o primeiro programa da fila no contexto do processador.
 		vm.sos.loadNextProcess();
+
+		//Executa o programa atual da CPU e os demais em fila, até encerrar todos.
 		vm.cpu.run();
-		/*
-		KeyboardDriver kDriver = new KeyboardDriver();
-		
-		int opt = 100;
-		
-		while(opt != 0){
-			System.out.println("\nDigite o programa que deseja executar:");
-			System.out.println("\t\tDEBUG: "+((vm.cpu.debug) ? "Ativado" : "Desativado"));
-			System.out.println("\t1 - PA");
-			System.out.println("\t2 - PB");
-			System.out.println("\t3 - PC");
-			System.out.println("\t4 - Contador");
-			System.out.println("\t5 - E1");
-			System.out.println("\t6 - ADD");
-			System.out.println("\t7 - MULT");
-			System.out.println("\t8 - SUB");
-			System.out.println("\t9 - E5");
-			System.out.println("\t10 - E6");
-			System.out.println("\t0 - Encerrar execução");
-			
-			opt = kDriver.readKeyboardInput();
-			
-			System.out.println("----------------");
-			if(vm.cpu.debug) //Modo DEBUG ON -> Estado anterior a execução
-				vm.cpu.aux.dump(getProgram(opt), 0, getProgram(opt).length);
-			System.out.println("----------------");
-
-			vm.sos.loadProgram(getProgram(opt));//Carregando o programa em memória
-			//vm.sos.runProgram(0, 0, getProgram(opt).length-1); //Executando o programa
-			vm.sos.runNextProcess();
-
-			System.out.println("----------------");
-			if(vm.cpu.debug)//Modo DEBUG ON -> Estado posterior a execução
-				vm.cpu.aux.dump(getProgram(opt), 0, getProgram(opt).length);
-			System.out.println("----------------");
-
-			cpu = new CPU(new Memory(MEM_SIZE), PAGE_SIZE);	//Limpando a memória para execução de um novo programa.
-			vm = new VirtualMachine(cpu, cpu.m);
-		}
-		
-
-		System.out.println("\n----------------");
-		System.out.println("Fim da execução.");
-		*/
 	}
 
 	private static Word[] getProgram(int opt) {

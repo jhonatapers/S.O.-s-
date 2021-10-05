@@ -31,10 +31,11 @@ public class SOs {
                     System.out.println("\n\t\t###### "+ itr + " => PROCESS ID["+cpu.process.id+"] ######");
                     processManager.terminateProcess(cpu.process);
 
+                    //Caso ainda exista programas na fila, execute o primeiro da fila.
                     if(processManager.peekNextProcess() != null){
                         processManager.dispatch(processManager.pollNextProcess());
                     }else{
-                        cpu.itr =Interrupt.ProgramEnd;
+                        cpu.itr = Interrupt.ProgramEnd;
                         break;
                     }
                                                             
@@ -92,7 +93,6 @@ public class SOs {
         loadDrivers();
     }
     
-    //vai ser igual o newProcess no gerente de processo (nao mais utilizar como esta agr... utilizar no gerente de processo)
     public boolean loadProgram(Word[] program){
         
         //Verifica se é possível alocar o programa em memória ou não. Se possível, retorna também quais páginas foram alocadas.
@@ -127,6 +127,7 @@ public class SOs {
         cpu.itr = Interrupt.NoInterrupt; 
     }
 
+    //Recupera o primeiro processo da fila e coloca para executar na CPU.
     public void loadNextProcess(){
         processManager.dispatch(processManager.pollNextProcess());
     }

@@ -6,9 +6,8 @@ import java.util.Queue;
 import Hardware.CPU;
 
 public class ProcessManager {
-
     
-    public ProcessControlBlock runningProcess; //por aqui
+    public ProcessControlBlock runningProcess;
     private Queue<ProcessControlBlock> processQueue;
     private MemoryManager memoryManager;
     private CPU cpu;
@@ -23,14 +22,17 @@ public class ProcessManager {
         processQueue.add(processControlBlock); //Adiciona processo na fila, informando quais os frames alocados na memoria.
     }
     
+    //Coloca um processo para executar no CPU.
     public void dispatch(ProcessControlBlock process){
         cpu.setProcess(process);
     }
 
+    //Resgata o primeiro processo da fila, removendo.
     public ProcessControlBlock pollNextProcess(){
         return processQueue.poll();
     }
 
+    //Resgata o primeiro processo da fila, sem remover.
     public ProcessControlBlock peekNextProcess(){
         return processQueue.peek();
     }
@@ -38,6 +40,4 @@ public class ProcessManager {
     public void terminateProcess(ProcessControlBlock processControlBlock){
         memoryManager.deallocate(processControlBlock.tablePage);
     }
-
-
 }

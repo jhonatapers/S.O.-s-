@@ -66,7 +66,7 @@ public class MemoryManager{
                 nrFrames = (nWords / pageLength);
             }
 
-            //first fit => Verifica na lista dos frames quais estão livres e aptos a receber o programa.
+            //First Fit => Verifica na lista dos frames quais estão livres e aptos a receber o programa.
             //Array "aux" irá armazenar os frames de memória escolhidos para este programa.
             for(int i = 0; i < freeFrames.length; i++){
                 if(nrFrames > 0){

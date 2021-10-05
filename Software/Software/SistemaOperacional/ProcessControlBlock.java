@@ -28,7 +28,7 @@ public class ProcessControlBlock {
      }
 
     public ProcessControlBlock clone(){
-        ProcessControlBlock teste = new ProcessControlBlock(this.id, this.interrupt, this.tablePage.clone(), this.pc, this.registrators.clone());
-        return teste;
+        ProcessControlBlock process = new ProcessControlBlock(this.id, this.interrupt, this.tablePage.clone(), this.pc, this.registrators.clone());
+        return process;
     }
 }

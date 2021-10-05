@@ -40,7 +40,7 @@ public class CPU {
     public ProcessControlBlock process;
     private int[] tablePage;
 
-    private static int MAX_CLOCK = 10;
+    private static int MAX_CLOCK = 5;
 
     public CPU(Memory memory, int pageSize){
         m = memory;
@@ -281,14 +281,14 @@ public class CPU {
 
             clock++;
             if(clock == MAX_CLOCK){  
-
-                process = new  ProcessControlBlock(process.id, this.itr, process.tablePage, this.pc, this.reg.clone());
+                
+                //Salva o estado atual do processo (será utilizado no ClockInterrupt).
+                process = new ProcessControlBlock(process.id, this.itr, process.tablePage, this.pc, this.reg.clone());
                 itr = Interrupt.ClockInterrupt;
                 clock = 0;
 
                 System.out.println("PROCESS ID ["+process.id+"]" +" PC ["+this.pc+"]" +" PC ["+this.itr+"]" );
                 ih.handle(itr);
-                
             }
             
             if(itr != Interrupt.NoInterrupt){
