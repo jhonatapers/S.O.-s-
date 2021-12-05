@@ -1,9 +1,11 @@
 package Hardware;
+import javax.sound.midi.Track;
+
 import Hardware.Memory.Word;
 import Software.SistemaOperacional.ProcessControlBlock;
 import Software.SistemaOperacional.SOs.InterruptHandling;
 
-public class CPU {
+public class CPU extends Thread{
 
     // ------ INSTRUCOES CPU ------
     public static enum Opcode {
@@ -96,6 +98,7 @@ public class CPU {
         return false;
     }
 
+    @Override
     public void run() {
 
         int clock = 0;
