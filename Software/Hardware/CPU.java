@@ -23,7 +23,8 @@ public class CPU {
         Overflow, 
         ProgramEnd,
         Trap,
-        ClockInterrupt;
+        ClockInterrupt,
+        IO;
     }
     // ----------------------------
 
