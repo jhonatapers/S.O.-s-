@@ -2,6 +2,7 @@ package Software.SistemaOperacional;
 
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.concurrent.Semaphore;
 
 import Hardware.CPU;
 
@@ -12,6 +13,7 @@ public class ProcessManager extends Thread{
     private Queue<ProcessControlBlock> blockedQueue;
     private MemoryManager memoryManager;
     private CPU cpu;
+
 
     public ProcessManager(CPU cpu, MemoryManager memoryManager){
         this.cpu = cpu;
