@@ -23,9 +23,13 @@ public class Scheduler extends Thread {
             try { semaSch.acquire(); } 
             catch(InterruptedException ie) { }
 
-            processManager.dispatch(processManager.pollNextProcess()); 
+            //Busca o primeiro da fila
+            if(processManager.peekNextProcess() != null){
+                //Seta o primeiro da fila para executar.
+                processManager.dispatch(processManager.pollNextProcess());
+            }
 
-            semaCPU.notify();
+            semaCPU.release();
         }
     }
 

@@ -5,6 +5,7 @@ import javax.sound.midi.Track;
 
 import Hardware.Memory.Word;
 import Software.SistemaOperacional.ProcessControlBlock;
+import Software.SistemaOperacional.ProcessControlBlock.ProcessState;
 import Software.SistemaOperacional.SOs.InterruptHandling;
 
 public class CPU extends Thread{
@@ -55,6 +56,7 @@ public class CPU extends Thread{
     }
 
     public void setProcess(ProcessControlBlock process) {
+        process.procesState = ProcessState.Running;
         this.process = process.clone();
         this.itr = process.interrupt;        
         this.reg = process.registrators.clone();
@@ -291,6 +293,8 @@ public class CPU extends Thread{
     
                 }
     
+
+                /*
                 clock++;
                 if(clock == MAX_CLOCK){  
                     
@@ -300,16 +304,32 @@ public class CPU extends Thread{
                     clock = 0;
     
                     System.out.println("PROCESS ID ["+process.id+"]" +" PC ["+this.pc+"]" +" PC ["+this.itr+"]" );
+
+                    try { semaCPU.acquire(); } 
+                    catch(InterruptedException ie) { }
+
                     ih.handle(itr);
+
+                    break;
+                }
+                */
+
+                //Salva o estado atual do processo (será utilizado no ClockInterrupt).
+                process = new ProcessControlBlock(process.id, this.itr, process.tablePage, this.pc, this.reg.clone(), process.procesState);
+
+                clock++;
+                if(clock == MAX_CLOCK){                      
+                    itr = Interrupt.ClockInterrupt;
+                    clock = 0; 
                 }
                 
-                if(itr != Interrupt.NoInterrupt){                                
-                    System.out.println("PROCESS ID ["+process.id+"]" +" PC ["+this.pc+"]" +" INTERRUPT ["+this.itr+"]" );
+                if(itr != Interrupt.NoInterrupt){                                                    
+                    try { semaCPU.acquire(); } 
+                    catch(InterruptedException ie) { }
+
                     ih.handle(itr);
-    
-                    if(itr == Interrupt.ProgramEnd){
-                        break;
-                    }
+
+                    break;                    
                 }
     
                 

@@ -1,5 +1,7 @@
 package Software.SistemaOperacional;
 
+import java.util.concurrent.Semaphore;
+
 import Hardware.CPU;
 import Hardware.Memory;
 import Hardware.CPU.Interrupt;
@@ -9,7 +11,25 @@ import Software.SistemaOperacional.Drivers.*;
 import Software.SistemaOperacional.MemoryManager.AllocatesReturn;
 
 public class SOs {
-    
+
+    public InterruptHandling interruptHandling;
+    private CPU cpu;
+    private MemoryManager memoryManager;
+    //private Memory memory;
+    private KeyboardDriver keyboardDriver;
+    private ConsoleOutputDriver consoleOutputDriver;
+    private ProcessManager processManager;
+    private Semaphore semaSch;
+
+    public SOs(CPU _cpu, Memory _memory, int _pageLength){      
+        interruptHandling = new InterruptHandling();
+        memoryManager = new MemoryManager(_memory, _pageLength);
+        _cpu.setInterruptHandling(interruptHandling);
+        cpu = _cpu;
+        processManager = new ProcessManager(cpu,memoryManager);
+        loadDrivers();
+    }
+
     public class InterruptHandling{
         
         //Tratando interrupcoes
@@ -29,18 +49,18 @@ public class SOs {
                     break;
                 case ProgramEnd:
                     System.out.println("\n\t\t###### "+ itr + " => PROCESS ID["+cpu.process.id+"] ######");
-                    processManager.terminateProcess(cpu.process);
 
-                    //Caso ainda exista programas na fila, execute o primeiro da fila.
-                    if(processManager.peekNextProcess() != null){
-                        processManager.dispatch(processManager.pollNextProcess());
-                    }else{
-                        cpu.itr = Interrupt.ProgramEnd;
-                        break;
-                    }
-                                                            
+                    //Finaliza processo
+                    processManager.finishProcess(cpu.process);
+
+                    //Libera escalonador
+                    semaSch.release();
+
                     break;
                 case Trap:
+
+
+
                     if(cpu.validAdress(cpu.translateAddress(cpu.getRegistrator(9)))){
                         switch(cpu.getRegistrator(8)){
                             case 1: 
@@ -54,17 +74,17 @@ public class SOs {
                     }else{
                         cpu.itr = Interrupt.InvalidAdress;
                     }
+
+
+
                     break;
                 case ClockInterrupt:
                     
                     //Adiciona processo atual no final da fila
                     processManager.createProcess(cpu.process.clone());
 
-                    //Busca o primeiro da fila
-                    if(processManager.peekNextProcess() != null){
-                        //Seta o primeiro da fila para executar.
-                        processManager.dispatch(processManager.pollNextProcess());
-                    }
+                    //Libera escalonador
+                    semaSch.release();
 
                     break;
                 default:
@@ -75,24 +95,8 @@ public class SOs {
 
         }        
     }
-
-    public InterruptHandling interruptHandling;
-    private CPU cpu;
-    private MemoryManager memoryManager;
-    //private Memory memory;
-    private KeyboardDriver keyboardDriver;
-    private ConsoleOutputDriver consoleOutputDriver;
-    private ProcessManager processManager;
-
-    public SOs(CPU _cpu, Memory _memory, int _pageLength){      
-        interruptHandling = new InterruptHandling();
-        memoryManager = new MemoryManager(_memory, _pageLength);
-        _cpu.setInterruptHandling(interruptHandling);
-        cpu = _cpu;
-        processManager = new ProcessManager(cpu,memoryManager);
-        loadDrivers();
-    }
     
+    /*
     //Verificar e carregar programa na memória
     public boolean loadProgram(Word[] program){
         
@@ -110,6 +114,7 @@ public class SOs {
 
         return false;
     }
+    */
 
     private void loadDrivers(){
         keyboardDriver = new KeyboardDriver();
