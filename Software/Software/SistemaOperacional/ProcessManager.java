@@ -20,18 +20,15 @@ public class ProcessManager extends Thread{
     private Semaphore semaCPU;
 
 
-    public ProcessManager(CPU cpu, MemoryManager memoryManager){
+    public ProcessManager(CPU cpu, MemoryManager memoryManager, Semaphore semaSch, Semaphore semaCPU){
+        this.semaSch = semaSch;
+        this.semaCPU = semaCPU;
+        
         this.cpu = cpu;
         readyQueue = new LinkedList<ProcessControlBlock>();
+        blockedQueue = new LinkedList<ProcessControlBlock>();
         this.memoryManager = memoryManager;
     }
-
-    /*
-    //Adiciona processo na fila de execução.
-    public void createProcess(ProcessControlBlock processControlBlock){
-        readyQueue.add(processControlBlock); 
-    }
-    */
 
     public void readyQueueProcess(ProcessControlBlock process){
         readyQueue.add(process); 
@@ -41,37 +38,64 @@ public class ProcessManager extends Thread{
         blockedQueue.add(process); 
     }
 
-    public ProcessControlBlock getProcess(int id){
-        //ProcessControlBlock process = new ProcessControlBlock();
+    public ProcessControlBlock getReadyProcess(int id){
+        ProcessControlBlock aux = new ProcessControlBlock();
 
+        
         for (ProcessControlBlock process : readyQueue) {
             if(process.id == id){
-                return process;
+                aux = process;
+                readyQueue.remove(process);  
             }  
         }
+
+        return aux;
+    }
+
+    public ProcessControlBlock polBlockedProcess(int id){
+        ProcessControlBlock aux = new ProcessControlBlock();
 
         for (ProcessControlBlock process : blockedQueue) {
             if(process.id == id){
-                return process;
+                aux = process;
+                blockedQueue.remove(process);                                
             }  
         }
 
-        return new ProcessControlBlock();
-
-        //return process;
+        return aux;
     }
+
+    public ProcessControlBlock peekBlockedProcess(int id){
+        ProcessControlBlock aux = new ProcessControlBlock();
+
+        for (ProcessControlBlock process : blockedQueue) {
+            if(process.id == id){
+                aux = process;                                
+            }  
+        }
+
+        return aux;
+    }
+    
+    
 
     public void createProcess(Word[] program){
         if(loadProgram(program)){
 
             //Verifica se CPU esta Rodando algum processo
-            if(semaCPU.availablePermits() > 0){
+            if(semaCPU.availablePermits() == 0){
 
-                //Libera escalonador
-                semaSch.release();
+                //Primeiro processo
+                if(semaSch.availablePermits() == 0){
+                    //Libera escalonador
+                    semaSch.release();
+                }
             }
-
         }
+    }
+
+    public void addQueueProcess(ProcessControlBlock process){
+        readyQueue.add(process);
     }
     
     //Verificar e carregar programa na memória

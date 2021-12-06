@@ -1,7 +1,7 @@
 package Hardware;
 import java.util.concurrent.Semaphore;
 
-import javax.sound.midi.Track;
+//import javax.sound.midi.Track;
 
 import Hardware.Memory.Word;
 import Software.SistemaOperacional.ProcessControlBlock;
@@ -46,10 +46,12 @@ public class CPU extends Thread{
     public ProcessControlBlock process;
     private int[] tablePage;
     private Semaphore semaCPU;
+    private int idProcessIO;
 
-    private static int MAX_CLOCK = 5;
+    private static int MAX_CLOCK = 5000;
 
-    public CPU(Memory memory, int pageSize){
+    public CPU(Memory memory, int pageSize, Semaphore semaCPU){
+        this.semaCPU = semaCPU;
         m = memory;
         reg = new int[10];
         this.pageSize = pageSize;
@@ -62,7 +64,16 @@ public class CPU extends Thread{
         this.reg = process.registrators.clone();
         this.pc = process.pc;
         this.tablePage = process.tablePage.clone();
+        
         //System.out.println("\nCPU executando: PROCESS ID ["+process.id+"]");
+    }
+
+    public void setIdProcessIo(int id){
+        this.idProcessIO = id;
+    }
+
+    public int getIdProcessIo(){
+        return idProcessIO;
     }
 
     public int getPC(){
@@ -293,45 +304,21 @@ public class CPU extends Thread{
     
                 }
     
-
-                /*
                 clock++;
-                if(clock == MAX_CLOCK){  
-                    
-                    //Salva o estado atual do processo (será utilizado no ClockInterrupt).
-                    process = new ProcessControlBlock(process.id, this.itr, process.tablePage, this.pc, this.reg.clone());
-                    itr = Interrupt.ClockInterrupt;
-                    clock = 0;
-    
-                    System.out.println("PROCESS ID ["+process.id+"]" +" PC ["+this.pc+"]" +" PC ["+this.itr+"]" );
-
-                    try { semaCPU.acquire(); } 
-                    catch(InterruptedException ie) { }
-
-                    ih.handle(itr);
-
-                    break;
-                }
-                */
-
-                //Salva o estado atual do processo (será utilizado no ClockInterrupt).
-                process = new ProcessControlBlock(process.id, this.itr, process.tablePage, this.pc, this.reg.clone(), process.procesState);
-
-                clock++;
-                if(clock == MAX_CLOCK){                      
+                if(clock == MAX_CLOCK){      
+                    //Salva o estado atual do processo
+                    process = new ProcessControlBlock(process.id, this.itr, process.tablePage, this.pc, this.reg.clone(), process.procesState);                
                     itr = Interrupt.ClockInterrupt;
                     clock = 0; 
+                    //ih.handle(itr);
+
+                    //break;
                 }
                 
-                if(itr != Interrupt.NoInterrupt){                                                    
-                    try { semaCPU.acquire(); } 
-                    catch(InterruptedException ie) { }
-
+                if(itr != Interrupt.NoInterrupt){                     
                     ih.handle(itr);
-
                     break;                    
-                }
-    
+                }    
                 
             }
         }

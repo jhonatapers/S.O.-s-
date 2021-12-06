@@ -7,7 +7,7 @@ import Hardware.Memory.Word;
 
 public class MemoryManager{
 
-        protected Memory memory;
+        public Memory memory;
         private int pageLength;
         private int frameLength;
         private int nFrames;

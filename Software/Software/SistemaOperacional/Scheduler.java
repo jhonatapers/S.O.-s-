@@ -27,9 +27,10 @@ public class Scheduler extends Thread {
             if(processManager.peekNextProcess() != null){
                 //Seta o primeiro da fila para executar.
                 processManager.dispatch(processManager.pollNextProcess());
+                semaCPU.release();
             }
 
-            semaCPU.release();
+            //semaCPU.release();
         }
     }
 
