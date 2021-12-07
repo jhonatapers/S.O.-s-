@@ -64,7 +64,7 @@ public class SOs {
                     cpu.itr = Interrupt.ProgramEnd;
                     break;
                 case ProgramEnd:                
-                    System.out.println("\n\t\t###### "+ itr + " => PROCESS ID["+cpu.process.id+"] ######");
+                    //System.out.println("\n\t\t###### "+ itr + " => PROCESS ID["+cpu.process.id+"] ######");
                     processManager.killProcess(cpu.process);
                     
                     //Libera Escalonador para pegar proximo processo
@@ -115,8 +115,8 @@ public class SOs {
         }        
     }
 
-    public void newProcess(Word[] program){
-        processManager.createProcess(program);
+    public Boolean newProcess(Word[] program){
+        return processManager.createProcess(program);
     }
 
     public void runScheduler(){

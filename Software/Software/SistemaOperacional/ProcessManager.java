@@ -123,8 +123,11 @@ public class ProcessManager {
     }
 
     //Cria novo processo e joga na fila de prontos
-    public void createProcess(Word[] program){
-        if(loadProgram(program)){
+    public Boolean createProcess(Word[] program){
+
+        boolean result = loadProgram(program);
+
+        if(result){
 
             //Verifica se CPU esta Rodando algum processo
             if(sCPU.availablePermits() == 0){
@@ -136,6 +139,8 @@ public class ProcessManager {
                 }
             }
         }
+
+        return result;
     }
 
     //Verificar e carregar programa na memória

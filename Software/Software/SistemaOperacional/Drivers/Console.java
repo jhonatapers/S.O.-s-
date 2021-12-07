@@ -94,7 +94,7 @@ public class Console extends Thread {
     }
 
     public void output(ProcessControlBlock process){
-        System.out.println("\nSAIDA Process ID [" + cpu.process.id+ "]");
+        //System.out.println("\nSAIDA Process ID [" + cpu.process.id+ "]");
         consoleOutputDriver.systemOutInt(memoryManager.memory.address[cpu.translateAddress(process.registrators[9])].p);
         process.interrupt = Interrupt.NoInterrupt;
     }

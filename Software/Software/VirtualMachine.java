@@ -11,7 +11,7 @@ public class VirtualMachine {
 	public CPU cpu;
 	public Memory memory;
 	public SOs sos;
-	private final static int MEM_SIZE = 1024;
+	private final static int MEM_SIZE = 128;//1024;
 	private final static int PAGE_SIZE = 16;
 
 	
@@ -29,6 +29,7 @@ public class VirtualMachine {
 		
 		CPU cpu = new CPU(new Memory(MEM_SIZE), PAGE_SIZE, sCPU);	
 		VirtualMachine vm = new VirtualMachine(cpu, cpu.m, sSch, sCPU);
+		Shell shell = new Shell(vm.sos);
 
 		/**
 		 * Debug = Informar, no console, cada linha sendo executada pelo programa.
@@ -48,6 +49,7 @@ public class VirtualMachine {
 		//vm.sos.loadNextProcess();
 
 		//Executa o programa atual da CPU e os demais em fila, até encerrar todos.
+		shell.start();
 		vm.sos.runScheduler();
 		vm.cpu.start();
 
