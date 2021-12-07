@@ -110,11 +110,12 @@ public class ProcessManager {
 
         for (ProcessControlBlock process : blockedQueue) {
             if(process.id == id){
-                aux = process;    
-                blockedQueue.remove(process);                            
+                aux = process;                                              
             }  
         }
         
+        blockedQueue.remove(aux);  
+
         //Libera acesso
         sBlokedQueue.release();
 
