@@ -1,4 +1,6 @@
 package Software;
+import java.util.concurrent.Semaphore;
+
 import Hardware.CPU;
 import Hardware.Memory;
 //import Hardware.Memory.Word;
@@ -12,15 +14,21 @@ public class VirtualMachine {
 	private final static int MEM_SIZE = 1024;
 	private final static int PAGE_SIZE = 16;
 
-    public VirtualMachine(CPU _cpu, Memory _memory){  
+	
+    public VirtualMachine(CPU _cpu, Memory _memory, Semaphore sSch, Semaphore sCPU){  
 		cpu = _cpu;
 		memory = _memory;
-		sos = new SOs(_cpu, _memory, PAGE_SIZE);
+		sos = new SOs(_cpu, _memory, PAGE_SIZE, sSch, sCPU);
     }
 
-    public static void main(String args[]) {  	     
-		CPU cpu = new CPU(new Memory(MEM_SIZE), PAGE_SIZE);	
-		VirtualMachine vm = new VirtualMachine(cpu, cpu.m);
+    public static void main(String args[]) {  
+
+			
+		Semaphore sSch = new Semaphore(0);
+		Semaphore sCPU = new Semaphore(0);
+		
+		CPU cpu = new CPU(new Memory(MEM_SIZE), PAGE_SIZE, sCPU);	
+		VirtualMachine vm = new VirtualMachine(cpu, cpu.m, sSch, sCPU);
 
 		/**
 		 * Debug = Informar, no console, cada linha sendo executada pelo programa.
@@ -30,18 +38,22 @@ public class VirtualMachine {
 		vm.cpu.debug = false;
 
 		//Carregando programas em memória.
-		vm.sos.loadProgram(new Softwares().contadorInOut);// [10] //Carregando o programa em memória CONTADOR PROCESS ID [0]
-		vm.sos.loadProgram(new Softwares().ADD);// [20+3 => 23] //Carregando o programa em memória ADD PROCESS ID [2]
-		vm.sos.loadProgram(new Softwares().SUB);// [30-32 => -2] //Carregando o programa em memória SUB PROCESS ID [3]
+		vm.sos.newProcess(new Softwares().contadorInOut);// [10] //Carregando o programa em memória CONTADOR PROCESS ID [0]
+		//vm.sos.loadProgram(new Softwares().ADD);// [20+3 => 23] //Carregando o programa em memória ADD PROCESS ID [2]
+		//vm.sos.loadProgram(new Softwares().SUB);// [30-32 => -2] //Carregando o programa em memória SUB PROCESS ID [3]
 		//vm.sos.loadProgram(new Softwares().PB);// [4 => 12] //Carregando o programa em memória de FATORIAL
 		//vm.sos.loadProgram(new Softwares().E1);// [12 => 12] [-1 => STOP (Interrupt ProgramEnd)] //Carregando o programa E1
 
 		//Colocando o primeiro programa da fila no contexto do processador.
-		vm.sos.loadNextProcess();
+		//vm.sos.loadNextProcess();
 
 		//Executa o programa atual da CPU e os demais em fila, até encerrar todos.
-		vm.cpu.run();
+		vm.sos.runScheduler();
+		vm.cpu.start();
+
 	}
+
+	
 
 
 }
