@@ -147,8 +147,10 @@ public class ProcessManager {
     //Cria novo processo e joga na fila de prontos
     public Boolean createProcess(Word[] program){
 
+        return loadProgram(program);
+        /*
         boolean result = loadProgram(program);
-
+        
         if(result){
 
             //Verifica se CPU esta Rodando algum processo
@@ -161,8 +163,10 @@ public class ProcessManager {
                 }
             }
         }
+        
 
         return result;
+        */
     }
 
     //Verificar e carregar programa na memória

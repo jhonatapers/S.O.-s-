@@ -1,10 +1,8 @@
 package Software;
-import java.util.Scanner;
 import java.util.concurrent.Semaphore;
 
 import Hardware.CPU;
 import Hardware.Memory;
-//import Hardware.Memory.Word;
 import Software.SistemaOperacional.SOs;
 
 public class VirtualMachine {
@@ -26,7 +24,7 @@ public class VirtualMachine {
 
 			
 		Semaphore sSch = new Semaphore(0);
-		Semaphore sCPU = new Semaphore(0);
+		Semaphore sCPU = new Semaphore(1);
 		
 		CPU cpu = new CPU(new Memory(MEM_SIZE), PAGE_SIZE, sCPU);	
 		VirtualMachine vm = new VirtualMachine(cpu, cpu.m, sSch, sCPU);
@@ -44,7 +42,7 @@ public class VirtualMachine {
 		//Carregando programas em memória.
 		vm.sos.newProcess(new Softwares().contadorInOut);// [10] //Carregando o programa em memória CONTADOR PROCESS ID [0]
 		vm.sos.newProcess(new Softwares().contadorInOut);// [10] //Carregando o programa em memória CONTADOR PROCESS ID [0]
-		vm.sos.newProcess(new Softwares().ADD);// [10] //Carregando o programa em memória CONTADOR PROCESS ID [0]
+		//vm.sos.newProcess(new Softwares().ADD);// [10] //Carregando o programa em memória CONTADOR PROCESS ID [0]
 		//vm.sos.loadProgram(new Softwares().ADD);// [20+3 => 23] //Carregando o programa em memória ADD PROCESS ID [2]
 		//vm.sos.loadProgram(new Softwares().SUB);// [30-32 => -2] //Carregando o programa em memória SUB PROCESS ID [3]
 		//vm.sos.loadProgram(new Softwares().PB);// [4 => 12] //Carregando o programa em memória de FATORIAL

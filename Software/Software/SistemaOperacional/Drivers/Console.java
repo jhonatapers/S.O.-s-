@@ -6,7 +6,6 @@ import java.util.Scanner;
 import java.util.concurrent.Semaphore;
 
 import Hardware.CPU;
-import Hardware.CPU.Interrupt;
 import Hardware.CPU.Opcode;
 import Software.SistemaOperacional.MemoryManager;
 import Software.SistemaOperacional.ProcessControlBlock;

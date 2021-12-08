@@ -229,6 +229,8 @@ public class CPU extends Thread {
     @Override
     public void run() {
 
+        process = new ProcessControlBlock(-1, Interrupt.NoProcessRunning , new int[0], -1, new int[0], ProcessState.Blocked);
+
         int clock = 0;
         
         while(true){

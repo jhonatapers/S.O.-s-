@@ -3,27 +3,44 @@ package Software;
 import java.util.Scanner;
 import java.util.concurrent.Semaphore;
 
+import Hardware.Memory.Word;
 import Software.SistemaOperacional.SOs;
 
 public class Shell extends Thread {
 
-    private SOs so;
+    private SOs sos;
     private Semaphore sAviso;
     private Boolean aviso;
 
-    public Shell(SOs so){
-        this.so = so;
+    private Scanner sc = new Scanner(System.in);
+
+    public Shell(SOs sos){
+        this.sos = sos;
         sAviso = new Semaphore(0);
+    }
+
+    private void tryLoad(Word[] program){
+        if(sos.newProcess(program)){
+            System.out.println("Programa Carregado em memoria");
+        }else{
+            System.out.println("Memória cheia");
+        }
     }
 
     @Override 
     public void run(){
         while(true){
-            Scanner sc = new Scanner(System.in);
-        	int input;
-			System.out.println("SHELL ABSURDA");
-            input = sc.nextInt();
-			System.out.println(input + "SHELL ABSURDA");
+            System.out.println("SHELL:");
+
+            switch(sc.next()){
+                case "#1":
+                    tryLoad(new Softwares().contadorInOut);
+                    break;
+                case "#2":
+                    tryLoad(new Softwares().ADD);
+                    break;
+            }
+            
 /*
             try {
                 Thread.sleep(10);
