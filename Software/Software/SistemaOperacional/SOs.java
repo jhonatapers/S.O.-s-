@@ -80,7 +80,7 @@ public class SOs {
                         cpu.process.processState = ProcessState.Blocked;
                         
                         //Adiciona na fila de bloqueados
-                        processManager.addBlockedQueue(trapProcess);                        
+                        processManager.addBlockedQueue(trapProcess.clone());                        
                         
                         //Empacota pedido ao Console
                         console.newRequest(trapProcess.id, trapProcess.registrators[8]);
@@ -96,7 +96,7 @@ public class SOs {
                     
                     //Adiciona processo atual no final da fila
                     processManager.addReadyQueue(cpu.process.clone());
-
+                    
                     //Libera escalonador
                     sSch.release();
                     break;

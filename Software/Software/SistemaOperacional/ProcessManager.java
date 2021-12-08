@@ -7,6 +7,7 @@ import java.util.concurrent.Semaphore;
 import Hardware.CPU;
 import Hardware.Memory.Word;
 import Software.SistemaOperacional.MemoryManager.AllocatesReturn;
+import Software.SistemaOperacional.ProcessControlBlock.ProcessState;
 
 public class ProcessManager {
     
@@ -41,6 +42,7 @@ public class ProcessManager {
         try { sReadyQueue.acquire(); } 
         catch(InterruptedException ie) { }
 
+        process.processState = ProcessState.Ready;
         readyQueue.add(process); 
 
         //Libera acesso

@@ -66,7 +66,7 @@ public class CPU extends Thread {
     //private int idProcessIO;
     private Queue<Integer> processIOQueue;
 
-    private static int MAX_CLOCK = 500;
+    private static int MAX_CLOCK = 5;
 
     public CPU(Memory memory, int pageSize, Semaphore sCPU){
 
@@ -245,7 +245,7 @@ public class CPU extends Thread {
                 }
                 
                 if(process.processState == ProcessState.Running){
-                    
+
                     if(validAdress(translateAddress(pc))) 
                         ir = m.address[translateAddress(pc)]; 
                 
@@ -426,6 +426,7 @@ public class CPU extends Thread {
         
                     }
 
+                    
                     //clock++;
                     if(clock++ == MAX_CLOCK){ 
                         this.setClockInterrupt(true); 
@@ -433,21 +434,29 @@ public class CPU extends Thread {
                     }
 
                     if(getClockInterrupt()){
-                        process = new ProcessControlBlock(process.id, this.itr, process.tablePage, this.pc, this.reg.clone(), process.processState);                    
+
+                        if(getTrapInterrupt()){
+                            process = new ProcessControlBlock(process.id, Interrupt.Trap, process.tablePage, this.pc, this.reg.clone(), process.processState);
+                        }else{
+                            process = new ProcessControlBlock(process.id, this.itr, process.tablePage, this.pc, this.reg.clone(), process.processState);
+                        }
+                                            
                         setClockInterrupt(false);
                         itr = Interrupt.ClockInterrupt;
-                        //ih.handle(Interrupt.ClockInterrupt);
-                    }
-
-                    if(getTrapInterrupt()){
-                        process = new ProcessControlBlock(process.id, Interrupt.NoInterrupt, process.tablePage, this.pc, this.reg.clone(), process.processState);
-                        setTrapInterrupt(false);
-                        ih.handle(Interrupt.Trap);
+                        ih.handle(Interrupt.ClockInterrupt);
                         break;
                     }
+                    
 
-                    if(itr != Interrupt.NoInterrupt){                                
-                        ih.handle(itr);
+                    if(itr != Interrupt.NoInterrupt || getTrapInterrupt()){     
+                        if(getTrapInterrupt()){
+                            process = new ProcessControlBlock(process.id, Interrupt.NoInterrupt, process.tablePage, this.pc, this.reg.clone(), process.processState);
+                            setTrapInterrupt(false);
+                            ih.handle(Interrupt.Trap);
+                        } else{
+                            ih.handle(itr);
+                        }                        
+                        
                         break; 
                     }
 
