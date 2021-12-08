@@ -19,18 +19,12 @@ public class ProcessManager {
     private Semaphore sReadyQueue;
     private Semaphore sBlokedQueue;
 
-    private Semaphore sCPU;
-    private Semaphore sSch;
-
-    public ProcessManager(CPU cpu, MemoryManager memoryManager, Semaphore sCPU, Semaphore sSch){
+    public ProcessManager(CPU cpu, MemoryManager memoryManager){
         readyQueue = new LinkedList<ProcessControlBlock>();
         blockedQueue = new LinkedList<ProcessControlBlock>();
 
         sReadyQueue = new Semaphore(1);
         sBlokedQueue = new Semaphore(1);
-
-        this.sCPU = sCPU;
-        this.sSch = sSch;
         
         this.cpu = cpu;
         this.memoryManager = memoryManager;

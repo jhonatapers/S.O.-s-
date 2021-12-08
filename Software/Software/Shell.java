@@ -1,7 +1,6 @@
 package Software;
 
 import java.util.Scanner;
-import java.util.concurrent.Semaphore;
 
 import Hardware.Memory.Word;
 import Software.SistemaOperacional.SOs;
@@ -9,14 +8,10 @@ import Software.SistemaOperacional.SOs;
 public class Shell extends Thread {
 
     private SOs sos;
-    private Semaphore sAviso;
-    private Boolean aviso;
-
     private Scanner sc = new Scanner(System.in);
 
     public Shell(SOs sos){
         this.sos = sos;
-        sAviso = new Semaphore(0);
     }
 
     private void tryLoad(Word[] program){

@@ -6,16 +6,10 @@
     "configurations": [
         {
             "type": "java",
-            "name": "Launch Current File",
-            "request": "launch",
-            "mainClass": "${file}"
-        },
-        {
-            "type": "java",
             "name": "Launch VirtualMachine",
             "request": "launch",
             "mainClass": "Software.VirtualMachine",
-            "projectName": "S.O.-s-_8fea49f7"
+            "console": "integratedTerminal"
         }
     ]
 }

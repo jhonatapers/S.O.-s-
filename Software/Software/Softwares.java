@@ -97,7 +97,7 @@ public class Softwares {
     /**
      * Pede um Int16 de entrada, se maior ou igual a zero calcula e imprime seu fatorial
     */
-    public Word[] PB = new Word[] { 
+    public Word[] Fatorial = new Word[] { 
         new Word(Opcode.LDI, 8, -1, 1),      //0 Input
         new Word(Opcode.LDI, 9, -1, 20),     //1 Input
         new Word(Opcode.TRAP, -1, -1, -1),   //2 Input

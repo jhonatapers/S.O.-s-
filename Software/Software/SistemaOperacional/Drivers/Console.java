@@ -22,11 +22,7 @@ public class Console extends Thread {
     private ProcessManager processManager;
     private MemoryManager memoryManager;
 
-    private Semaphore sConsole;
-
-    private Semaphore sCPU;
-
-    public Console(CPU cpu, ProcessManager processManager, MemoryManager memoryManager, Semaphore sConsole, Semaphore sCPU){
+    public Console(CPU cpu, ProcessManager processManager, MemoryManager memoryManager){
         sRequestQueue = new Semaphore(1);
         requestQueue = new LinkedList<Request>(); 
         loadDrivers();
@@ -34,14 +30,18 @@ public class Console extends Thread {
         this.cpu = cpu;
         this.processManager = processManager;
         this.memoryManager = memoryManager;
-
-        this.sConsole = sConsole;
-        this.sCPU = sCPU;
     }
 
     @Override
     public void run(){
         while(true){
+
+            //Simula atraso do Console
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
 
             if(!requestQueueisEmpty()){
 
@@ -64,17 +64,9 @@ public class Console extends Thread {
                         output(process);
                     break;
                 }
-    
-                //processManager.addBlockedQueue(process.clone());
+
                 cpu.setIDProcessIO(process.id);
                 cpu.setIoInterrupt(true);
-    
-                /* gambiarra
-                if(sCPU.availablePermits() == 0){
-                    sCPU.release();
-                }
-                */
-
             }
         }
     }

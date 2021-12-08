@@ -17,8 +17,6 @@ public class SOs {
     private CPU cpu;
     private ProcessManager processManager;
 
-    //Console Driver
-    private Semaphore sConsole;
     private Console console;
 
     //Semaforo Escalonador
@@ -26,8 +24,6 @@ public class SOs {
     //Escalonador
     private Scheduler scheduler;
 
-    //Semaforo CPU
-    private Semaphore sCPU;
 
     public SOs(CPU _cpu, Memory _memory, int _pageLength, Semaphore sSch, Semaphore sCPU){      
         interruptHandling = new InterruptHandling();
@@ -35,13 +31,11 @@ public class SOs {
         memoryManager = new MemoryManager(_memory, _pageLength);
         _cpu.setInterruptHandling(interruptHandling);
         cpu = _cpu;
-        processManager = new ProcessManager(cpu, memoryManager, sCPU, sSch);
+        processManager = new ProcessManager(cpu, memoryManager);
 
         this.sSch = sSch;
-        this.sCPU = sCPU;
 
-        sConsole = new Semaphore(0);
-        this.console = new Console(cpu, processManager, memoryManager, sConsole, sCPU);
+        this.console = new Console(cpu, processManager, memoryManager);
         this.console.start();
 
         scheduler = new Scheduler(processManager, sSch, sCPU);
