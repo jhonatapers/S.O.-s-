@@ -77,7 +77,7 @@ public class Softwares {
         new Word(Opcode.JMPIG, 7, 6, -1),     //21 pula pra inicio do loop
         new Word(Opcode.STOP, -1, -1, -1),    //22 pos 17
         new Word(Opcode.DATA, -1, -1, -1),    //23 posição de dados daqui pra frente
-        new Word(Opcode.DATA, -1, -1, 6),    //24
+        new Word(Opcode.DATA, -1, -1, 6),     //24
         new Word(Opcode.DATA, -1, -1, -1),    //25
         new Word(Opcode.DATA, -1, -1, -1),    //26
         new Word(Opcode.DATA, -1, -1, -1),    //27 
@@ -89,7 +89,7 @@ public class Softwares {
         new Word(Opcode.DATA, -1, -1, -1),    //33
         new Word(Opcode.DATA, -1, -1, -1),    //34
         new Word(Opcode.DATA, -1, -1, 22),    //35
-        new Word(Opcode.DATA, -1, -1, 6),    //36
+        new Word(Opcode.DATA, -1, -1, 6),     //36
 
     }; 
 

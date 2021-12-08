@@ -7,6 +7,7 @@ import Hardware.Memory;
 import Hardware.CPU.Interrupt;
 import Hardware.Memory.Word;
 import Software.SistemaOperacional.Drivers.*;
+import Software.SistemaOperacional.ProcessControlBlock.ProcessState;
 
 public class SOs {
 
@@ -74,18 +75,16 @@ public class SOs {
                 case Trap:
                     if(cpu.validAdress(cpu.translateAddress(cpu.getRegistrator(9)))){
                         
-                        ProcessControlBlock trapProcess = new ProcessControlBlock(cpu.process.id, Interrupt.NoInterrupt, cpu.process.tablePage, cpu.getPC(), cpu.getRegistrators().clone());
+                        ProcessControlBlock trapProcess = cpu.process.clone();
+
+                        cpu.process.processState = ProcessState.Blocked;
+                        
                         //Adiciona na fila de bloqueados
                         processManager.addBlockedQueue(trapProcess);                        
                         
                         //Empacota pedido ao Console
                         console.newRequest(trapProcess.id, trapProcess.registrators[8]);
 
-                        cpu.itr = Interrupt.NoInterrupt;
-
-                        //Libera Console
-                        sConsole.release();
-                        
                         //Libera escalonador
                         sSch.release();
 
@@ -103,8 +102,14 @@ public class SOs {
                     break;
                 case IO:
                     //Pega Processo Bloqueado por IO que esta pronto e joga na fila de prontos
-                    processManager.addReadyQueue(processManager.polBlockedProcess(cpu.getIDProcessIO()));
-                    //cpu.itr = cpu.process.interrupt;
+                    ProcessControlBlock processIO = processManager.polBlockedProcess(cpu.getIDProcessIO()).clone();
+                    processIO.processState = ProcessState.Ready;
+
+                    processManager.addReadyQueue(processIO);
+
+                    break;
+                case NoProcessRunning:
+                    sSch.release();
                     break;
                 default:
                     System.out.println(itr);

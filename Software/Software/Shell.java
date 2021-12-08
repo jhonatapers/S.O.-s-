@@ -26,10 +26,10 @@ public class Shell extends Thread {
             }
             
             if(this.so.newProcess(new Softwares().contadorInOut)){
-                System.out.println("Processo Carregado em memoria");
+                //System.out.println("Processo Carregado em memoria");
            
             }else{                
-                System.out.println("Memoria Cheia");
+                //System.out.println("Memoria Cheia");
             }     
 
         }

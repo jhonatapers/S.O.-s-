@@ -2,6 +2,8 @@ package Software.SistemaOperacional;
 
 import java.util.concurrent.Semaphore;
 
+import Software.SistemaOperacional.ProcessControlBlock.ProcessState;
+
 public class Scheduler extends Thread {
     
     private ProcessManager processManager;
@@ -24,14 +26,17 @@ public class Scheduler extends Thread {
             try { sSch.acquire(); } 
             catch(InterruptedException ie) { }
 
+ 
             //Busca o primeiro da fila
             if(processManager.peekReadyProcess() != null){
                 //Seta o primeiro da fila para executar.
-                processManager.dispatch(processManager.polReadyProcess());
-                sCPU.release();
+                ProcessControlBlock process = processManager.polReadyProcess();
+                process.processState = ProcessState.Running;
+                processManager.dispatch(process);
+                //sCPU.release();
             }
 
-            //semaCPU.release();
+            sCPU.release();
         }
     }
 }

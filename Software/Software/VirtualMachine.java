@@ -49,7 +49,7 @@ public class VirtualMachine {
 		//vm.sos.loadNextProcess();
 
 		//Executa o programa atual da CPU e os demais em fila, até encerrar todos.
-		shell.start();
+		//shell.start();
 		vm.sos.runScheduler();
 		vm.cpu.start();
 

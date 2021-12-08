@@ -44,29 +44,38 @@ public class Console extends Thread {
     public void run(){
         while(true){
 
-            try { sConsole.acquire(); } 
-            catch(InterruptedException ie) { }
+            if(!requestQueueisEmpty()){
 
-            Request request = requestQueue.poll();
+                try { sRequestQueue.acquire(); } 
+                catch(InterruptedException ie) { }
 
-            ProcessControlBlock process = processManager.polBlockedProcess(request.processId);
+                Request request = requestQueue.poll();
 
-            switch(request.iORequest){                        
-                case READ:
-                    input(process);
-                break;
-                
-                case WRITE:
-                    output(process);
-                break;
-            }
+                sRequestQueue.release();
 
-            processManager.addBlockedQueue(process.clone());
-            cpu.setIDProcessIO(process.id);
-            cpu.setIoInterrupt();
 
-            if(sCPU.availablePermits() == 0){
-                sCPU.release();
+                ProcessControlBlock process = processManager.peekBlockedProcess(request.processId);
+    
+                switch(request.iORequest){                        
+                    case READ:
+                        input(process);
+                    break;
+                    
+                    case WRITE:
+                        output(process);
+                    break;
+                }
+    
+                //processManager.addBlockedQueue(process.clone());
+                cpu.setIDProcessIO(process.id);
+                cpu.setIoInterrupt(true);
+    
+                /* gambiarra
+                if(sCPU.availablePermits() == 0){
+                    sCPU.release();
+                }
+                */
+
             }
         }
     }
@@ -78,6 +87,19 @@ public class Console extends Thread {
         requestQueue.add(new Request(processId, type));
 
         sRequestQueue.release();
+    }
+
+    private Boolean requestQueueisEmpty(){
+        Boolean value;
+
+        try { sRequestQueue.acquire(); } 
+        catch(InterruptedException ie) { }
+
+        value = requestQueue.isEmpty();
+
+        sRequestQueue.release();
+
+        return value;
     }
 
     private void loadDrivers(){

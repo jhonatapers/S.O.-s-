@@ -69,7 +69,7 @@ public class ProcessManager {
         //Libera acesso
         sReadyQueue.release();
 
-        return aux;
+        return aux.clone();
     }
 
     public ProcessControlBlock peekReadyProcess(){
@@ -97,7 +97,7 @@ public class ProcessManager {
         //Libera acesso
         sBlokedQueue.release();
 
-        return aux;
+        return aux.clone();
     }
 
     public ProcessControlBlock polBlockedProcess(int id){
@@ -119,7 +119,27 @@ public class ProcessManager {
         //Libera acesso
         sBlokedQueue.release();
 
-        return aux;
+        return aux.clone();
+    }
+
+    public ProcessControlBlock peekBlockedProcess(int id){
+
+        ProcessControlBlock aux = new ProcessControlBlock(); 
+
+        //Pede acesso a fila de prontos
+        try { sBlokedQueue.acquire(); } 
+        catch(InterruptedException ie) { }
+
+        for (ProcessControlBlock process : blockedQueue) {
+            if(process.id == id){
+                aux = process;                                              
+            }  
+        }
+
+        //Libera acesso
+        sBlokedQueue.release();
+
+        return aux.clone();
     }
 
     //Cria novo processo e joga na fila de prontos
