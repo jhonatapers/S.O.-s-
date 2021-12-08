@@ -24,25 +24,7 @@ public class MemoryManager{
 
                 freeFrames[i] = true;
                 //#region furos
-                if(i == 1)
-                {
-                    freeFrames[i] = false;
-                }
-
-                if(i == 5)
-                {
-                    freeFrames[i] = false;
-                }
-                
-                if(i == 7)
-                {
-                    freeFrames[i] = false;
-                }
-
-                if(i == 9)
-                {
-                    freeFrames[i] = false;
-                }
+               
                 //#endregion
 
             }

@@ -73,10 +73,8 @@ public class SOs {
 
                     break;
                 case Trap:
-                    if(cpu.validAdress(cpu.translateAddress(cpu.getRegistrator(9)))){
-                        
-                        ProcessControlBlock trapProcess = cpu.process.clone();
-
+                    ProcessControlBlock trapProcess = cpu.process.clone();
+                    if(cpu.validAdress(cpu.translateAddress(cpu.getRegistrator(9),trapProcess.tablePage))){
                         cpu.process.processState = ProcessState.Blocked;
                         
                         //Adiciona na fila de bloqueados

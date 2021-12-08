@@ -108,17 +108,17 @@ public class Console extends Thread {
     }
 
     public void input(ProcessControlBlock process){
-        memoryManager.memory.address[cpu.translateAddress(process.registrators[9])].opc = Opcode.DATA;
-        memoryManager.memory.address[cpu.translateAddress(process.registrators[9])].r1 = -1;
-        memoryManager.memory.address[cpu.translateAddress(process.registrators[9])].r2 = -1;
-        memoryManager.memory.address[cpu.translateAddress(process.registrators[9])].p = keyboardDriver.readKeyboardInput();
-        process.interrupt = Interrupt.NoInterrupt;
+        int address = cpu.translateAddress(process.registrators[9], process.tablePage);
+        memoryManager.memory.address[address].opc = Opcode.DATA;
+        memoryManager.memory.address[address].r1 = -1;
+        memoryManager.memory.address[address].r2 = -1;
+        memoryManager.memory.address[address].p = keyboardDriver.readKeyboardInput();
     }
 
     public void output(ProcessControlBlock process){
         //System.out.println("\nSAIDA Process ID [" + cpu.process.id+ "]");
-        consoleOutputDriver.systemOutInt(memoryManager.memory.address[cpu.translateAddress(process.registrators[9])].p);
-        process.interrupt = Interrupt.NoInterrupt;
+        int address = cpu.translateAddress(process.registrators[9], process.tablePage);
+        consoleOutputDriver.systemOutInt(memoryManager.memory.address[address].p);
     }
 
     public static enum IORequest {

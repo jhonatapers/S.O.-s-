@@ -246,26 +246,26 @@ public class CPU extends Thread {
                 
                 if(process.processState == ProcessState.Running){
 
-                    if(validAdress(translateAddress(pc))) 
-                        ir = m.address[translateAddress(pc)]; 
+                    if(validAdress(translateAddress(pc,tablePage))) 
+                        ir = m.address[translateAddress(pc,tablePage)]; 
                 
                     if(debug){ showState(); }
                 
                 
                     switch (ir.opc) {
                         case JMP: //  PC <- k       
-                            if(validAdress(translateAddress(ir.p)))                    
+                            if(validAdress(translateAddress(ir.p,tablePage)))                    
                                 pc = ir.p;			                    
                             break;
         
                         case JMPI: // PC <- Rs
-                            if(validAdress(translateAddress(reg[ir.r1])))
+                            if(validAdress(translateAddress(reg[ir.r1],tablePage)))
                                 pc = reg[ir.r1];
                             break;					
                             
                         case JMPIG: // If Rc > 0 Then PC <- Rs Else PC <- PC +1
                             if (reg[ir.r2] > 0) {
-                                if(validAdress(translateAddress(reg[ir.r1])))
+                                if(validAdress(translateAddress(reg[ir.r1],tablePage)))
                                     pc = reg[ir.r1];                      
                             } else {
                                 pc++;
@@ -274,7 +274,7 @@ public class CPU extends Thread {
         
                         case JMPIL: //f Rc < 0 then PC <- Rs Else PC <- PC +1 
                             if (reg[ir.r2] < 0) {
-                                if(validAdress(translateAddress(reg[ir.r1])))
+                                if(validAdress(translateAddress(reg[ir.r1],tablePage)))
                                     pc = reg[ir.r1];
                             } else {
                                 pc++;
@@ -283,7 +283,7 @@ public class CPU extends Thread {
         
                         case JMPIE: // If Rc = 0 Then PC <- Rs Else PC <- PC +1
                             if (reg[ir.r2] == 0) {
-                                if(validAdress(translateAddress(reg[ir.r1])))
+                                if(validAdress(translateAddress(reg[ir.r1],tablePage)))
                                     pc = reg[ir.r1];
                             } else {
                                 pc++;
@@ -291,14 +291,14 @@ public class CPU extends Thread {
                             break;
                             
                         case JMPIM: // PC <- [A]
-                            if(validAdress(translateAddress(m.address[translateAddress(ir.p)].p)))
-                                pc = m.address[translateAddress(ir.p)].p;
+                            if(validAdress(translateAddress(m.address[translateAddress(ir.p,tablePage)].p,tablePage)))
+                                pc = m.address[translateAddress(ir.p,tablePage)].p;
                             break;
                             
                         case JMPIGM: //if Rc > 0 then PC <- [A] Else PC <- PC +1 
                                 if (reg[ir.r2] > 0) {
-                                    if(validAdress(translateAddress(m.address[translateAddress(ir.p)].p)))
-                                        pc = m.address[translateAddress(ir.p)].p;
+                                    if(validAdress(translateAddress(m.address[translateAddress(ir.p,tablePage)].p,tablePage)))
+                                        pc = m.address[translateAddress(ir.p,tablePage)].p;
                                 } else {
                                     pc++;
                                 }
@@ -306,8 +306,8 @@ public class CPU extends Thread {
                             
                         case JMPILM: //f Rc < 0 then PC <- [A] Else PC <- PC +1
                                 if (reg[ir.r2] < 0) {
-                                    if(validAdress(translateAddress(m.address[translateAddress(ir.p)].p))){
-                                        pc = m.address[translateAddress(ir.p)].p;
+                                    if(validAdress(translateAddress(m.address[translateAddress(ir.p,tablePage)].p,tablePage))){
+                                        pc = m.address[translateAddress(ir.p,tablePage)].p;
                                     }
                                 } else {
                                     pc++;
@@ -316,8 +316,8 @@ public class CPU extends Thread {
                             
                         case JMPIEM: //f Rc = 0 then PC <- [A] Else PC <- PC +1
                                 if (reg[ir.r2] == 0) {
-                                    if(validAdress(translateAddress(m.address[translateAddress(ir.p)].p)))
-                                        pc = m.address[translateAddress(ir.p)].p;
+                                    if(validAdress(translateAddress(m.address[translateAddress(ir.p,tablePage)].p,tablePage)))
+                                        pc = m.address[translateAddress(ir.p,tablePage)].p;
                                 } else {
                                     pc++;
                                 }
@@ -366,31 +366,31 @@ public class CPU extends Thread {
                                 break;
         
                         case LDD: // Rd <- [A] 
-                                if(validAdress(translateAddress(ir.p))){
-                                    reg[ir.r1] = m.address[translateAddress(ir.p)].p;
+                                if(validAdress(translateAddress(ir.p,tablePage))){
+                                    reg[ir.r1] = m.address[translateAddress(ir.p,tablePage)].p;
                                     pc++;
                                 }
                                 break;
                                                     
                         case STD: // [A] <- Rs     
-                                if(validAdress(translateAddress(ir.p))){
-                                    m.address[translateAddress(ir.p)].opc = Opcode.DATA;
-                                    m.address[translateAddress(ir.p)].p = reg[ir.r1];
+                                if(validAdress(translateAddress(ir.p,tablePage))){
+                                    m.address[translateAddress(ir.p,tablePage)].opc = Opcode.DATA;
+                                    m.address[translateAddress(ir.p,tablePage)].p = reg[ir.r1];
                                     pc++;
                                 }
                                 break;
         
                         case LDX: // Rd <- [Rs] 
-                                if(validAdress(translateAddress(reg[ir.r2]))){
-                                    reg[ir.r1] = m.address[translateAddress(reg[ir.r2])].p;
+                                if(validAdress(translateAddress(reg[ir.r2],tablePage))){
+                                    reg[ir.r1] = m.address[translateAddress(reg[ir.r2],tablePage)].p;
                                     pc++;
                                 }
                                 break;
         
                         case STX: // [Rd] <-Rs
-                                if(validAdress(translateAddress(reg[ir.r1]))){
-                                    m.address[translateAddress(reg[ir.r1])].opc = Opcode.DATA;      
-                                    m.address[translateAddress(reg[ir.r1])].p = reg[ir.r2];          
+                                if(validAdress(translateAddress(reg[ir.r1],tablePage))){
+                                    m.address[translateAddress(reg[ir.r1],tablePage)].opc = Opcode.DATA;      
+                                    m.address[translateAddress(reg[ir.r1],tablePage)].p = reg[ir.r2];          
                                     pc++;
                                 }
                                 break;
@@ -426,37 +426,29 @@ public class CPU extends Thread {
         
                     }
 
-                    
                     //clock++;
                     if(clock++ == MAX_CLOCK){ 
                         this.setClockInterrupt(true); 
                         clock = 0;
                     }
 
-                    if(getClockInterrupt()){
+                    if (getTrapInterrupt()){
+                        process = new ProcessControlBlock(process.id, Interrupt.NoInterrupt, process.tablePage, this.pc, this.reg.clone(), process.processState);
+                        setTrapInterrupt(false);
+                        ih.handle(Interrupt.Trap);
+                        break;
+                    }
 
-                        if(getTrapInterrupt()){
-                            process = new ProcessControlBlock(process.id, Interrupt.Trap, process.tablePage, this.pc, this.reg.clone(), process.processState);
-                        }else{
-                            process = new ProcessControlBlock(process.id, this.itr, process.tablePage, this.pc, this.reg.clone(), process.processState);
-                        }
-                                            
+                    if(getClockInterrupt()){
+                        process = new ProcessControlBlock(process.id, this.itr, process.tablePage, this.pc, this.reg.clone(), process.processState);                
                         setClockInterrupt(false);
                         itr = Interrupt.ClockInterrupt;
                         ih.handle(Interrupt.ClockInterrupt);
                         break;
                     }
                     
-
-                    if(itr != Interrupt.NoInterrupt || getTrapInterrupt()){     
-                        if(getTrapInterrupt()){
-                            process = new ProcessControlBlock(process.id, Interrupt.NoInterrupt, process.tablePage, this.pc, this.reg.clone(), process.processState);
-                            setTrapInterrupt(false);
-                            ih.handle(Interrupt.Trap);
-                        } else{
-                            ih.handle(itr);
-                        }                        
-                        
+                    if(itr != Interrupt.NoInterrupt){     
+                        ih.handle(itr);
                         break; 
                     }
 
@@ -472,7 +464,7 @@ public class CPU extends Thread {
     }
 
     //Traduz um dado PC para a posição exata da memória onde a Word se encontra.
-    public int translateAddress(int pc){
+    public int translateAddress(int pc, int[] tablePage){
         int page = pc / pageSize; 
         int offset = pc % pageSize;
         int frame  = tablePage[page] * pageSize; //Converte a pagina do pc atual na posição real da memoria.
