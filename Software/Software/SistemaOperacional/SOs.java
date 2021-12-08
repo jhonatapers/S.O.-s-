@@ -24,7 +24,6 @@ public class SOs {
     //Escalonador
     private Scheduler scheduler;
 
-
     public SOs(CPU _cpu, Memory _memory, int _pageLength, Semaphore sSch, Semaphore sCPU){      
         interruptHandling = new InterruptHandling();
 
@@ -48,23 +47,31 @@ public class SOs {
             switch (itr) {
                 case InvalidInstruction:
                     System.out.println(itr);
-                    cpu.itr = Interrupt.ProgramEnd;
+                    cpu.process.processState = ProcessState.Blocked;
+                    processManager.killProcess(cpu.process);                    
+                    //Libera Escalonador para pegar proximo processo
+                    sSch.release();  
                     break;
                 case InvalidAdress:
                     System.out.println(itr);
-                    cpu.itr = Interrupt.ProgramEnd;
+                    cpu.process.processState = ProcessState.Blocked;
+                    processManager.killProcess(cpu.process);                    
+                    //Libera Escalonador para pegar proximo processo
+                    sSch.release();  
                     break;
                 case Overflow:
                     System.out.println(itr);
-                    cpu.itr = Interrupt.ProgramEnd;
+                    cpu.process.processState = ProcessState.Blocked;
+                    processManager.killProcess(cpu.process);                    
+                    //Libera Escalonador para pegar proximo processo
+                    sSch.release();  
                     break;
                 case ProgramEnd:                
                     //System.out.println("\n\t\t###### "+ itr + " => PROCESS ID["+cpu.process.id+"] ######");
-                    processManager.killProcess(cpu.process);
-                    
+                    cpu.process.processState = ProcessState.Blocked;
+                    processManager.killProcess(cpu.process);                    
                     //Libera Escalonador para pegar proximo processo
                     sSch.release();       
-
                     break;
                 case Trap:
                     ProcessControlBlock trapProcess = cpu.process.clone();

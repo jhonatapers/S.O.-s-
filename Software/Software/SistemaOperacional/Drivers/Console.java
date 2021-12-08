@@ -38,7 +38,7 @@ public class Console extends Thread {
 
             //Simula atraso do Console
             try {
-                Thread.sleep(1000);
+                Thread.sleep(10);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
