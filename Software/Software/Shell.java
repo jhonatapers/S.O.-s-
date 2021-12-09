@@ -30,6 +30,8 @@ public class Shell extends Thread {
 
     @Override
     public void run(){
+        
+        clearScreen();
 
         while(true){
 
@@ -79,6 +81,9 @@ public class Shell extends Thread {
                     System.out.println(" ------------------------------------------ ");
                     System.out.println(" ------------------------------------------ ");
                 break;
+                case "clear":
+                    clearScreen();
+                    break;
                 case "contador":
                     tryCreateProcess(new Softwares().contadorInOut, "Contador");
                     break;
@@ -100,6 +105,12 @@ public class Shell extends Thread {
         }
 
     }
+
+    public static void clearScreen() {  
+        for(int i = 0; i < 100; i++){
+            System.out.println("");
+        } 
+    }  
 
     private void tryCreateProcess(Word[] program, String programName){
         if(sos.newProcess(program)){
