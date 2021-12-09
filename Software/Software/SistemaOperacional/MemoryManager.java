@@ -21,12 +21,7 @@ public class MemoryManager{
 
             freeFrames = new boolean[nFrames];
             for(int i = 0; i < freeFrames.length; i++){
-
                 freeFrames[i] = true;
-                //#region furos
-               
-                //#endregion
-
             }
         }
 

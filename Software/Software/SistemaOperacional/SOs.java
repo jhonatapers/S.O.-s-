@@ -34,8 +34,7 @@ public class SOs {
 
         this.sSch = sSch;
 
-        this.console = new Console(cpu, processManager, memoryManager);
-        this.console.start();
+        this.console = new Console(cpu, processManager, memoryManager);        
 
         scheduler = new Scheduler(processManager, sSch, sCPU);
     }
@@ -125,6 +124,11 @@ public class SOs {
 
     public void runScheduler(){
         scheduler.start();
+    }
+
+    public void runConsole(Semaphore sNeedInput, Semaphore sInput, Semaphore sInputed){
+        console.setSemaShell(sNeedInput, sInput, sInputed);
+        console.start();
     }
 
 }

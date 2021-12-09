@@ -1,8 +1,8 @@
 package Software;
 
 import java.util.Scanner;
+import java.util.concurrent.Semaphore;
 
-import Hardware.Memory.Word;
 import Software.SistemaOperacional.SOs;
 
 public class Shell extends Thread {
@@ -10,46 +10,90 @@ public class Shell extends Thread {
     private SOs sos;
     private Scanner sc = new Scanner(System.in);
 
-    public Shell(SOs sos){
+    private Semaphore sNeedInput;
+    public static volatile Boolean needInput = false;
+
+    private Semaphore sInput;
+    public static volatile int input = 0;
+
+    private Semaphore sInputed;
+    public static volatile boolean inputed = false;         
+
+    public Shell(SOs sos, Semaphore sNeedInput, Semaphore sInput, Semaphore sInputed){
         this.sos = sos;
+
+        this.sNeedInput = sNeedInput;
+        this.sInput = sInput;
+        this.sInputed = sInputed;
     }
 
-    private void tryLoad(Word[] program){
-        if(sos.newProcess(program)){
-            System.out.println("Programa Carregado em memoria");
-        }else{
-            System.out.println("Memória cheia");
-        }
-    }
-
-    @Override 
+    @Override
     public void run(){
-        while(true){
-            System.out.println("SHELL:");
 
-            switch(sc.next()){
-                case "#1":
-                    tryLoad(new Softwares().contadorInOut);
-                    break;
-                case "#2":
-                    tryLoad(new Softwares().ADD);
-                    break;
-            }
+        while(true){
+
+            String in = sc.nextLine();
+
+            try { sNeedInput.acquire(); } 
+            catch(InterruptedException ie) { }
             
-/*
-            try {
-                Thread.sleep(10);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            if(needInput){
+
+                try{ 
+                    int aux = Integer.parseInt(in);      
+                    
+                    try { sInput.acquire(); } 
+                    catch(InterruptedException ie) { }
+
+                    input = aux;
+
+                    sInput.release();
+
+                    needInput = false;  
+                    
+                       
+                    try { sInputed.acquire(); } 
+                    catch(InterruptedException ie) { }
+
+                    inputed = true;
+
+                    sInputed.release();
+                    
+                }
+                catch(NumberFormatException e) { }
             }
-            
-            if(this.so.newProcess(new Softwares().contadorInOut)){
-                //System.out.println("Processo Carregado em memoria");
-           
-            }else{                
-                //System.out.println("Memoria Cheia");
-            }     
-*/
+
+            sNeedInput.release();
+
+            switch(in){
+                case "help":
+                    System.out.println(" ------------------------------------------ ");
+                    System.out.println(" ------------------PROGRAMS---------------- ");
+                    System.out.println(" ------------------------------------------ ");
+                    System.out.println("|contador                                  |");
+                    System.out.println("|fatorial                                  |");
+                    System.out.println("|add                                       |");
+                    System.out.println("|sub                                       |");
+                    System.out.println("|mult                                      |");
+                    System.out.println(" ------------------------------------------ ");
+                    System.out.println(" ------------------------------------------ ");
+                break;
+                case "contador":
+                    break;
+                case "fatorial":
+                    break;
+                case "add":
+                    break;
+                case "sub":
+                    break;
+                case "mult":
+                    break;
+                case default:
+                break;       
+            }
         }
+
     }
+
+    
 }

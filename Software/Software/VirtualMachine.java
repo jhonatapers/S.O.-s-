@@ -25,11 +25,15 @@ public class VirtualMachine {
 			
 		Semaphore sSch = new Semaphore(0);
 		Semaphore sCPU = new Semaphore(1);
+
+		Semaphore sNeedInput = new Semaphore(1);
+		Semaphore sInput = new Semaphore(1);
+		Semaphore sInputed = new Semaphore(1);
 		
 		CPU cpu = new CPU(new Memory(MEM_SIZE), PAGE_SIZE, sCPU);	
 		VirtualMachine vm = new VirtualMachine(cpu, cpu.m, sSch, sCPU);
-		Shell shell = new Shell(vm.sos);
-
+		Shell shell = new Shell(vm.sos, sNeedInput, sInput, sInputed);
+		vm.sos.runConsole(sNeedInput, sInput, sInputed);
 		/**
 		 * Debug = Informar, no console, cada linha sendo executada pelo programa.
 		 * true  = Debug ON
@@ -38,9 +42,14 @@ public class VirtualMachine {
 		vm.cpu.debug = false;
 
 		//Carregando programas em memória.
-		//vm.sos.newProcess(new Softwares().contadorInOut);// [10] //Carregando o programa em memória CONTADOR PROCESS ID [0]
 		vm.sos.newProcess(new Softwares().contadorInOut);// [10] //Carregando o programa em memória CONTADOR PROCESS ID [0]
-		vm.sos.newProcess(new Softwares().Fatorial);
+		//vm.sos.newProcess(new Softwares().Fatorial);// [10] //Carregando o programa em memória CONTADOR PROCESS ID [0]
+		//vm.sos.newProcess(new Softwares().contadorInOut);
+		//vm.sos.newProcess(new Softwares().contadorInOut);
+		//vm.sos.newProcess(new Softwares().contadorInOut);
+		//vm.sos.newProcess(new Softwares().contadorInOut);
+		
+		//vm.sos.newProcess(new Softwares().Fatorial);
 		//vm.sos.newProcess(new Softwares().ADD);// [10] //Carregando o programa em memória CONTADOR PROCESS ID [0]
 		//vm.sos.loadProgram(new Softwares().ADD);// [20+3 => 23] //Carregando o programa em memória ADD PROCESS ID [2]
 		//vm.sos.loadProgram(new Softwares().SUB);// [30-32 => -2] //Carregando o programa em memória SUB PROCESS ID [3]
@@ -51,7 +60,7 @@ public class VirtualMachine {
 		//vm.sos.loadNextProcess();
 
 		//Executa o programa atual da CPU e os demais em fila, até encerrar todos.
-		//shell.start();
+		shell.start();
 		vm.sos.runScheduler();
 		vm.cpu.start();
 		

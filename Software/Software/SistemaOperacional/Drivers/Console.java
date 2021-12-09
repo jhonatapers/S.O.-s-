@@ -7,14 +7,15 @@ import java.util.concurrent.Semaphore;
 
 import Hardware.CPU;
 import Hardware.CPU.Opcode;
+import Software.Shell;
 import Software.SistemaOperacional.MemoryManager;
 import Software.SistemaOperacional.ProcessControlBlock;
 import Software.SistemaOperacional.ProcessManager;
 
 public class Console extends Thread {
 
-    private KeyboardDriver keyboardDriver;
-    private ConsoleOutputDriver consoleOutputDriver;
+    //private KeyboardDriver keyboardDriver;
+    //private ConsoleOutputDriver consoleOutputDriver;
     private Semaphore sRequestQueue;
     private Queue<Request> requestQueue;
 
@@ -22,14 +23,76 @@ public class Console extends Thread {
     private ProcessManager processManager;
     private MemoryManager memoryManager;
 
+    //Semaforos para sincronização com o Shell
+    private Semaphore sNeedInput;
+    private Semaphore sInput;
+    private Semaphore sInputed;
+
     public Console(CPU cpu, ProcessManager processManager, MemoryManager memoryManager){
         sRequestQueue = new Semaphore(1);
         requestQueue = new LinkedList<Request>(); 
-        loadDrivers();
 
         this.cpu = cpu;
         this.processManager = processManager;
         this.memoryManager = memoryManager;
+    }
+
+    public void setSemaShell(Semaphore sNeedInput, Semaphore sInput, Semaphore sInputed){        
+        this.sNeedInput = sNeedInput;
+        this.sInput = sInput;
+        this.sInputed = sInputed;
+    }
+
+    private int requestInput(){
+
+        try { sNeedInput.acquire(); } 
+        catch(InterruptedException ie) { }
+
+        Shell.needInput = true;
+
+        sNeedInput.release();
+
+        System.out.println("Digite um inteiro:");
+
+        boolean loop = true;
+        while(loop){
+
+            try { sInputed.acquire(); } 
+            catch(InterruptedException ie) { }
+
+            loop = !Shell.inputed;
+
+            sInputed.release();
+        }
+
+        try { sInputed.acquire(); } 
+        catch(InterruptedException ie) { }
+
+        Shell.inputed = false;
+
+        sInputed.release();
+
+        try { sInput.acquire(); } 
+        catch(InterruptedException ie) { }
+
+        return Shell.input;
+    }
+
+    public void input(ProcessControlBlock process){
+        int address = cpu.translateAddress(process.registrators[9], process.tablePage);
+        memoryManager.memory.address[address].opc = Opcode.DATA;
+        memoryManager.memory.address[address].r1 = -1;
+        memoryManager.memory.address[address].r2 = -1;
+        memoryManager.memory.address[address].p = requestInput();
+        sInput.release();
+    }
+
+    public void output(ProcessControlBlock process){
+        //System.out.println("\nSAIDA Process ID [" + cpu.process.id+ "]");
+        int address = cpu.translateAddress(process.registrators[9], process.tablePage);
+        int output = memoryManager.memory.address[address].p;
+
+        System.out.println("\t"+output);
     }
 
     @Override
@@ -93,25 +156,6 @@ public class Console extends Thread {
         return value;
     }
 
-    private void loadDrivers(){
-        keyboardDriver = new KeyboardDriver();
-        consoleOutputDriver = new ConsoleOutputDriver();
-    }
-
-    public void input(ProcessControlBlock process){
-        int address = cpu.translateAddress(process.registrators[9], process.tablePage);
-        memoryManager.memory.address[address].opc = Opcode.DATA;
-        memoryManager.memory.address[address].r1 = -1;
-        memoryManager.memory.address[address].r2 = -1;
-        memoryManager.memory.address[address].p = keyboardDriver.readKeyboardInput();
-    }
-
-    public void output(ProcessControlBlock process){
-        //System.out.println("\nSAIDA Process ID [" + cpu.process.id+ "]");
-        int address = cpu.translateAddress(process.registrators[9], process.tablePage);
-        consoleOutputDriver.systemOutInt(memoryManager.memory.address[address].p);
-    }
-
     public static enum IORequest {
         READ,
         WRITE;
@@ -132,31 +176,6 @@ public class Console extends Thread {
                     break;
             }
         }
-    }
-
-    public class ConsoleOutputDriver {
-        
-        public void systemOutInt(int conteudo) {
-            System.out.println("\t"+conteudo);
-        }
-
-    }
-    
-    public class KeyboardDriver {
-        
-        private Scanner sc = new Scanner(System.in);
-        int input;
-        
-        public int readKeyboardInput() {
-            System.out.println("Digite um int:");
-            input = sc.nextInt();
-            return input;
-        }
-        
-        //Utilizado para "limpar" o conteudo do leitor.
-        public void flushReaderBuffer() { 
-            sc.nextLine();
-        }   
     }
     
 }
