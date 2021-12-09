@@ -2,7 +2,6 @@ package Software.SistemaOperacional.Drivers;
 
 import java.util.LinkedList;
 import java.util.Queue;
-import java.util.Scanner;
 import java.util.concurrent.Semaphore;
 
 import Hardware.CPU;
@@ -14,8 +13,6 @@ import Software.SistemaOperacional.ProcessManager;
 
 public class Console extends Thread {
 
-    //private KeyboardDriver keyboardDriver;
-    //private ConsoleOutputDriver consoleOutputDriver;
     private Semaphore sRequestQueue;
     private Queue<Request> requestQueue;
 
@@ -37,6 +34,68 @@ public class Console extends Thread {
         this.memoryManager = memoryManager;
     }
 
+    @Override
+    public void run(){
+        while(true){
+
+            //Simula atraso do Console
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            if(!requestQueueisEmpty()){
+
+                try { sRequestQueue.acquire(); } 
+                catch(InterruptedException ie) { }
+
+                Request request = requestQueue.poll();
+
+                sRequestQueue.release();
+
+
+                ProcessControlBlock process = processManager.peekBlockedProcess(request.processId);
+    
+                switch(request.iORequest){                        
+                    case READ:
+                        input(process);
+                    break;
+                    
+                    case WRITE:
+                        output(process);
+                    break;
+                }
+
+                cpu.setIDProcessIO(process.id);
+                cpu.setIoInterrupt(true);
+            }
+        }
+    }
+    
+    public void newRequest(int processId, int type){
+        try { sRequestQueue.acquire(); } 
+        catch(InterruptedException ie) { }
+
+        requestQueue.add(new Request(processId, type));
+
+        sRequestQueue.release();
+    }
+
+    private Boolean requestQueueisEmpty(){
+        Boolean value;
+
+        try { sRequestQueue.acquire(); } 
+        catch(InterruptedException ie) { }
+
+        value = requestQueue.isEmpty();
+
+        sRequestQueue.release();
+
+        return value;
+    }
+
+    
     public void setSemaShell(Semaphore sNeedInput, Semaphore sInput, Semaphore sInputed){        
         this.sNeedInput = sNeedInput;
         this.sInput = sInput;
@@ -93,67 +152,6 @@ public class Console extends Thread {
         int output = memoryManager.memory.address[address].p;
 
         System.out.println("\t"+output);
-    }
-
-    @Override
-    public void run(){
-        while(true){
-
-            //Simula atraso do Console
-            try {
-                Thread.sleep(10);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-            if(!requestQueueisEmpty()){
-
-                try { sRequestQueue.acquire(); } 
-                catch(InterruptedException ie) { }
-
-                Request request = requestQueue.poll();
-
-                sRequestQueue.release();
-
-
-                ProcessControlBlock process = processManager.peekBlockedProcess(request.processId);
-    
-                switch(request.iORequest){                        
-                    case READ:
-                        input(process);
-                    break;
-                    
-                    case WRITE:
-                        output(process);
-                    break;
-                }
-
-                cpu.setIDProcessIO(process.id);
-                cpu.setIoInterrupt(true);
-            }
-        }
-    }
-    
-    public void newRequest(int processId, int type){
-        try { sRequestQueue.acquire(); } 
-        catch(InterruptedException ie) { }
-
-        requestQueue.add(new Request(processId, type));
-
-        sRequestQueue.release();
-    }
-
-    private Boolean requestQueueisEmpty(){
-        Boolean value;
-
-        try { sRequestQueue.acquire(); } 
-        catch(InterruptedException ie) { }
-
-        value = requestQueue.isEmpty();
-
-        sRequestQueue.release();
-
-        return value;
     }
 
     public static enum IORequest {

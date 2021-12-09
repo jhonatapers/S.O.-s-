@@ -42,7 +42,7 @@ public class VirtualMachine {
 		vm.cpu.debug = false;
 
 		//Carregando programas em memória.
-		vm.sos.newProcess(new Softwares().contadorInOut);// [10] //Carregando o programa em memória CONTADOR PROCESS ID [0]
+		//vm.sos.newProcess(new Softwares().contadorInOut);// [10] //Carregando o programa em memória CONTADOR PROCESS ID [0]
 		//vm.sos.newProcess(new Softwares().Fatorial);// [10] //Carregando o programa em memória CONTADOR PROCESS ID [0]
 		//vm.sos.newProcess(new Softwares().contadorInOut);
 		//vm.sos.newProcess(new Softwares().contadorInOut);

@@ -45,28 +45,28 @@ public class SOs {
         public void handle(Interrupt itr){
             switch (itr) {
                 case InvalidInstruction:
-                    System.out.println(itr);
+                System.out.println("\n\t\t###### "+ itr + " => PROCESS ID["+cpu.process.id+"] ######");
                     cpu.process.processState = ProcessState.Blocked;
                     processManager.killProcess(cpu.process);                    
                     //Libera Escalonador para pegar proximo processo
                     sSch.release();  
                     break;
                 case InvalidAdress:
-                    System.out.println(itr);
+                System.out.println("\n\t\t###### "+ itr + " => PROCESS ID["+cpu.process.id+"] ######");
                     cpu.process.processState = ProcessState.Blocked;
                     processManager.killProcess(cpu.process);                    
                     //Libera Escalonador para pegar proximo processo
                     sSch.release();  
                     break;
                 case Overflow:
-                    System.out.println(itr);
+                System.out.println("\n\t\t###### "+ itr + " => PROCESS ID["+cpu.process.id+"] ######");
                     cpu.process.processState = ProcessState.Blocked;
                     processManager.killProcess(cpu.process);                    
                     //Libera Escalonador para pegar proximo processo
                     sSch.release();  
                     break;
                 case ProgramEnd:                
-                    //System.out.println("\n\t\t###### "+ itr + " => PROCESS ID["+cpu.process.id+"] ######");
+                    System.out.println("\n\t\t###### "+ itr + " => PROCESS ID["+cpu.process.id+"] ######");
                     cpu.process.processState = ProcessState.Blocked;
                     processManager.killProcess(cpu.process);                    
                     //Libera Escalonador para pegar proximo processo

@@ -3,6 +3,7 @@ package Software;
 import java.util.Scanner;
 import java.util.concurrent.Semaphore;
 
+import Hardware.Memory.Word;
 import Software.SistemaOperacional.SOs;
 
 public class Shell extends Thread {
@@ -66,27 +67,32 @@ public class Shell extends Thread {
             sNeedInput.release();
 
             switch(in){
-                case "help":
+                case "--help":
                     System.out.println(" ------------------------------------------ ");
-                    System.out.println(" ------------------PROGRAMS---------------- ");
+                    System.out.println(" ------------------PROGRAMAS--------------- ");
                     System.out.println(" ------------------------------------------ ");
-                    System.out.println("|contador                                  |");
-                    System.out.println("|fatorial                                  |");
-                    System.out.println("|add                                       |");
-                    System.out.println("|sub                                       |");
-                    System.out.println("|mult                                      |");
+                    System.out.println("|  contador                                |");
+                    System.out.println("|  fatorial                                |");
+                    System.out.println("|  add                                     |");
+                    System.out.println("|  sub                                     |");
+                    System.out.println("|  mult                                    |");
                     System.out.println(" ------------------------------------------ ");
                     System.out.println(" ------------------------------------------ ");
                 break;
                 case "contador":
+                    tryCreateProcess(new Softwares().contadorInOut, "Contador");
                     break;
                 case "fatorial":
+                    tryCreateProcess(new Softwares().Fatorial, "Fatorial");
                     break;
                 case "add":
+                    tryCreateProcess(new Softwares().ADD, "Add");
                     break;
                 case "sub":
+                    tryCreateProcess(new Softwares().SUB, "Sub");
                     break;
                 case "mult":
+                    tryCreateProcess(new Softwares().MULT, "Mult");
                     break;
                 case default:
                 break;       
@@ -95,5 +101,12 @@ public class Shell extends Thread {
 
     }
 
+    private void tryCreateProcess(Word[] program, String programName){
+        if(sos.newProcess(program)){
+            System.out.println(programName + " CARREAGDO EM MEMÓRIA");
+        }else{
+            System.out.println("SEM ESPAÇO EM MEMÓRIA");
+        }
+    }
     
 }

@@ -9,7 +9,7 @@
             "name": "Launch VirtualMachine",
             "request": "launch",
             "mainClass": "Software.VirtualMachine",
-            "console": "integratedTerminal"
+            "console": "externalTerminal"
         }
     ]
 }
