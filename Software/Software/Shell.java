@@ -32,6 +32,7 @@ public class Shell extends Thread {
     public void run(){
         
         clearScreen();
+        logo();
 
         while(true){
 
@@ -107,6 +108,30 @@ public class Shell extends Thread {
             }
         }
 
+    }
+
+    private void logo(){
+        System.out.println("          _____                   _______                   _____     	   ");  
+        System.out.println("         /\\    \\                 /::\\    \\                 /\\    \\         ");
+        System.out.println("        /::\\    \\               /::::\\    \\               /::\\    \\        ");
+        System.out.println("       /::::\\    \\             /::::::\\    \\             /::::\\    \\       ");
+        System.out.println("      /::::::\\    \\           /::::::::\\    \\           /::::::\\    \\      ");
+        System.out.println("     /:::/\\:::\\    \\         /:::/~~\\:::\\    \\         /:::/\\:::\\    \\     ");
+        System.out.println("    /:::/__\\:::\\    \\       /:::/    \\:::\\    \\       /:::/__\\:::\\    \\    ");
+        System.out.println("    \\:::\\   \\:::\\    \\     /:::/    / \\:::\\    \\      \\:::\\   \\:::\\    \\   ");
+        System.out.println("  ___\\:::\\   \\:::\\    \\   /:::/____/   \\:::\\____\\   ___\\:::\\   \\:::\\    \\  ");
+        System.out.println(" /\\   \\:::\\   \\:::\\    \\ |:::|    |     |:::|    | /\\   \\:::\\   \\:::\\    \\ ");
+        System.out.println("/::\\   \\:::\\   \\:::\\____\\|:::|____|     |:::|    |/::\\   \\:::\\   \\:::\\____\\");
+        System.out.println("\\:::\\   \\:::\\   \\::/    / \\:::\\    \\   /:::/    / \\:::\\   \\:::\\   \\::/    /");
+        System.out.println(" \\:::\\   \\:::\\   \\/____/   \\:::\\    \\ /:::/    /   \\:::\\   \\:::\\   \\/____/ ");
+        System.out.println("  \\:::\\   \\:::\\    \\        \\:::\\    /:::/    /     \\:::\\   \\:::\\    \\     ");
+        System.out.println("   \\:::\\   \\:::\\____\\        \\:::\\__/:::/    /       \\:::\\   \\:::\\____\\    ");
+        System.out.println("    \\:::\\  /:::/    /         \\::::::::/    /         \\:::\\  /:::/    /    ");
+        System.out.println("     \\:::\\/:::/    /           \\::::::/    /           \\:::\\/:::/    /     ");
+        System.out.println("      \\::::::/    /             \\::::/    /             \\::::::/    /      ");
+        System.out.println("       \\::::/    /               \\::/____/               \\::::/    /       ");
+        System.out.println("        \\::/    /                 ~~                      \\::/    /        ");
+        System.out.println("         \\/____/                                           \\/____/         ");
     }
 
     public static void clearScreen() {  
