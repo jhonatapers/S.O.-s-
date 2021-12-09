@@ -12,6 +12,7 @@ public class VirtualMachine {
 	public SOs sos;
 	private final static int MEM_SIZE = 1024;
 	private final static int PAGE_SIZE = 16;
+	private final static int BASE = 16;
 	
     public VirtualMachine(CPU _cpu, Memory _memory, Semaphore sSch, Semaphore sCPU){  
 		cpu = _cpu;
@@ -28,7 +29,7 @@ public class VirtualMachine {
 		Semaphore sInput = new Semaphore(1);
 		Semaphore sInputed = new Semaphore(1);
 		
-		CPU cpu = new CPU(new Memory(MEM_SIZE), PAGE_SIZE, sCPU);	
+		CPU cpu = new CPU(new Memory(MEM_SIZE), PAGE_SIZE, BASE, sCPU);	
 		VirtualMachine vm = new VirtualMachine(cpu, cpu.m, sSch, sCPU);
 		Shell shell = new Shell(vm.sos, sNeedInput, sInput, sInputed);
 		vm.sos.runConsole(sNeedInput, sInput, sInputed);

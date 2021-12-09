@@ -100,6 +100,9 @@ public class Shell extends Thread {
                     tryCreateProcess(new Softwares().MULT, "Mult");
                     break;
                 case default:
+                    System.out.println("-!!!!!!!!!!!!!!!!!!!!!-");
+                    System.out.println("COMANDO NAO RECONHECIDO");
+                    System.out.println("-!!!!!!!!!!!!!!!!!!!!!-");
                 break;       
             }
         }

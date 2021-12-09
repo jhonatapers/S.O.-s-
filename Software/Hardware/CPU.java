@@ -68,7 +68,14 @@ public class CPU extends Thread {
 
     private static int MAX_CLOCK = 5;
 
-    public CPU(Memory memory, int pageSize, Semaphore sCPU){
+    private int MAX;
+
+    private int MIN;
+
+    public CPU(Memory memory, int pageSize, int BASE, Semaphore sCPU){
+
+		MAX = (int) (Math.pow(2, BASE) / 2) -1;
+		MIN = (int) (Math.pow(2, BASE) / 2) * -1;
 
         sClockInterrupt = new Semaphore(1);
         clockInterrupt = false;
@@ -218,7 +225,7 @@ public class CPU extends Thread {
     }
 
     private boolean overflow(int n){
-        if(n < -32768 || n > 32767){
+        if(n < MIN || n > MAX){
             itr = Interrupt.Overflow;
             return true;
         }
